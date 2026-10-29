@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="84" viewBox="0 0 1200 84" role="img" aria-label="Top projects">
+<defs>
+  <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#7cc8ff"/>
+  </linearGradient>
+  <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#3d9bff"/><stop offset="0.6" stop-color="#ff3b5c"/><stop offset="1" stop-color="#ff3b5c" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="84" rx="16" fill="#03060f"/>
+<text x="32" y="53" font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="27" font-weight="700" fill="url(#tt)">Top projects</text>
+<rect x="258" y="44" width="542" height="1.5" fill="url(#ln)"/>
+<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="12" fill="#7cc8ff"><text x="820" y="46" fill-opacity="0.80">1</text><text x="829" y="49" fill-opacity="0.78">0</text><text x="838" y="45" fill-opacity="0.76">0</text><text x="848" y="43" fill-opacity="0.74">0</text><text x="858" y="49" fill-opacity="0.72">0</text><text x="869" y="44" fill-opacity="0.69">1</text><text x="880" y="46" fill-opacity="0.67">0</text><text x="891" y="48" fill-opacity="0.64">0</text><text x="903" y="42" fill-opacity="0.62">0</text><text x="915" y="48" fill-opacity="0.59">1</text><text x="927" y="48" fill-opacity="0.56">0</text><text x="941" y="45" fill-opacity="0.53">0</text><text x="954" y="43" fill-opacity="0.50">0</text><text x="983" y="42" fill-opacity="0.44">1</text><text x="999" y="46" fill-opacity="0.40">0</text><text x="1015" y="48" fill-opacity="0.37">1</text><text x="1031" y="40" fill-opacity="0.33">0</text><text x="1048" y="49" fill-opacity="0.29">0</text><text x="1066" y="50" fill-opacity="0.25">1</text><text x="1085" y="46" fill-opacity="0.21">0</text><text x="1124" y="41" fill-opacity="0.12">1</text><text x="1145" y="44" fill-opacity="0.08">0</text><text x="1167" y="47" fill-opacity="0.08">0</text></g>
+</svg>
