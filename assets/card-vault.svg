@@ -1,29 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="250" viewBox="0 0 600 250" role="img" aria-label="Vault: Turns an Android phone into a private AI coprocessor. Documents stay encrypted on-device; the laptop only receives a signed answer capsule and checks it before trusting it.">
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="278" viewBox="0 0 600 278" role="img" aria-label="Vault: Turns an Android phone into a private AI coprocessor. Documents stay encrypted on-device; the laptop only receives a signed answer capsule and checks it before trusting it.">
 <defs>
+  <filter id="sh" x="-5%" y="-10%" width="110%" height="130%">
+    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#f0284a" flood-opacity="0.13"/>
+  </filter>
+  <clipPath id="c"><rect x="14" y="14" width="572" height="250" rx="16"/></clipPath>
   <linearGradient id="bd" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ff3b5c" stop-opacity="0.9"/>
-    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.16"/>
-    <stop offset="1" stop-color="#3d9bff" stop-opacity="0.55"/>
+    <stop offset="0" stop-color="#f0284a" stop-opacity="0.7"/>
+    <stop offset="0.5" stop-color="#e2e9f6"/>
+    <stop offset="1" stop-color="#1f6fff" stop-opacity="0.35"/>
   </linearGradient>
   <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#7cc8ff"/>
+    <stop offset="0" stop-color="#9f1239"/><stop offset="1" stop-color="#f0284a"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#9f1239"/><stop offset="1" stop-color="#f0284a"/>
   </linearGradient>
   <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#ff3b5c"/><stop offset="1" stop-color="#ff3b5c" stop-opacity="0"/>
+    <stop offset="0" stop-color="#f0284a"/><stop offset="1" stop-color="#f0284a" stop-opacity="0"/>
   </linearGradient>
   <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#ff3b5c" stop-opacity="0.26"/><stop offset="1" stop-color="#ff3b5c" stop-opacity="0"/>
+    <stop offset="0" stop-color="#fda4af" stop-opacity="0.26"/><stop offset="1" stop-color="#fda4af" stop-opacity="0"/>
   </radialGradient>
-  <clipPath id="c"><rect width="600" height="250" rx="16"/></clipPath>
 </defs>
+<style>
+  .tg { fill: #f0284a; fill-opacity: .07; stroke: #f0284a; stroke-opacity: .45; animation: lit 6s ease-in-out infinite backwards; }
+  .tt { fill: #9f1239; animation: litText 6s ease-in-out infinite backwards; }
+  @keyframes lit { 0%, 26%, 100% { fill-opacity: .07; stroke-opacity: .45; } 9%, 17% { fill-opacity: 1; stroke-opacity: 1; } }
+  @keyframes litText { 0%, 26%, 100% { fill: #9f1239; } 9%, 17% { fill: #ffffff; } }
+  
+  .orbit { fill: none; stroke-linecap: round; stroke-dasharray: 70 930; animation: orbit linear infinite; }
+  @keyframes orbit { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<rect x="14" y="14" width="572" height="250" rx="16" fill="#ffffff" filter="url(#sh)"/>
 <g clip-path="url(#c)">
-  <rect width="600" height="250" fill="#03060f"/>
-  <ellipse cx="520" cy="10" rx="260" ry="130" fill="url(#gl)"/>
-  <rect x="0" y="0" width="360" height="3" fill="url(#bar)"/>
+  <ellipse cx="506" cy="14" rx="260" ry="140" fill="url(#gl)"/>
+  <rect x="14" y="14" width="343" height="3" fill="url(#bar)"/>
 </g>
-<rect x="0.75" y="0.75" width="598.5" height="248.5" rx="15.5" fill="none" stroke="url(#bd)" stroke-width="1.5"/>
-<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="12" fill="#7cc8ff"><text x="405" y="34" fill-opacity="0.68">1</text><text x="415" y="34" fill-opacity="0.65">0</text><text x="425" y="34" fill-opacity="0.62">1</text><text x="436" y="34" fill-opacity="0.58">1</text><text x="448" y="34" fill-opacity="0.54">0</text><text x="460" y="33" fill-opacity="0.50">0</text><text x="474" y="33" fill-opacity="0.45">1</text><text x="489" y="34" fill-opacity="0.40">1</text><text x="505" y="33" fill-opacity="0.35">1</text><text x="403" y="49" fill-opacity="0.69">1</text><text x="413" y="49" fill-opacity="0.66">0</text><text x="423" y="49" fill-opacity="0.62">1</text><text x="434" y="49" fill-opacity="0.59">0</text><text x="458" y="49" fill-opacity="0.51">0</text><text x="471" y="46" fill-opacity="0.46">1</text><text x="519" y="43" fill-opacity="0.30">1</text><text x="417" y="65" fill-opacity="0.64">1</text><text x="439" y="64" fill-opacity="0.57">1</text><text x="464" y="64" fill-opacity="0.49">0</text><text x="547" y="53" fill-opacity="0.21">1</text></g>
-<text x="34" y="70" font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="26" font-weight="700" fill="url(#tt)">Vault</text>
-<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="13.5" fill="#aebfd9"><text x="34" y="108">Turns an Android phone into a private AI coprocessor.</text><text x="34" y="130">Documents stay encrypted on-device; the laptop only receives a</text><text x="34" y="152">signed answer capsule and checks it before trusting it.</text></g>
-<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="12" fill="#d6e2f5"><rect x="34.0" y="200" width="50.4" height="26" rx="13" fill="#ff3b5c" fill-opacity="0.16" stroke="#ff3b5c" stroke-opacity="0.85"/><text x="59.2" y="217" text-anchor="middle">Dart</text><rect x="92.4" y="200" width="118.8" height="26" rx="13" fill="#0c1428" fill-opacity="1" stroke="#2a3a5c" stroke-opacity="0.85"/><text x="151.8" y="217" text-anchor="middle">On-device LLM</text><rect x="219.2" y="200" width="65.6" height="26" rx="13" fill="#0c1428" fill-opacity="1" stroke="#2a3a5c" stroke-opacity="0.85"/><text x="252.0" y="217" text-anchor="middle">Crypto</text></g>
+<path d="M30.25,14.75 H569.75 A15.5,15.5 0 0 1 585.25,30.25 V247.75 A15.5,15.5 0 0 1 569.75,263.25 H30.25 A15.5,15.5 0 0 1 14.75,247.75 V30.25 A15.5,15.5 0 0 1 30.25,14.75 Z" fill="none" stroke="url(#bd)" stroke-width="1.5"/>
+<path class="orbit" d="M30.25,14.75 H569.75 A15.5,15.5 0 0 1 585.25,30.25 V247.75 A15.5,15.5 0 0 1 569.75,263.25 H30.25 A15.5,15.5 0 0 1 14.75,247.75 V30.25 A15.5,15.5 0 0 1 30.25,14.75 Z" pathLength="1000" stroke="#f0284a" stroke-width="7" stroke-opacity="0.16" style="animation-duration:20.5s;animation-delay:-0.0s"/><path class="orbit" d="M30.25,14.75 H569.75 A15.5,15.5 0 0 1 585.25,30.25 V247.75 A15.5,15.5 0 0 1 569.75,263.25 H30.25 A15.5,15.5 0 0 1 14.75,247.75 V30.25 A15.5,15.5 0 0 1 30.25,14.75 Z" pathLength="1000" stroke="#f0284a" stroke-width="2.2" stroke-opacity="0.95" style="animation-duration:20.5s;animation-delay:-0.0s"/><path class="orbit" d="M30.25,14.75 H569.75 A15.5,15.5 0 0 1 585.25,30.25 V247.75 A15.5,15.5 0 0 1 569.75,263.25 H30.25 A15.5,15.5 0 0 1 14.75,247.75 V30.25 A15.5,15.5 0 0 1 30.25,14.75 Z" pathLength="1000" stroke="#1f6fff" stroke-width="7" stroke-opacity="0.16" style="animation-duration:20.5s;animation-delay:-10.2s"/><path class="orbit" d="M30.25,14.75 H569.75 A15.5,15.5 0 0 1 585.25,30.25 V247.75 A15.5,15.5 0 0 1 569.75,263.25 H30.25 A15.5,15.5 0 0 1 14.75,247.75 V30.25 A15.5,15.5 0 0 1 30.25,14.75 Z" pathLength="1000" stroke="#1f6fff" stroke-width="2.2" stroke-opacity="0.95" style="animation-duration:20.5s;animation-delay:-10.2s"/>
+<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="12" fill="#f0284a"><text x="395" y="40" fill-opacity="0.58">1</text><text x="405" y="40" fill-opacity="0.56">0</text><text x="415" y="40" fill-opacity="0.53">1</text><text x="426" y="40" fill-opacity="0.50">1</text><text x="438" y="40" fill-opacity="0.46">0</text><text x="451" y="39" fill-opacity="0.42">0</text><text x="465" y="39" fill-opacity="0.38">1</text><text x="480" y="40" fill-opacity="0.34">1</text><text x="496" y="39" fill-opacity="0.29">1</text><text x="393" y="55" fill-opacity="0.59">1</text><text x="403" y="55" fill-opacity="0.56">0</text><text x="413" y="55" fill-opacity="0.53">1</text><text x="424" y="55" fill-opacity="0.50">0</text><text x="448" y="55" fill-opacity="0.43">0</text><text x="462" y="52" fill-opacity="0.39">1</text><text x="510" y="48" fill-opacity="0.25">1</text><text x="395" y="71" fill-opacity="0.59">0</text><text x="404" y="71" fill-opacity="0.56">1</text><text x="425" y="70" fill-opacity="0.50">1</text><text x="450" y="70" fill-opacity="0.43">0</text><text x="532" y="59" fill-opacity="0.19">1</text></g>
+<text x="48" y="70" font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="26" font-weight="700" fill="url(#tt)">Vault</text>
+
+<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="13.5" fill="#3d4b66"><text x="48" y="114">Turns an Android phone into a private AI coprocessor.</text><text x="48" y="136">Documents stay encrypted on-device; the laptop only receives</text><text x="48" y="158">a signed answer capsule and checks it before trusting it.</text></g>
+<g font-family="'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace" font-size="12" font-weight="600"><rect class="tg" x="48.0" y="214" width="50.4" height="26" rx="13" style="animation-delay:0.35s"/><text class="tt" x="73.2" y="231" text-anchor="middle" style="animation-delay:0.35s">Dart</text><rect class="tg" x="106.4" y="214" width="118.8" height="26" rx="13" style="animation-delay:1.25s"/><text class="tt" x="165.8" y="231" text-anchor="middle" style="animation-delay:1.25s">On-device LLM</text><rect class="tg" x="233.2" y="214" width="65.6" height="26" rx="13" style="animation-delay:2.15s"/><text class="tt" x="266.0" y="231" text-anchor="middle" style="animation-delay:2.15s">Crypto</text></g>
 </svg>

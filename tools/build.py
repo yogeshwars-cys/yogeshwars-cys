@@ -1,12 +1,17 @@
-"""Generate the profile README artwork (assets/*.svg).
+"""Generate the profile README artwork (assets/*.svg) and README.md.
 
+    python tools/fetch_metrics.py   # refresh tools/metrics.json from GitHub (optional)
     python tools/build.py
 
 The header rasterises "YOGESHWAR" onto a character grid: solid blocks inside the
-letters, shading toward the edges, and binary digits that break off the edges and
-drift away. Everything is plain SVG + CSS so it animates inside GitHub's <img>.
+letters, shading toward the edges, and binary digits that break off the edges,
+drift away and stream back in. Below it, captions decode out of binary and
+dissolve again in a loop. Everything is plain SVG + CSS so it animates inside
+GitHub's <img>, and all motion stops under prefers-reduced-motion.
 """
 
+import datetime as dt
+import json
 import math
 import random
 from pathlib import Path
@@ -16,26 +21,110 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
+METRICS = ROOT / "tools" / "metrics.json"
 FONT_PATH = "C:/Windows/Fonts/seguibl.ttf"  # Segoe UI Black, only used to rasterise the name
 
-SANS = "'Segoe UI', Inter, -apple-system, 'Helvetica Neue', Arial, sans-serif"
 MONO = "'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace"
 
-INK = "#03060f"
-BLUE = "#3d9bff"
-BLUE_HOT = "#7cc8ff"
-RED = "#ff3b5c"
-MUTED = "#8ea3c4"
+PAPER = "#ffffff"
+LINE = "#e2e9f6"
+INK = "#0b1530"
+INK2 = "#3d4b66"
+MUTED = "#69778f"
+NAVY = "#0a2463"
+BLUE = "#1f6fff"
+SKY = "#6fb6ff"
+RED = "#f0284a"
+RED_DEEP = "#9f1239"
+GREEN = "#10b981"
+GREEN_DEEP = "#047857"
+
+# accent -> (main, deep, soft)
+ACCENTS = {
+    "blue": (BLUE, NAVY, SKY),
+    "red": (RED, RED_DEEP, "#fda4af"),
+    "green": (GREEN, GREEN_DEEP, "#6ee7b7"),
+}
+
+CAPTIONS = [
+    "Systems Architecture and Engineering",
+    "Foundational AI Primitives",
+    "Author of HaDA",
+    "Builder of CortexNET",
+    "AI Security and Anomaly Detection",
+    "Information Retrieval at the Edge",
+]
+
+SUMMARY = ("A 3rd Year Cyber Security Undergraduate, working at the intersection of AI, Security, "
+           "Systems, Information Retrieval and Distributed Computing to build efficient and powerful "
+           "Solutions that make real world impacts.")
 
 REDUCED_MOTION = "@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }"
+
+# a bright dash that travels slowly around a card border, through the corners
+ORBIT_CSS = """
+  .orbit { fill: none; stroke-linecap: round; stroke-dasharray: 70 930; animation: orbit linear infinite; }
+  @keyframes orbit { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }"""
 
 
 def esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def rrect(x: float, y: float, w: float, h: float, r: float) -> str:
+    return (f"M{x + r},{y} H{x + w - r} A{r},{r} 0 0 1 {x + w},{y + r} V{y + h - r} "
+            f"A{r},{r} 0 0 1 {x + w - r},{y + h} H{x + r} A{r},{r} 0 0 1 {x},{y + h - r} "
+            f"V{y + r} A{r},{r} 0 0 1 {x + r},{y} Z")
+
+
+def orbit(d: str, colors: tuple[str, str], dur: float) -> str:
+    """Two light dashes chasing each other around the border path `d`."""
+    out = []
+    for k, c in enumerate(colors):
+        style = f"animation-duration:{dur}s;animation-delay:-{dur * k / 2:.1f}s"
+        out.append(f'<path class="orbit" d="{d}" pathLength="1000" stroke="{c}" stroke-width="7" stroke-opacity="0.16" style="{style}"/>')
+        out.append(f'<path class="orbit" d="{d}" pathLength="1000" stroke="{c}" stroke-width="2.2" stroke-opacity="0.95" style="{style}"/>')
+    return "".join(out)
+
+
+def wrap(text: str, width: int) -> list[str]:
+    lines, line = [], ""
+    for word in text.split():
+        if line and len(line) + 1 + len(word) > width:
+            lines.append(line)
+            line = word
+        else:
+            line = f"{line} {word}".strip()
+    if line:
+        lines.append(line)
+    return lines
+
+
+def bit_field(rng: random.Random, x0: float, x1: float, y0: float, y1: float, step: float, alpha: float = 0.7) -> str:
+    """A block of binary that is dense on the left and breaks apart to the right."""
+    out = []
+    y = y0
+    while y <= y1:
+        x = x0 + rng.uniform(0, step)
+        while x < x1:
+            t = (x - x0) / (x1 - x0)
+            if rng.random() < 0.92 - t * 0.85:
+                lift = t * t * rng.uniform(0, 18)
+                out.append(f'<text x="{x:.0f}" y="{y - lift:.0f}" fill-opacity="{max(0.08, alpha - t * alpha * 0.85):.2f}">{rng.choice("01")}</text>')
+            x += step * (1 + t * 1.6)
+        y += step * 1.7
+    return "".join(out)
+
+
+def card_defs(W: float, H: float, m: float, r: float, shadow: str) -> str:
+    return f"""<filter id="sh" x="-5%" y="-10%" width="110%" height="130%">
+    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="{shadow}" flood-opacity="0.13"/>
+  </filter>
+  <clipPath id="c"><rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="{r}"/></clipPath>"""
+
+
 # ---------------------------------------------------------------------------
-# Header: character-art name dissolving into binary
+# Header: character-art name dissolving into binary, plus rotating captions
 # ---------------------------------------------------------------------------
 
 def name_mask(text: str, cols: int, cell_w: float, cell_h: float, stretch: float) -> np.ndarray:
@@ -82,9 +171,61 @@ def outward(filled: np.ndarray, y: int, x: int) -> tuple[float, float]:
     return vx / n, vy / n
 
 
+def pct(seconds: float, total: float) -> str:
+    return f"{100 * seconds / total:.3f}%"
+
+
+def caption_layer(rng: random.Random, cx: float, base_y: float) -> tuple[str, str]:
+    """Captions that decode out of flickering binary, hold, then blow away as digits."""
+    slot, reveal, hide, gone = 5.5, 0.55, 4.1, 5.2   # seconds within each caption's slot
+    total = slot * len(CAPTIONS)
+    cw, size = 13.2, 22
+
+    css = f"""
+  .cap {{ font-size: {size}px; font-weight: 700; }}
+  .ci, .ch, .co {{ animation-duration: {total}s; animation-iteration-count: infinite; animation-fill-mode: backwards; animation-timing-function: linear; }}
+  .ci {{ animation-name: cin; opacity: 0; }}
+  .ch {{ animation-name: cshow; opacity: 0; }}
+  .ch.k0 {{ opacity: 1; }}
+  .co {{ animation-name: cout; opacity: 0; transform-box: fill-box; transform-origin: center; animation-timing-function: cubic-bezier(.2,.6,.3,1); }}
+  @keyframes cin {{ 0% {{ opacity: 0; }} 0.05% {{ opacity: 1; }} {pct(reveal, total)} {{ opacity: 1; }} {pct(reveal + 0.02, total)}, 100% {{ opacity: 0; }} }}
+  @keyframes cshow {{ 0%, {pct(reveal, total)} {{ opacity: 0; }} {pct(reveal + 0.02, total)}, {pct(hide, total)} {{ opacity: 1; }} {pct(hide + 0.06, total)}, 100% {{ opacity: 0; }} }}
+  @keyframes cout {{
+    0%, {pct(hide, total)} {{ opacity: 0; transform: translate(0, 0) scale(1); }}
+    {pct(hide + 0.06, total)} {{ opacity: 1; transform: translate(0, 0) scale(1); }}
+    {pct(gone, total)} {{ opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.4); }}
+    100% {{ opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.4); }}
+  }}"""
+
+    out = [f'<g class="cap" aria-hidden="true">']
+    for k, caption in enumerate(CAPTIONS):
+        x0 = cx - len(caption) * cw / 2
+        for i, ch in enumerate(caption):
+            if ch == " ":
+                continue
+            x = round(x0 + i * cw + cw / 2, 1)
+            phase = round(k * slot + i * 0.035 + rng.uniform(0, 0.2), 3)
+            flip = round(rng.uniform(0.14, 0.3), 2)
+            out.append(
+                f'<g class="ci" style="animation-delay:{phase}s" fill="{BLUE}" text-anchor="middle">'
+                f'<text class="fa" x="{x}" y="{base_y}" style="animation-duration:{flip}s">0</text>'
+                f'<text class="fb" x="{x}" y="{base_y}" style="animation-duration:{flip}s">1</text></g>'
+            )
+            k0 = " k0" if k == 0 else ""
+            out.append(f'<text class="ch{k0}" x="{x}" y="{base_y}" text-anchor="middle" fill="url(#capInk)" style="animation-delay:{phase}s">{esc(ch)}</text>')
+            dx, dy = rng.uniform(18, 70), -rng.uniform(8, 38)
+            fill = RED if rng.random() < 0.22 else SKY
+            out.append(
+                f'<text class="co" x="{x}" y="{base_y}" text-anchor="middle" fill="{fill}" '
+                f'style="--dx:{dx:.0f}px;--dy:{dy:.0f}px;animation-delay:{phase}s">{rng.choice("01")}</text>'
+            )
+    out.append("</g>")
+    return css, "\n".join(out)
+
+
 def header_svg() -> str:
     rng = random.Random(7)
-    W, H = 1200, 400
+    W, H = 1200, 420
     cols, cell_w, cell_h = 168, 6.0, 9.0
     cov = name_mask("YOGESHWAR", cols, cell_w, cell_h, stretch=1.3)
     pad = 4
@@ -94,7 +235,7 @@ def header_svg() -> str:
     depth = depth_map(filled)
 
     x0 = (W - cols * cell_w) / 2
-    y0 = 52.0
+    y0 = 34.0
 
     def cx(x: float) -> float:
         return round(x0 + x * cell_w, 1)
@@ -103,18 +244,18 @@ def header_svg() -> str:
         return round(y0 + (y + 1) * cell_h, 1)
 
     body: dict[int, list[tuple[int, str]]] = {}   # row -> [(col, glyph)] for the solid letters
-    flicker: list[tuple[int, int, str]] = []     # edge digits that blink
-    dust: list[tuple[float, float, str, float]] = []  # static detached digits around the edges
-    particles: list[tuple[float, float, str, float, float, float, float, bool]] = []
+    boil: list[tuple[int, int]] = []             # edge cells that flip between 0 and 1
+    dust: list[tuple[float, float, str, float]] = []
+    leaving: list[str] = []                      # particles blowing off the edges
+    arriving: list[str] = []                     # particles streaming back in
 
     wind = (0.9, -0.45)  # dust blows up and to the right
     for y in range(rows):
         for x in range(cols):
             d = int(depth[y, x])
             if d == 0:
-                # anti-aliased fringe just outside the letters
-                if cov[y, x] > 0.12 and rng.random() < 0.55:
-                    dust.append((cx(x), cy(y), rng.choice("01░"), round(0.35 + cov[y, x] * 0.6, 2)))
+                if cov[y, x] > 0.12 and rng.random() < 0.5:
+                    dust.append((cx(x), cy(y), rng.choice("01░"), round(0.3 + cov[y, x] * 0.5, 2)))
                 continue
 
             ox, oy = outward(filled, y, x)
@@ -126,168 +267,240 @@ def header_svg() -> str:
             else:
                 r = rng.random()
                 if r < 0.18 + 0.32 * downwind:
-                    glyph = ""  # this cell has already blown away
+                    glyph = ""  # already blown away
                 elif r < 0.62:
-                    glyph = rng.choice("01")
+                    glyph = "01"
                 else:
                     glyph = rng.choice("▒░")
 
-            if glyph in ("0", "1") and rng.random() < 0.35:
-                flicker.append((x, y, glyph))
+            if glyph == "01":
+                boil.append((x, y))
             elif glyph:
                 body.setdefault(y, []).append((x, glyph))
 
-            if d == 1:
-                # loose digits hanging off the edge, a few cells out
-                for _ in range(1 + int(downwind * 2)):
-                    if rng.random() < 0.45:
-                        dist = rng.uniform(1.0, 2.5 + 5.0 * downwind)
-                        dx = ox * dist + wind[0] * dist * 0.8
-                        dy = oy * dist * 0.6 + wind[1] * dist * 0.5
-                        alpha = max(0.12, 0.9 - dist * 0.11)
-                        dust.append((cx(x + dx), cy(y + dy), rng.choice("01"), round(alpha, 2)))
-                # animated particles drifting away
-                if rng.random() < 0.10 + 0.30 * downwind:
-                    dist = rng.uniform(40, 130)
-                    jitter = rng.uniform(-0.35, 0.35)
-                    vx = ox * 0.6 + wind[0] + jitter
-                    vy = oy * 0.6 + wind[1] + rng.uniform(-0.3, 0.2)
-                    n = math.hypot(vx, vy) or 1.0
-                    particles.append((
-                        cx(x), cy(y), rng.choice("01"),
-                        round(vx / n * dist, 1), round(vy / n * dist, 1),
-                        round(rng.uniform(3.5, 7.5), 2), round(-rng.uniform(0, 7.5), 2),
-                        rng.random() < 0.18,  # a share of the dust burns red
-                    ))
+            if d != 1:
+                continue
+            for _ in range(1 + int(downwind * 2)):
+                if rng.random() < 0.45:
+                    dist = rng.uniform(1.0, 2.5 + 5.0 * downwind)
+                    ddx = ox * dist + wind[0] * dist * 0.8
+                    ddy = oy * dist * 0.6 + wind[1] * dist * 0.5
+                    alpha = max(0.1, 0.75 - dist * 0.1)
+                    dust.append((cx(x + ddx), cy(y + ddy), rng.choice("01"), round(alpha, 2)))
 
-    name_top = y0
-    name_bottom = y0 + rows * cell_h
+            vx, vy = ox * 0.7 + wind[0] + rng.uniform(-0.35, 0.35), oy * 0.7 + wind[1] + rng.uniform(-0.3, 0.2)
+            n = math.hypot(vx, vy) or 1.0
+            vx, vy = vx / n, vy / n
+            px, py = -vy, vx  # perpendicular, for a curved path
+            if rng.random() < 0.16 + 0.34 * downwind:
+                dist = rng.uniform(45, 160)
+                swirl = rng.uniform(-1, 1) * dist * 0.28
+                mx, my = vx * dist * 0.45 + px * swirl, vy * dist * 0.45 + py * swirl
+                ex, ey = vx * dist + px * swirl * 0.4, vy * dist + py * swirl * 0.4 - dist * 0.1
+                hot = " hot" if rng.random() < 0.22 else ""
+                leaving.append(
+                    f'<text class="p{hot}" x="{cx(x)}" y="{cy(y)}" font-size="{rng.uniform(7.5, 11.5):.1f}" '
+                    f'style="--mx:{mx:.0f}px;--my:{my:.0f}px;--dx:{ex:.0f}px;--dy:{ey:.0f}px;'
+                    f'animation-duration:{rng.uniform(4.5, 9.5):.2f}s;animation-delay:-{rng.uniform(0, 9.5):.2f}s">{rng.choice("01")}</text>'
+                )
+            elif rng.random() < 0.07:
+                dist = rng.uniform(60, 140)
+                swirl = rng.uniform(-1, 1) * dist * 0.3
+                sx, sy = vx * dist + px * swirl, vy * dist + py * swirl
+                mx, my = sx * 0.4 - px * swirl * 0.3, sy * 0.4 - py * swirl * 0.3
+                arriving.append(
+                    f'<text class="q" x="{cx(x)}" y="{cy(y)}" font-size="{rng.uniform(7.5, 10.5):.1f}" '
+                    f'style="--mx:{mx:.0f}px;--my:{my:.0f}px;--dx:{sx:.0f}px;--dy:{sy:.0f}px;'
+                    f'animation-duration:{rng.uniform(5, 9):.2f}s;animation-delay:-{rng.uniform(0, 9):.2f}s">{rng.choice("01")}</text>'
+                )
+
+    name_top, name_bottom = y0, y0 + rows * cell_h
     name_left, name_right = x0, x0 + cols * cell_w
+    cap_y = round(name_bottom + 64)
+    cap_css, cap_svg = caption_layer(random.Random(23), W / 2, cap_y)
 
-    out = []
-    out.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">')
-    out.append('<title id="t">YOGESHWAR</title>')
-    out.append('<desc id="d">The name YOGESHWAR drawn in character art, its edges disintegrating into drifting binary digits.</desc>')
+    def rows_to_text(attrs: str, dx: float = 0.0) -> list[str]:
+        lines = []
+        for y, items in sorted(body.items()):
+            xs = " ".join(f"{cx(x) + dx:.1f}" for x, _ in items)
+            chars = "".join(g for _, g in items)
+            lines.append(f'<text class="g" x="{xs}" y="{cy(y)}" {attrs}>{esc(chars)}</text>')
+        return lines
+
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">',
+           '<title id="t">YOGESHWAR</title>',
+           '<desc id="d">The name YOGESHWAR drawn in character art, its edges disintegrating into drifting binary digits. '
+           f'Below it, captions decode from binary in turn: {esc(", ".join(CAPTIONS))}.</desc>']
     out.append(f"""<defs>
-  <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="{name_left:.0f}" y1="{name_top:.0f}" x2="{name_left + 260:.0f}" y2="{name_bottom + 160:.0f}">
-    <stop offset="0" stop-color="#ffffff"/>
-    <stop offset="0.45" stop-color="#e8f4ff"/>
-    <stop offset="0.75" stop-color="{BLUE_HOT}"/>
-    <stop offset="1" stop-color="{BLUE}"/>
+  <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="{name_left:.0f}" y1="{name_top:.0f}" x2="{name_right:.0f}" y2="{name_bottom + 120:.0f}">
+    <stop offset="0" stop-color="{NAVY}"/>
+    <stop offset="0.45" stop-color="#1747c9"/>
+    <stop offset="0.8" stop-color="{BLUE}"/>
+    <stop offset="1" stop-color="#4ea3ff"/>
+  </linearGradient>
+  <linearGradient id="capInk" gradientUnits="userSpaceOnUse" x1="300" y1="0" x2="900" y2="0">
+    <stop offset="0" stop-color="{NAVY}"/><stop offset="0.6" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/>
   </linearGradient>
   <linearGradient id="ghost" gradientUnits="userSpaceOnUse" x1="{name_left:.0f}" y1="0" x2="{name_right:.0f}" y2="0">
-    <stop offset="0" stop-color="{RED}" stop-opacity="0.9"/>
-    <stop offset="0.35" stop-color="{RED}" stop-opacity="0.15"/>
+    <stop offset="0" stop-color="{RED}" stop-opacity="0.75"/>
+    <stop offset="0.35" stop-color="{RED}" stop-opacity="0.12"/>
     <stop offset="0.7" stop-color="{RED}" stop-opacity="0"/>
-    <stop offset="1" stop-color="{RED}" stop-opacity="0.55"/>
+    <stop offset="1" stop-color="{RED}" stop-opacity="0.5"/>
   </linearGradient>
-  <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{BLUE}" stop-opacity="0"/>
-    <stop offset="0.3" stop-color="{BLUE}"/>
-    <stop offset="0.55" stop-color="#ffffff"/>
-    <stop offset="0.8" stop-color="{RED}"/>
-    <stop offset="1" stop-color="{RED}" stop-opacity="0"/>
+  <linearGradient id="sheenGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.5"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="{SKY}"/><stop offset="0.5" stop-color="{LINE}"/><stop offset="1" stop-color="#fda4af"/>
   </linearGradient>
   <radialGradient id="glowBlue" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{BLUE}" stop-opacity="0.42"/>
-    <stop offset="0.6" stop-color="#1f5fd6" stop-opacity="0.12"/>
-    <stop offset="1" stop-color="#1f5fd6" stop-opacity="0"/>
+    <stop offset="0" stop-color="{SKY}" stop-opacity="0.32"/>
+    <stop offset="0.6" stop-color="{SKY}" stop-opacity="0.1"/>
+    <stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
   </radialGradient>
   <radialGradient id="glowRed" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{RED}" stop-opacity="0.32"/>
+    <stop offset="0" stop-color="{RED}" stop-opacity="0.16"/>
     <stop offset="1" stop-color="{RED}" stop-opacity="0"/>
   </radialGradient>
-  <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
-    <circle cx="1" cy="1" r="1" fill="#8fb4ff" fill-opacity="0.09"/>
+  <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="1" fill="{BLUE}" fill-opacity="0.08"/>
   </pattern>
   <filter id="bloom" x="-10%" y="-30%" width="120%" height="160%">
-    <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b"/>
-    <feFlood flood-color="{BLUE}" flood-opacity="0.85"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b"/>
+    <feFlood flood-color="{SKY}" flood-opacity="0.6"/>
     <feComposite in2="b" operator="in" result="g"/>
     <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
+  <mask id="nameMask" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}">
+    <rect width="{W}" height="{H}" fill="#000"/>
+    {"".join(rows_to_text('fill="#fff"'))}
+  </mask>
   <clipPath id="frame"><rect width="{W}" height="{H}" rx="16"/></clipPath>
 </defs>
 <style>
   text {{ font-family: {MONO}; }}
   .g {{ font-size: 10.5px; }}
-  .f {{ animation: flick 2.6s steps(1, end) infinite; }}
-  .p {{ font-size: 9px; opacity: 0; animation: drift linear infinite; }}
-  .caret {{ animation: blink 1.1s steps(1, end) infinite; }}
-  @keyframes flick {{ 0%, 100% {{ opacity: 1; }} 40% {{ opacity: 0.25; }} 55% {{ opacity: 0.9; }} 80% {{ opacity: 0.4; }} }}
+  .fa, .fb {{ animation-iteration-count: infinite; animation-timing-function: steps(1, end); }}
+  .fa {{ animation-name: flipA; }}
+  .fb {{ animation-name: flipB; opacity: 0; }}
+  .gone {{ animation: gone ease-in-out infinite; }}
+  .p, .q {{ opacity: 0; transform-box: fill-box; transform-origin: center; animation-iteration-count: infinite; animation-timing-function: cubic-bezier(.2,.6,.35,1); }}
+  .p {{ fill: {BLUE}; animation-name: drift; }}
+  .p.hot {{ animation-name: driftHot; }}
+  .q {{ fill: {SKY}; animation-name: reform; }}
+  .sheen {{ animation: sweep 9s ease-in-out infinite; }}
+  @keyframes flipA {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0; }} }}
+  @keyframes flipB {{ 0% {{ opacity: 0; }} 50% {{ opacity: 1; }} }}
+  @keyframes gone {{ 0%, 55% {{ opacity: 1; }} 65%, 88% {{ opacity: 0; }} 100% {{ opacity: 1; }} }}
   @keyframes drift {{
-    0% {{ transform: translate(0, 0); opacity: 0; }}
-    12% {{ opacity: 0.95; }}
-    100% {{ transform: translate(var(--dx), var(--dy)); opacity: 0; }}
+    0% {{ transform: translate(0, 0) scale(1); opacity: 0; }}
+    8% {{ opacity: .95; }}
+    45% {{ transform: translate(var(--mx), var(--my)) scale(.85); }}
+    100% {{ transform: translate(var(--dx), var(--dy)) scale(.35); opacity: 0; }}
   }}
-  @keyframes blink {{ 0%, 49% {{ opacity: 1; }} 50%, 100% {{ opacity: 0; }} }}
+  @keyframes driftHot {{
+    0% {{ transform: translate(0, 0) scale(1); opacity: 0; fill: {BLUE}; }}
+    8% {{ opacity: .95; }}
+    45% {{ transform: translate(var(--mx), var(--my)) scale(.85); fill: {RED}; }}
+    100% {{ transform: translate(var(--dx), var(--dy)) scale(.35); opacity: 0; fill: {RED}; }}
+  }}
+  @keyframes reform {{
+    0% {{ transform: translate(var(--dx), var(--dy)) scale(.4); opacity: 0; }}
+    25% {{ opacity: .8; }}
+    55% {{ transform: translate(var(--mx), var(--my)) scale(.8); }}
+    92% {{ transform: translate(0, 0) scale(1); opacity: .9; }}
+    100% {{ transform: translate(0, 0) scale(1); opacity: 0; }}
+  }}
+  @keyframes sweep {{ 0% {{ transform: translateX(0); }} 70%, 100% {{ transform: translateX({name_right - name_left + 320:.0f}px); }} }}
+  {ORBIT_CSS}
+  {cap_css}
   {REDUCED_MOTION}
 </style>""")
 
     out.append('<g clip-path="url(#frame)">')
-    out.append(f'<rect width="{W}" height="{H}" fill="{INK}"/>')
+    out.append(f'<rect width="{W}" height="{H}" fill="{PAPER}"/>')
     out.append(f'<rect width="{W}" height="{H}" fill="url(#dots)"/>')
-    out.append(f'<ellipse cx="{W / 2}" cy="{(name_top + name_bottom) / 2:.0f}" rx="560" ry="170" fill="url(#glowBlue)"/>')
-    out.append(f'<ellipse cx="{name_right - 40:.0f}" cy="{name_top + 20:.0f}" rx="230" ry="120" fill="url(#glowRed)"/>')
-    out.append(f'<ellipse cx="{name_left + 20:.0f}" cy="{name_bottom:.0f}" rx="160" ry="80" fill="url(#glowRed)" opacity="0.6"/>')
+    out.append(f'<ellipse cx="{W / 2}" cy="{(name_top + name_bottom) / 2:.0f}" rx="600" ry="190" fill="url(#glowBlue)"/>')
+    out.append(f'<ellipse cx="{name_right - 30:.0f}" cy="{name_top + 10:.0f}" rx="260" ry="130" fill="url(#glowRed)"/>')
+    out.append(f'<ellipse cx="{name_left + 10:.0f}" cy="{name_bottom + 10:.0f}" rx="200" ry="100" fill="url(#glowRed)" opacity="0.7"/>')
 
-    def rows_to_text(cells: dict[int, list[tuple[int, str]]], attrs: str, dx: float = 0.0) -> None:
-        for y, items in sorted(cells.items()):
-            xs = " ".join(f"{cx(x) + dx:.1f}" for x, _ in items)
-            chars = "".join(g for _, g in items)
-            out.append(f'<text class="g" x="{xs}" y="{cy(y)}" {attrs}>{esc(chars)}</text>')
-
-    # red chromatic ghost, offset to the left
     out.append('<g aria-hidden="true">')
-    rows_to_text(body, 'fill="url(#ghost)"', dx=-3.0)
+    out += rows_to_text('fill="url(#ghost)"', dx=-3.0)
     out.append("</g>")
-    # the solid letters, with bloom
     out.append('<g filter="url(#bloom)">')
-    rows_to_text(body, 'fill="url(#ink)"')
+    out += rows_to_text('fill="url(#ink)"')
     out.append("</g>")
+    out.append(f'<g mask="url(#nameMask)"><rect class="sheen" x="{name_left - 300:.0f}" y="{name_top:.0f}" width="160" height="{name_bottom - name_top:.0f}" fill="url(#sheenGrad)"/></g>')
 
-    out.append('<g fill="url(#ink)">')
-    for i, (x, y, g) in enumerate(flicker):
-        delay = -round(rng.uniform(0, 2.6), 2)
-        out.append(f'<text class="g f" x="{cx(x)}" y="{cy(y)}" style="animation-delay:{delay}s">{g}</text>')
+    out.append('<g class="g" fill="url(#ink)">')
+    for x, y in boil:
+        flip = rng.uniform(1.2, 3.4)
+        delay = -rng.uniform(0, 3.4)
+        pair = (f'<text class="fa" x="{cx(x)}" y="{cy(y)}" style="animation-duration:{flip:.2f}s;animation-delay:{delay:.2f}s">0</text>'
+                f'<text class="fb" x="{cx(x)}" y="{cy(y)}" style="animation-duration:{flip:.2f}s;animation-delay:{delay:.2f}s">1</text>')
+        if rng.random() < 0.4:
+            pair = f'<g class="gone" style="animation-duration:{rng.uniform(5, 11):.2f}s;animation-delay:-{rng.uniform(0, 11):.2f}s">{pair}</g>'
+        out.append(pair)
     out.append("</g>")
 
     out.append('<g font-size="9.5">')
     for x, y, g, a in dust:
-        fill = BLUE_HOT if rng.random() < 0.8 else RED
+        fill = BLUE if rng.random() < 0.8 else RED
         out.append(f'<text x="{x}" y="{y}" fill="{fill}" fill-opacity="{a}">{esc(g)}</text>')
     out.append("</g>")
+    out.append("<g>" + "".join(arriving) + "</g>")
+    out.append("<g>" + "".join(leaving) + "</g>")
 
-    out.append("<g>")
-    for x, y, g, dx, dy, dur, delay, red in particles:
-        fill = RED if red else BLUE_HOT
-        out.append(
-            f'<text class="p" x="{x}" y="{y}" fill="{fill}" '
-            f'style="--dx:{dx}px;--dy:{dy}px;animation-duration:{dur}s;animation-delay:{delay}s">{g}</text>'
-        )
+    out.append(cap_svg)
     out.append("</g>")
-
-    # rule + tagline
-    rule_y = name_bottom + 28
-    out.append(f'<rect x="{W / 2 - 360}" y="{rule_y:.0f}" width="720" height="1.5" fill="url(#rule)"/>')
-    tag_y = rule_y + 40
-    out.append(
-        f'<text x="{W / 2}" y="{tag_y:.0f}" text-anchor="middle" font-size="15" fill="#c9d8ef" letter-spacing="0.5">'
-        f'I build AI, security and distributed systems that run close to the data'
-        f'<tspan class="caret" fill="{BLUE_HOT}"> ▍</tspan></text>'
-    )
-    out.append("</g>")
-    out.append(f'<rect x="0.75" y="0.75" width="{W - 1.5}" height="{H - 1.5}" rx="15.5" fill="none" stroke="url(#rule)" stroke-opacity="0.45" stroke-width="1.5"/>')
+    frame = rrect(0.75, 0.75, W - 1.5, H - 1.5, 15.5)
+    out.append(f'<path d="{frame}" fill="none" stroke="url(#frameGrad)" stroke-width="1.5"/>')
+    out.append(orbit(frame, (BLUE, RED), 26))
     out.append("</svg>")
 
-    print(f"header: grid {cols}x{rows}, {sum(len(v) for v in body.values())} glyphs, "
-          f"{len(flicker)} flicker, {len(dust)} dust, {len(particles)} particles")
+    print(f"header: grid {cols}x{rows}, {sum(len(v) for v in body.values())} glyphs, {len(boil)} boiling, "
+          f"{len(dust)} dust, {len(leaving)} leaving, {len(arriving)} arriving")
     return "\n".join(out)
 
 
 # ---------------------------------------------------------------------------
-# Section title
+# Summary and section titles
 # ---------------------------------------------------------------------------
+
+def summary_svg() -> str:
+    W, m = 1200, 14
+    lines = wrap(SUMMARY, 84)
+    H = m * 2 + 52 + len(lines) * 34 + 18
+    rng = random.Random(5)
+    text = "".join(f'<text x="{m + 62}" y="{m + 58 + k * 34}">{esc(line)}</text>' for k, line in enumerate(lines))
+    frame = rrect(m + 0.75, m + 0.75, W - 2 * m - 1.5, H - 2 * m - 1.5, 15.5)
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(SUMMARY)}">
+<defs>
+  {card_defs(W, H, m, 16, BLUE)}
+  <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/>
+  </linearGradient>
+  <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="{SKY}" stop-opacity="0.22"/><stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<style>{ORBIT_CSS}
+  {REDUCED_MOTION}
+</style>
+<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
+<g clip-path="url(#c)">
+  <ellipse cx="{W - 120}" cy="{m}" rx="360" ry="150" fill="url(#gl)"/>
+</g>
+<path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
+{orbit(frame, (BLUE, RED), 30)}
+<rect x="{m + 34}" y="{m + 34}" width="4" height="{len(lines) * 34 - 4}" rx="2" fill="url(#bar)"/>
+<g font-family="{MONO}" font-size="19" fill="{INK}">{text}</g>
+<g font-family="{MONO}" font-size="12" fill="{BLUE}">{bit_field(rng, W - 260, W - 40, m + 30, m + 70, 10, 0.5)}</g>
+</svg>
+"""
+
 
 def section_svg(title: str) -> str:
     rng = random.Random(11)
@@ -298,21 +511,21 @@ def section_svg(title: str) -> str:
     while x < 1180:
         fade = 1 - (x - 820) / 360
         if rng.random() < 0.35 + 0.6 * fade:
-            bits.append(f'<text x="{x:.0f}" y="{rng.uniform(40, 50):.0f}" fill-opacity="{max(0.08, fade * 0.8):.2f}">{rng.choice("01")}</text>')
+            bits.append(f'<text x="{x:.0f}" y="{rng.uniform(40, 50):.0f}" fill-opacity="{max(0.08, fade * 0.7):.2f}">{rng.choice("01")}</text>')
         x += 9 + 14 * (1 - fade)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(title)}">
 <defs>
   <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="{BLUE_HOT}"/>
+    <stop offset="0" stop-color="{NAVY}"/><stop offset="1" stop-color="{BLUE}"/>
   </linearGradient>
   <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="{BLUE}"/><stop offset="0.6" stop-color="{RED}"/><stop offset="1" stop-color="{RED}" stop-opacity="0"/>
   </linearGradient>
 </defs>
-<rect width="{W}" height="{H}" rx="16" fill="{INK}"/>
+<rect x="0.75" y="0.75" width="{W - 1.5}" height="{H - 1.5}" rx="15.5" fill="{PAPER}" stroke="{LINE}" stroke-width="1.5"/>
 <text x="32" y="53" font-family="{MONO}" font-size="27" font-weight="700" fill="url(#tt)">{esc(title)}</text>
 <rect x="{line_x:.0f}" y="44" width="{800 - line_x:.0f}" height="1.5" fill="url(#ln)"/>
-<g font-family="{MONO}" font-size="12" fill="{BLUE_HOT}">{"".join(bits)}</g>
+<g font-family="{MONO}" font-size="12" fill="{BLUE}">{"".join(bits)}</g>
 </svg>
 """
 
@@ -324,7 +537,7 @@ def section_svg(title: str) -> str:
 # wide=True cards span the full README width and bookend the 2-column grid
 PROJECTS = [
     {
-        "slug": "cortexnet", "repo": "cortexnet", "title": "CortexNET", "accent": "blue", "wide": True,
+        "slug": "cortexnet", "repo": "cortexnet", "title": "CortexNET", "accent": "green", "wide": True, "flagship": True,
         "desc": "Outline-first context for coding agents. A learned coprocessor ranks "
                 "which symbol bodies the next step needs, so a small local model can "
                 "work through long coding sessions on a 6 GB laptop GPU.",
@@ -368,100 +581,234 @@ PROJECTS = [
 ]
 
 
-def wrap(text: str, width: int) -> list[str]:
-    lines, line = [], ""
-    for word in text.split():
-        if line and len(line) + 1 + len(word) > width:
-            lines.append(line)
-            line = word
-        else:
-            line = f"{line} {word}".strip()
-    if line:
-        lines.append(line)
-    return lines
-
-
-def bit_field(rng: random.Random, x0: float, x1: float, y0: float, y1: float, step: float) -> str:
-    """A block of binary that is dense on the left and breaks apart to the right."""
-    out = []
-    y = y0
-    while y <= y1:
-        x = x0 + rng.uniform(0, step)
-        while x < x1:
-            t = (x - x0) / (x1 - x0)
-            if rng.random() < 0.92 - t * 0.85:
-                lift = t * t * rng.uniform(0, 18)
-                out.append(f'<text x="{x:.0f}" y="{y - lift:.0f}" fill-opacity="{max(0.08, 0.7 - t * 0.6):.2f}">{rng.choice("01")}</text>')
-            x += step * (1 + t * 1.6)
-        y += step * 1.7
-    return "".join(out)
-
-
 def card_svg(i: int, p: dict) -> str:
     rng = random.Random(100 + i)
     wide = p.get("wide", False)
-    W, H = (1200, 230) if wide else (600, 250)
-    hot = RED if p["accent"] == "red" else BLUE
-    cool = BLUE if p["accent"] == "red" else RED
-    lines = wrap(p["desc"], 66 if wide else 62)
+    m = 14
+    W, H = (1200, 258) if wide else (600, 278)
+    main, deep, soft = ACCENTS[p["accent"]]
+    other = RED if p["accent"] != "red" else BLUE
+    lines = wrap(p["desc"], 66 if wide else 60)
     assert len(lines) <= 4, (p["slug"], lines)
+    L = m + 34  # content left edge
 
-    title_y = 70
-    desc_y = 108
-    desc = "".join(f'<text x="34" y="{desc_y + k * 22}">{esc(line)}</text>' for k, line in enumerate(lines))
+    desc = "".join(f'<text x="{L}" y="{m + 100 + k * 22}">{esc(line)}</text>' for k, line in enumerate(lines))
 
-    tags, tx, tag_y = [], 34.0, H - 50
+    tags, tx, tag_y = [], float(L), H - m - 50
     for k, tag in enumerate(p["tags"]):
         w = 20 + len(tag) * 7.6
-        first = k == 0
+        delay = f"animation-delay:{k * 0.9 + i * 0.35:.2f}s"
         tags.append(
-            f'<rect x="{tx:.1f}" y="{tag_y}" width="{w:.1f}" height="26" rx="13" '
-            f'fill="{hot if first else "#0c1428"}" fill-opacity="{0.16 if first else 1}" '
-            f'stroke="{hot if first else "#2a3a5c"}" stroke-opacity="0.85"/>'
-            f'<text x="{tx + w / 2:.1f}" y="{tag_y + 17}" text-anchor="middle">{esc(tag)}</text>'
+            f'<rect class="tg" x="{tx:.1f}" y="{tag_y}" width="{w:.1f}" height="26" rx="13" style="{delay}"/>'
+            f'<text class="tt" x="{tx + w / 2:.1f}" y="{tag_y + 17}" text-anchor="middle" style="{delay}">{esc(tag)}</text>'
         )
         tx += w + 8
 
     if wide:
-        field = bit_field(rng, 700, 1170, 50, 190, 11)
-        glow = f'<ellipse cx="900" cy="{H / 2}" rx="380" ry="150" fill="url(#gl)"/>'
+        field = bit_field(rng, 700, W - 40, m + 40, H - m - 40, 11, 0.6)
+        glow = f'<ellipse cx="900" cy="{H / 2}" rx="400" ry="160" fill="url(#gl)"/>'
     else:
-        field = bit_field(rng, 400, 580, 34, 70, 9)
-        glow = f'<ellipse cx="{80 if p["accent"] == "blue" else 520}" cy="10" rx="260" ry="130" fill="url(#gl)"/>'
+        field = bit_field(rng, 390, W - m - 20, m + 26, m + 62, 9, 0.6)
+        glow = f'<ellipse cx="{m + 80 if p["accent"] == "blue" else W - m - 80}" cy="{m}" rx="260" ry="140" fill="url(#gl)"/>'
 
+    flag = ""
+    if p.get("flagship"):
+        fx = L + len(p["title"]) * 18.2 + 20
+        flag = (f'<rect x="{fx:.0f}" y="{m + 37}" width="88" height="24" rx="12" fill="url(#accent)"/>'
+                f'<text x="{fx + 44:.0f}" y="{m + 53}" text-anchor="middle" font-family="{MONO}" font-size="12" font-weight="700" fill="#fff">Flagship</text>')
+
+    frame = rrect(m + 0.75, m + 0.75, W - 2 * m - 1.5, H - 2 * m - 1.5, 15.5)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(p['title'])}: {esc(p['desc'])}">
 <defs>
+  {card_defs(W, H, m, 16, main)}
   <linearGradient id="bd" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{hot}" stop-opacity="0.9"/>
-    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.16"/>
-    <stop offset="1" stop-color="{cool}" stop-opacity="0.55"/>
+    <stop offset="0" stop-color="{main}" stop-opacity="0.7"/>
+    <stop offset="0.5" stop-color="{LINE}"/>
+    <stop offset="1" stop-color="{other}" stop-opacity="0.35"/>
   </linearGradient>
   <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="{BLUE_HOT}"/>
+    <stop offset="0" stop-color="{deep}"/><stop offset="1" stop-color="{main}"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="{deep}"/><stop offset="1" stop-color="{main}"/>
   </linearGradient>
   <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{hot}"/><stop offset="1" stop-color="{hot}" stop-opacity="0"/>
+    <stop offset="0" stop-color="{main}"/><stop offset="1" stop-color="{main}" stop-opacity="0"/>
   </linearGradient>
   <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{hot}" stop-opacity="0.26"/><stop offset="1" stop-color="{hot}" stop-opacity="0"/>
+    <stop offset="0" stop-color="{soft}" stop-opacity="{0.38 if p.get('flagship') else 0.26}"/><stop offset="1" stop-color="{soft}" stop-opacity="0"/>
   </radialGradient>
-  <clipPath id="c"><rect width="{W}" height="{H}" rx="16"/></clipPath>
 </defs>
+<style>
+  .tg {{ fill: {main}; fill-opacity: .07; stroke: {main}; stroke-opacity: .45; animation: lit 6s ease-in-out infinite backwards; }}
+  .tt {{ fill: {deep}; animation: litText 6s ease-in-out infinite backwards; }}
+  @keyframes lit {{ 0%, 26%, 100% {{ fill-opacity: .07; stroke-opacity: .45; }} 9%, 17% {{ fill-opacity: 1; stroke-opacity: 1; }} }}
+  @keyframes litText {{ 0%, 26%, 100% {{ fill: {deep}; }} 9%, 17% {{ fill: #ffffff; }} }}
+  {ORBIT_CSS}
+  {REDUCED_MOTION}
+</style>
+<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
 <g clip-path="url(#c)">
-  <rect width="{W}" height="{H}" fill="{INK}"/>
   {glow}
-  <rect x="0" y="0" width="{W * 0.6:.0f}" height="3" fill="url(#bar)"/>
+  <rect x="{m}" y="{m}" width="{(W - 2 * m) * 0.6:.0f}" height="3" fill="url(#bar)"/>
 </g>
-<rect x="0.75" y="0.75" width="{W - 1.5}" height="{H - 1.5}" rx="15.5" fill="none" stroke="url(#bd)" stroke-width="1.5"/>
-<g font-family="{MONO}" font-size="12" fill="{BLUE_HOT}">{field}</g>
-<text x="34" y="{title_y}" font-family="{MONO}" font-size="{30 if wide else 26}" font-weight="700" fill="url(#tt)">{esc(p['title'])}</text>
-<g font-family="{MONO}" font-size="13.5" fill="#aebfd9">{desc}</g>
-<g font-family="{MONO}" font-size="12" fill="#d6e2f5">{"".join(tags)}</g>
+<path d="{frame}" fill="none" stroke="url(#bd)" stroke-width="1.5"/>
+{orbit(frame, (main, other), 18 + i * 2.5)}
+<g font-family="{MONO}" font-size="12" fill="{main}">{field}</g>
+<text x="{L}" y="{m + 56}" font-family="{MONO}" font-size="{30 if wide else 26}" font-weight="700" fill="url(#tt)">{esc(p['title'])}</text>
+{flag}
+<g font-family="{MONO}" font-size="13.5" fill="{INK2}">{desc}</g>
+<g font-family="{MONO}" font-size="12" font-weight="600">{"".join(tags)}</g>
 </svg>
 """
 
 
-def readme() -> str:
+# ---------------------------------------------------------------------------
+# Metrics
+# ---------------------------------------------------------------------------
+
+def load_metrics() -> dict:
+    data = json.loads(METRICS.read_text(encoding="utf-8"))
+    weeks = data["weeks"]
+    first = next(k for k in range(len(weeks) - 26, len(weeks)) if weeks[k]["count"] > 0)
+    data["recent"] = weeks[max(0, first - 1):]
+    total = sum(data["languages"].values())
+    top = list(data["languages"].items())[:6]
+    rest = total - sum(v for _, v in top)
+    data["lang_share"] = [(k, v / total) for k, v in top] + ([("Other", rest / total)] if rest else [])
+    data["lang_repos"] = data["public_repos"] - len(data["excluded"])
+    return data
+
+
+def fmt_date(iso: str) -> str:
+    d = dt.date.fromisoformat(iso)
+    return f"{d.day} {d.strftime('%b %Y')}"
+
+
+def metrics_svg(data: dict) -> str:
+    W, H, m = 1200, 580, 14
+    L, R = m + 40, W - m - 40
+    out = []
+
+    tiles = [
+        (data["contributions"], "contributions, last 12 months"),
+        (data["commits"], "commits"),
+        (data["pull_requests"], "pull requests"),
+        (data["public_repos"], "public repositories"),
+    ]
+    tw = (R - L) / len(tiles)
+    for k, (value, label) in enumerate(tiles):
+        x = L + k * tw
+        if k:
+            out.append(f'<rect x="{x - 20:.0f}" y="{m + 44}" width="1" height="72" fill="{LINE}"/>')
+        out.append(f'<text x="{x:.0f}" y="{m + 92}" font-size="44" font-weight="700" fill="url(#num)">{value}</text>')
+        out.append(f'<text x="{x:.0f}" y="{m + 118}" font-size="13" fill="{INK2}">{esc(label)}</text>')
+    out.append(f'<rect x="{L}" y="{m + 150}" width="{R - L}" height="1" fill="{LINE}"/>')
+
+    # weekly contributions: one series, so no legend; the title names it and only the peak is labelled
+    weeks = data["recent"]
+    counts = [w["count"] for w in weeks]
+    top = 5 * math.ceil((max(counts) + 1) / 5)
+    px0, px1, py0, py1 = L + 34, 700, m + 240, m + 470
+    out.append(f'<text x="{L}" y="{m + 190}" font-size="15" font-weight="700" fill="{INK}">Weekly contributions</text>')
+    out.append(f'<text x="{L}" y="{m + 210}" font-size="12.5" fill="{MUTED}">{fmt_date(weeks[0]["start"])} to {fmt_date(data["as_of"])}</text>')
+    for tick in range(0, top + 1, 5):
+        y = py1 - (py1 - py0) * tick / top
+        out.append(f'<rect x="{px0}" y="{y:.1f}" width="{px1 - px0}" height="1" fill="{LINE if tick else "#c9d3e6"}"/>')
+        out.append(f'<text x="{px0 - 10}" y="{y + 4:.1f}" text-anchor="end" font-size="11.5" fill="{MUTED}">{tick}</text>')
+    band = (px1 - px0) / len(weeks)
+    bw = band - 4
+    peak = max(range(len(counts)), key=lambda k: (counts[k], k))
+    prev_month = None
+    for k, (w, c) in enumerate(zip(weeks, counts)):
+        x = px0 + k * band + 2
+        if c:
+            h = (py1 - py0) * c / top
+            r = min(4, h)
+            d = f"M{x:.1f},{py1} V{py1 - h + r:.1f} Q{x:.1f},{py1 - h:.1f} {x + r:.1f},{py1 - h:.1f} H{x + bw - r:.1f} Q{x + bw:.1f},{py1 - h:.1f} {x + bw:.1f},{py1 - h + r:.1f} V{py1} Z"
+            out.append(f'<path class="vb" d="{d}" fill="url(#barV)" style="animation-delay:{k * 0.04:.2f}s"/>')
+            if k == peak:
+                out.append(f'<text x="{x + bw / 2:.1f}" y="{py1 - h - 8:.1f}" text-anchor="middle" font-size="12.5" font-weight="700" fill="{INK}">{c}</text>')
+        month = dt.date.fromisoformat(w["start"]).strftime("%b")
+        if month != prev_month:
+            out.append(f'<text x="{x:.1f}" y="{py1 + 22}" font-size="11.5" fill="{MUTED}">{month}</text>')
+            prev_month = month
+
+    # languages: one measure across categories, so a single hue; identity comes from the row labels
+    lx, lbar0, lbar1 = 770, 870, R - 52
+    out.append(f'<text x="{lx}" y="{m + 190}" font-size="15" font-weight="700" fill="{INK}">Languages by code size</text>')
+    out.append(f'<text x="{lx}" y="{m + 210}" font-size="12.5" fill="{MUTED}">share of bytes across {data["lang_repos"]} public repos</text>')
+    biggest = data["lang_share"][0][1]
+    for k, (name, share) in enumerate(data["lang_share"]):
+        y = m + 252 + k * 33
+        w = max(6, (lbar1 - lbar0) * share / biggest)
+        fill = "#b9c3d6" if name == "Other" else "url(#barH)"
+        out.append(f'<text x="{lx}" y="{y + 10}" font-size="13" fill="{INK}">{esc(name)}</text>')
+        out.append(f'<rect class="hb" x="{lbar0}" y="{y}" width="{w:.1f}" height="12" rx="4" fill="{fill}" style="animation-delay:{0.3 + k * 0.06:.2f}s"/>')
+        out.append(f'<text x="{lbar0 + w + 8:.1f}" y="{y + 10}" font-size="12.5" fill="{INK2}">{share * 100:.1f}%</text>')
+
+    excluded = ", ".join(data["excluded"])
+    note = (f"Public GitHub data as of {fmt_date(data['as_of'])}. "
+            f"{excluded} is left out of the language split because it is mostly third-party code.")
+    out.append(f'<text x="{L}" y="{H - m - 24}" font-size="11.5" fill="{MUTED}">{esc(note)}</text>')
+
+    frame = rrect(m + 0.75, m + 0.75, W - 2 * m - 1.5, H - 2 * m - 1.5, 15.5)
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Metrics: {data['contributions']} contributions in the last 12 months, {data['commits']} commits, {data['pull_requests']} pull requests, {data['public_repos']} public repositories, a weekly contribution chart and a language breakdown.">
+<defs>
+  {card_defs(W, H, m, 16, BLUE)}
+  <linearGradient id="num" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="{NAVY}"/><stop offset="1" stop-color="{BLUE}"/>
+  </linearGradient>
+  <linearGradient id="barV" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{SKY}"/>
+  </linearGradient>
+  <linearGradient id="barH" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="{SKY}"/><stop offset="1" stop-color="{BLUE}"/>
+  </linearGradient>
+  <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="{SKY}" stop-opacity="0.2"/><stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<style>
+  text {{ font-family: {MONO}; }}
+  .vb {{ transform-box: fill-box; transform-origin: 50% 100%; animation: growV .9s cubic-bezier(.2,.7,.2,1) backwards; }}
+  .hb {{ transform-box: fill-box; transform-origin: 0 50%; animation: growH .9s cubic-bezier(.2,.7,.2,1) backwards; }}
+  @keyframes growV {{ from {{ transform: scaleY(0); }} }}
+  @keyframes growH {{ from {{ transform: scaleX(0); }} }}
+  {ORBIT_CSS}
+  {REDUCED_MOTION}
+</style>
+<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
+<g clip-path="url(#c)"><ellipse cx="{W - 160}" cy="{m}" rx="420" ry="170" fill="url(#gl)"/></g>
+<path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
+{orbit(frame, (BLUE, RED), 34)}
+{chr(10).join(out)}
+</svg>
+"""
+
+
+def metrics_table(data: dict) -> str:
+    weeks = "\n".join(f"| {fmt_date(w['start'])} | {w['count']} |" for w in data["recent"])
+    langs = "\n".join(f"| {name} | {share * 100:.1f}% |" for name, share in data["lang_share"])
+    return f"""<details>
+<summary>Metrics as a table</summary>
+
+| Week starting | Contributions |
+|---|---:|
+{weeks}
+
+| Language | Share of bytes |
+|---|---:|
+{langs}
+
+</details>"""
+
+
+# ---------------------------------------------------------------------------
+# README
+# ---------------------------------------------------------------------------
+
+def readme(data: dict) -> str:
     def link(p: dict, width: str) -> str:
         return (f'<a href="https://github.com/yogeshwars-cys/{p["repo"]}">'
                 f'<img src="assets/card-{p["slug"]}.svg" width="{width}" alt="{esc(p["title"])}: {esc(p["desc"])}"></a>')
@@ -488,7 +835,11 @@ def readme() -> str:
         grid.append(f'<p align="center">\n{cells}\n</p>')
 
     return f"""<p align="center">
-  <img src="assets/header.svg" width="100%" alt="YOGESHWAR, written in character art that dissolves into binary at the edges">
+  <img src="assets/header.svg" width="100%" alt="YOGESHWAR, written in character art that dissolves into binary at the edges, with rotating captions: {esc(', '.join(CAPTIONS))}">
+</p>
+
+<p align="center">
+  <img src="assets/summary.svg" width="100%" alt="{esc(SUMMARY)}">
 </p>
 
 <p align="center">
@@ -498,6 +849,16 @@ def readme() -> str:
 {chr(10).join(grid)}
 
 <p align="center">
+  <img src="assets/section-metrics.svg" width="100%" alt="Metrics">
+</p>
+
+<p align="center">
+  <img src="assets/metrics.svg" width="100%" alt="{data['contributions']} contributions in the last 12 months, {data['commits']} commits, {data['pull_requests']} pull requests, {data['public_repos']} public repositories. Charts of weekly contributions and languages by code size follow as a table.">
+</p>
+
+{metrics_table(data)}
+
+<p align="center">
   <a href="https://github.com/yogeshwars-cys?tab=repositories"><img src="assets/section-more.svg" width="100%" alt="All repositories"></a>
 </p>
 """
@@ -505,14 +866,18 @@ def readme() -> str:
 
 def main() -> None:
     ASSETS.mkdir(exist_ok=True)
-    for old in ASSETS.glob("card-*.svg"):
+    for old in ASSETS.glob("*.svg"):
         old.unlink()
+    data = load_metrics()
     (ASSETS / "header.svg").write_text(header_svg(), encoding="utf-8")
+    (ASSETS / "summary.svg").write_text(summary_svg(), encoding="utf-8")
     (ASSETS / "section-projects.svg").write_text(section_svg("Top projects"), encoding="utf-8")
+    (ASSETS / "section-metrics.svg").write_text(section_svg("Metrics"), encoding="utf-8")
     (ASSETS / "section-more.svg").write_text(section_svg("All repositories ↗"), encoding="utf-8")
     for i, p in enumerate(PROJECTS):
         (ASSETS / f"card-{p['slug']}.svg").write_text(card_svg(i, p), encoding="utf-8")
-    (ROOT / "README.md").write_text(readme(), encoding="utf-8")
+    (ASSETS / "metrics.svg").write_text(metrics_svg(data), encoding="utf-8")
+    (ROOT / "README.md").write_text(readme(data), encoding="utf-8")
 
 
 if __name__ == "__main__":
