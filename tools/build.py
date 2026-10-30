@@ -14,6 +14,7 @@ import datetime as dt
 import json
 import math
 import random
+import re
 from pathlib import Path
 
 import numpy as np
@@ -77,11 +78,11 @@ def rrect(x: float, y: float, w: float, h: float, r: float) -> str:
             f"V{y + r} A{r},{r} 0 0 1 {x + r},{y} Z")
 
 
-def orbit(d: str, colors: tuple[str, str], dur: float) -> str:
-    """Two light dashes chasing each other around the border path `d`."""
+def orbit(d: str, colors: tuple[str, str], dur: float, dash: int = 70) -> str:
+    """Two light dashes chasing each other around the border path `d` (dash is out of 1000)."""
     out = []
     for k, c in enumerate(colors):
-        style = f"animation-duration:{dur}s;animation-delay:-{dur * k / 2:.1f}s"
+        style = f"stroke-dasharray:{dash} {1000 - dash};animation-duration:{dur}s;animation-delay:-{dur * k / 2:.1f}s"
         out.append(f'<path class="orbit" d="{d}" pathLength="1000" stroke="{c}" stroke-width="7" stroke-opacity="0.16" style="{style}"/>')
         out.append(f'<path class="orbit" d="{d}" pathLength="1000" stroke="{c}" stroke-width="2.2" stroke-opacity="0.95" style="{style}"/>')
     return "".join(out)
@@ -420,8 +421,6 @@ def header_svg() -> str:
 </style>""")
 
     out.append('<g clip-path="url(#frame)">')
-    out.append(f'<rect width="{W}" height="{H}" fill="{PAPER}"/>')
-    out.append(f'<rect width="{W}" height="{H}" fill="url(#dots)"/>')
     out.append(f'<ellipse cx="{W / 2}" cy="{(name_top + name_bottom) / 2:.0f}" rx="600" ry="190" fill="url(#glowBlue)"/>')
     out.append(f'<ellipse cx="{name_right - 30:.0f}" cy="{name_top + 10:.0f}" rx="260" ry="130" fill="url(#glowRed)"/>')
     out.append(f'<ellipse cx="{name_left + 10:.0f}" cy="{name_bottom + 10:.0f}" rx="200" ry="100" fill="url(#glowRed)" opacity="0.7"/>')
@@ -455,9 +454,6 @@ def header_svg() -> str:
 
     out.append(cap_svg)
     out.append("</g>")
-    frame = rrect(0.75, 0.75, W - 1.5, H - 1.5, 15.5)
-    out.append(f'<path d="{frame}" fill="none" stroke="url(#frameGrad)" stroke-width="1.5"/>')
-    out.append(orbit(frame, (BLUE, RED), 26))
     out.append("</svg>")
 
     print(f"header: grid {cols}x{rows}, {sum(len(v) for v in body.values())} glyphs, {len(boil)} boiling, "
@@ -522,7 +518,6 @@ def section_svg(title: str) -> str:
     <stop offset="0" stop-color="{BLUE}"/><stop offset="0.6" stop-color="{RED}"/><stop offset="1" stop-color="{RED}" stop-opacity="0"/>
   </linearGradient>
 </defs>
-<rect x="0.75" y="0.75" width="{W - 1.5}" height="{H - 1.5}" rx="15.5" fill="{PAPER}" stroke="{LINE}" stroke-width="1.5"/>
 <text x="32" y="53" font-family="{MONO}" font-size="27" font-weight="700" fill="url(#tt)">{esc(title)}</text>
 <rect x="{line_x:.0f}" y="44" width="{800 - line_x:.0f}" height="1.5" fill="url(#ln)"/>
 <g font-family="{MONO}" font-size="12" fill="{BLUE}">{"".join(bits)}</g>
@@ -599,8 +594,8 @@ def card_svg(i: int, p: dict) -> str:
         w = 20 + len(tag) * 7.6
         delay = f"animation-delay:{k * 0.9 + i * 0.35:.2f}s"
         tags.append(
-            f'<rect class="tg" x="{tx:.1f}" y="{tag_y}" width="{w:.1f}" height="26" rx="13" style="{delay}"/>'
-            f'<text class="tt" x="{tx + w / 2:.1f}" y="{tag_y + 17}" text-anchor="middle" style="{delay}">{esc(tag)}</text>'
+            f'<rect class="tg{i}" x="{tx:.1f}" y="{tag_y}" width="{w:.1f}" height="26" rx="13" style="{delay}"/>'
+            f'<text class="tt{i}" x="{tx + w / 2:.1f}" y="{tag_y + 17}" text-anchor="middle" style="{delay}">{esc(tag)}</text>'
         )
         tx += w + 8
 
@@ -640,10 +635,10 @@ def card_svg(i: int, p: dict) -> str:
   </radialGradient>
 </defs>
 <style>
-  .tg {{ fill: {main}; fill-opacity: .07; stroke: {main}; stroke-opacity: .45; animation: lit 6s ease-in-out infinite backwards; }}
-  .tt {{ fill: {deep}; animation: litText 6s ease-in-out infinite backwards; }}
-  @keyframes lit {{ 0%, 26%, 100% {{ fill-opacity: .07; stroke-opacity: .45; }} 9%, 17% {{ fill-opacity: 1; stroke-opacity: 1; }} }}
-  @keyframes litText {{ 0%, 26%, 100% {{ fill: {deep}; }} 9%, 17% {{ fill: #ffffff; }} }}
+  .tg{i} {{ fill: {main}; fill-opacity: .07; stroke: {main}; stroke-opacity: .45; animation: lit{i} 6s ease-in-out infinite backwards; }}
+  .tt{i} {{ fill: {deep}; animation: litText{i} 6s ease-in-out infinite backwards; }}
+  @keyframes lit{i} {{ 0%, 26%, 100% {{ fill-opacity: .07; stroke-opacity: .45; }} 9%, 17% {{ fill-opacity: 1; stroke-opacity: 1; }} }}
+  @keyframes litText{i} {{ 0%, 26%, 100% {{ fill: {deep}; }} 9%, 17% {{ fill: #ffffff; }} }}
   {ORBIT_CSS}
   {REDUCED_MOTION}
 </style>
@@ -787,21 +782,116 @@ def metrics_svg(data: dict) -> str:
 """
 
 
-def metrics_table(data: dict) -> str:
-    weeks = "\n".join(f"| {fmt_date(w['start'])} | {w['count']} |" for w in data["recent"])
-    langs = "\n".join(f"| {name} | {share * 100:.1f}% |" for name, share in data["lang_share"])
-    return f"""<details>
-<summary>Metrics as a table</summary>
+# ---------------------------------------------------------------------------
+# Page: every piece composed onto one brushed-metal sheet
+# ---------------------------------------------------------------------------
+# GitHub can't style a README's background, and separate images always leave
+# seams of the page colour between them, so the whole README is one image.
 
-| Week starting | Contributions |
-|---|---:|
-{weeks}
+def nest(svg: str, ns: str, x: float, y: float, width: float) -> tuple[str, float]:
+    """Inline a standalone SVG at (x, y) scaled to `width`; ids get an `ns` prefix so pieces can't collide."""
+    head, _, rest = svg.partition(">")
+    vw, vh = (float(v) for v in re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', head).groups())
+    body = rest.rsplit("</svg>", 1)[0]
+    body = re.sub(r"<title[^>]*>.*?</title>|<desc[^>]*>.*?</desc>", "", body, flags=re.S)
+    body = re.sub(r'\bid="([\w-]+)"', lambda mt: f'id="{ns}-{mt.group(1)}"', body)
+    body = re.sub(r"url\(#([\w-]+)\)", lambda mt: f"url(#{ns}-{mt.group(1)})", body)
+    height = width * vh / vw
+    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{width:.1f}" height="{height:.1f}" viewBox="0 0 {vw:g} {vh:g}">{body}</svg>', height
 
-| Language | Share of bytes |
-|---|---:|
-{langs}
 
-</details>"""
+def brushed(rng: random.Random, w: float, h: float) -> str:
+    """Hairline streaks for a brushed-steel grain."""
+    out = []
+    for _ in range(int(h * 1.2)):
+        light = rng.random() < 0.55
+        out.append(
+            f'<rect x="{rng.uniform(-w * 0.3, w):.0f}" y="{rng.uniform(0, h):.1f}" width="{rng.uniform(w * 0.2, w * 0.9):.0f}" '
+            f'height="{rng.uniform(0.4, 1.1):.2f}" fill="{"#ffffff" if light else "#4b5563"}" '
+            f'fill-opacity="{rng.uniform(0.04, 0.16 if light else 0.08):.3f}"/>'
+        )
+    return "".join(out)
+
+
+def profile_svg(data: dict) -> str:
+    W, pad = 1200, 22
+    inner = W - 2 * pad
+    parts: list[str] = []
+    y = 6.0
+
+    def put(svg: str, ns: str, x: float, width: float) -> float:
+        el, h = nest(svg, ns, x, y, width)
+        parts.append(el)
+        return h
+
+    y += put(header_svg(), "hd", 0, W) - 40
+    y += put(summary_svg(), "sm", pad, inner) + 4
+    y += put(section_svg("Top projects"), "s1", pad, inner)
+    pair: list[tuple[int, dict]] = []
+    for i, p in enumerate(PROJECTS):
+        if p.get("wide"):
+            y += put(card_svg(i, p), f"c{i}", pad, inner)
+            continue
+        pair.append((i, p))
+        if len(pair) == 2:
+            heights = [put(card_svg(j, q), f"c{j}", pad + k * inner / 2, inner / 2) for k, (j, q) in enumerate(pair)]
+            y += max(heights)
+            pair = []
+    y += 4
+    y += put(section_svg("Metrics"), "s2", pad, inner)
+    y += put(metrics_svg(data), "mt", pad, inner) + 4
+    y += put(section_svg("All repositories ↗"), "s3", pad, inner)
+    H = round(y + 16)
+
+    rng = random.Random(3)
+    frame = rrect(0.75, 0.75, W - 1.5, H - 1.5, 13.5)
+    skew = math.tan(math.radians(16)) * H
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pt">
+<title id="pt">Yogeshwar S: profile</title>
+<defs>
+  <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#b4bac3"/>
+    <stop offset="0.16" stop-color="#e3e6ea"/>
+    <stop offset="0.33" stop-color="#c2c7cf"/>
+    <stop offset="0.5" stop-color="#eceef1"/>
+    <stop offset="0.68" stop-color="#bcc2ca"/>
+    <stop offset="0.85" stop-color="#dde0e5"/>
+    <stop offset="1" stop-color="#aab0b9"/>
+  </linearGradient>
+  <pattern id="grain" width="{W}" height="180" patternUnits="userSpaceOnUse">{brushed(rng, W, 180)}</pattern>
+  <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75">
+    <stop offset="0.6" stop-color="#1f2937" stop-opacity="0"/>
+    <stop offset="1" stop-color="#1f2937" stop-opacity="0.22"/>
+  </radialGradient>
+  <linearGradient id="glint" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.38"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+    <stop offset="0.5" stop-color="#9aa1ab"/>
+    <stop offset="1" stop-color="#6b7280"/>
+  </linearGradient>
+  <clipPath id="page"><rect width="{W}" height="{H}" rx="14"/></clipPath>
+</defs>
+<style>
+  .glint {{ animation: glint 16s ease-in-out infinite; }}
+  @keyframes glint {{ 0% {{ transform: translateX(0); }} 60%, 100% {{ transform: translateX({W + skew + 900:.0f}px); }} }}
+  {ORBIT_CSS}
+  {REDUCED_MOTION}
+</style>
+<g clip-path="url(#page)">
+  <rect width="{W}" height="{H}" fill="url(#metal)"/>
+  <rect width="{W}" height="{H}" fill="url(#grain)"/>
+  <rect width="{W}" height="{H}" fill="url(#vignette)"/>
+  <g transform="skewX(-16)"><rect class="glint" x="{-560:.0f}" y="0" width="420" height="{H}" fill="url(#glint)"/></g>
+  {chr(10).join(parts)}
+</g>
+<path d="{frame}" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+{orbit(frame, (BLUE, RED), 70, dash=14)}
+</svg>
+"""
 
 
 # ---------------------------------------------------------------------------
@@ -809,59 +899,12 @@ def metrics_table(data: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def readme(data: dict) -> str:
-    def link(p: dict, width: str) -> str:
-        return (f'<a href="https://github.com/yogeshwars-cys/{p["repo"]}">'
-                f'<img src="assets/card-{p["slug"]}.svg" width="{width}" alt="{esc(p["title"])}: {esc(p["desc"])}"></a>')
-
-    blocks, pending = [], []
-    for p in PROJECTS:
-        if p.get("wide"):
-            if pending:
-                blocks.append(pending)
-                pending = []
-            blocks.append([p])
-        else:
-            pending.append(p)
-            if len(pending) == 2:
-                blocks.append(pending)
-                pending = []
-    if pending:
-        blocks.append(pending)
-
-    grid = []
-    for block in blocks:
-        width = "100%" if len(block) == 1 else "49%"
-        cells = "\n".join(f"  {link(p, width)}" for p in block)
-        grid.append(f'<p align="center">\n{cells}\n</p>')
-
-    return f"""<p align="center">
-  <img src="assets/header.svg" width="100%" alt="YOGESHWAR, written in character art that dissolves into binary at the edges, with rotating captions: {esc(', '.join(CAPTIONS))}">
-</p>
-
-<p align="center">
-  <img src="assets/summary.svg" width="100%" alt="{esc(SUMMARY)}">
-</p>
-
-<p align="center">
-  <img src="assets/section-projects.svg" width="100%" alt="Top projects">
-</p>
-
-{chr(10).join(grid)}
-
-<p align="center">
-  <img src="assets/section-metrics.svg" width="100%" alt="Metrics">
-</p>
-
-<p align="center">
-  <img src="assets/metrics.svg" width="100%" alt="{data['contributions']} contributions in the last 12 months, {data['commits']} commits, {data['pull_requests']} pull requests, {data['public_repos']} public repositories. Charts of weekly contributions and languages by code size follow as a table.">
-</p>
-
-{metrics_table(data)}
-
-<p align="center">
-  <a href="https://github.com/yogeshwars-cys?tab=repositories"><img src="assets/section-more.svg" width="100%" alt="All repositories"></a>
-</p>
-"""
+    projects = " ".join(f"{p['title']}{' (flagship)' if p.get('flagship') else ''}: {p['desc']}" for p in PROJECTS)
+    alt = (f"Yogeshwar S. {', '.join(CAPTIONS)}. {SUMMARY} Top projects. {projects} "
+           f"Metrics: {data['contributions']} contributions in the last 12 months, {data['commits']} commits, "
+           f"{data['pull_requests']} pull requests, {data['public_repos']} public repositories.")
+    return (f'<a href="https://github.com/yogeshwars-cys?tab=repositories">'
+            f'<img src="assets/profile.svg" width="100%" alt="{esc(alt)}"></a>\n')
 
 
 def main() -> None:
@@ -869,14 +912,7 @@ def main() -> None:
     for old in ASSETS.glob("*.svg"):
         old.unlink()
     data = load_metrics()
-    (ASSETS / "header.svg").write_text(header_svg(), encoding="utf-8")
-    (ASSETS / "summary.svg").write_text(summary_svg(), encoding="utf-8")
-    (ASSETS / "section-projects.svg").write_text(section_svg("Top projects"), encoding="utf-8")
-    (ASSETS / "section-metrics.svg").write_text(section_svg("Metrics"), encoding="utf-8")
-    (ASSETS / "section-more.svg").write_text(section_svg("All repositories ↗"), encoding="utf-8")
-    for i, p in enumerate(PROJECTS):
-        (ASSETS / f"card-{p['slug']}.svg").write_text(card_svg(i, p), encoding="utf-8")
-    (ASSETS / "metrics.svg").write_text(metrics_svg(data), encoding="utf-8")
+    (ASSETS / "profile.svg").write_text(profile_svg(data), encoding="utf-8")
     (ROOT / "README.md").write_text(readme(data), encoding="utf-8")
 
 
