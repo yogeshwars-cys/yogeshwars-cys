@@ -50,8 +50,10 @@ ACCENTS = {
 CAPTIONS = [
     "Systems Architecture and Engineering",
     "Foundational AI Primitives",
-    "Author of HaDA",
-    "Builder of CortexNET",
+    "Edge Computing Frameworks",
+    "Decentralized Learning",
+    "Neuromorphic Research",
+    "Author of CortexNET, HaDA Systems and Many more",
     "AI Security and Anomaly Detection",
     "Information Retrieval at the Edge",
 ]

@@ -113,17 +113,17 @@
   @keyframes sweep { 0% { transform: translateX(0); } 70%, 100% { transform: translateX(1376px); } }
   
   .cap { font-size: 22px; font-weight: 700; }
-  .ci, .ch, .co { animation-duration: 33.0s; animation-iteration-count: infinite; animation-fill-mode: backwards; animation-timing-function: linear; }
+  .ci, .ch, .co { animation-duration: 44.0s; animation-iteration-count: infinite; animation-fill-mode: backwards; animation-timing-function: linear; }
   .ci { animation-name: cin; opacity: 0; }
   .ch { animation-name: cshow; opacity: 0; }
   .ch.k0 { opacity: 1; }
   .co { animation-name: cout; opacity: 0; transform-box: fill-box; transform-origin: center; animation-timing-function: cubic-bezier(.2,.6,.3,1); }
-  @keyframes cin { 0% { opacity: 0; } 0.05% { opacity: 1; } 1.667% { opacity: 1; } 1.727%, 100% { opacity: 0; } }
-  @keyframes cshow { 0%, 1.667% { opacity: 0; } 1.727%, 12.424% { opacity: 1; } 12.606%, 100% { opacity: 0; } }
+  @keyframes cin { 0% { opacity: 0; } 0.05% { opacity: 1; } 1.250% { opacity: 1; } 1.295%, 100% { opacity: 0; } }
+  @keyframes cshow { 0%, 1.250% { opacity: 0; } 1.295%, 9.318% { opacity: 1; } 9.455%, 100% { opacity: 0; } }
   @keyframes cout {
-    0%, 12.424% { opacity: 0; transform: translate(0, 0) scale(1); }
-    12.606% { opacity: 1; transform: translate(0, 0) scale(1); }
-    15.758% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.4); }
+    0%, 9.318% { opacity: 0; transform: translate(0, 0) scale(1); }
+    9.455% { opacity: 1; transform: translate(0, 0) scale(1); }
+    11.818% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.4); }
     100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.4); }
   }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
@@ -1091,270 +1091,492 @@
 <g class="ci" style="animation-delay:6.427s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="765.0" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="765.0" y="332" style="animation-duration:0.29s">1</text></g>
 <text class="ch" x="765.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:6.427s">s</text>
 <text class="co" x="765.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:49px;--dy:-20px;animation-delay:6.427s">1</text>
-<g class="ci" style="animation-delay:11.16s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="514.2" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="514.2" y="332" style="animation-duration:0.24s">1</text></g>
-<text class="ch" x="514.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.16s">A</text>
-<text class="co" x="514.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:25px;--dy:-32px;animation-delay:11.16s">1</text>
-<g class="ci" style="animation-delay:11.037s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="527.4" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="527.4" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="527.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.037s">u</text>
-<text class="co" x="527.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-17px;animation-delay:11.037s">0</text>
-<g class="ci" style="animation-delay:11.236s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="540.6" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="540.6" y="332" style="animation-duration:0.17s">1</text></g>
-<text class="ch" x="540.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.236s">t</text>
-<text class="co" x="540.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:60px;--dy:-32px;animation-delay:11.236s">0</text>
-<g class="ci" style="animation-delay:11.269s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="553.8" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="553.8" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="553.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.269s">h</text>
-<text class="co" x="553.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:24px;--dy:-33px;animation-delay:11.269s">0</text>
-<g class="ci" style="animation-delay:11.302s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="567.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="567.0" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="567.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.302s">o</text>
-<text class="co" x="567.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-26px;animation-delay:11.302s">0</text>
-<g class="ci" style="animation-delay:11.343s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="580.2" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="580.2" y="332" style="animation-duration:0.18s">1</text></g>
-<text class="ch" x="580.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.343s">r</text>
-<text class="co" x="580.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:49px;--dy:-33px;animation-delay:11.343s">0</text>
-<g class="ci" style="animation-delay:11.268s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="606.6" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="606.6" y="332" style="animation-duration:0.21s">1</text></g>
-<text class="ch" x="606.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.268s">o</text>
-<text class="co" x="606.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-28px;animation-delay:11.268s">1</text>
-<g class="ci" style="animation-delay:11.434s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="619.8" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="619.8" y="332" style="animation-duration:0.16s">1</text></g>
-<text class="ch" x="619.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.434s">f</text>
-<text class="co" x="619.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:31px;--dy:-19px;animation-delay:11.434s">1</text>
-<g class="ci" style="animation-delay:11.393s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="646.2" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="646.2" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="646.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.393s">H</text>
-<text class="co" x="646.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:59px;--dy:-18px;animation-delay:11.393s">0</text>
-<g class="ci" style="animation-delay:11.54s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="659.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="659.4" y="332" style="animation-duration:0.26s">1</text></g>
-<text class="ch" x="659.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.54s">a</text>
-<text class="co" x="659.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:26px;--dy:-25px;animation-delay:11.54s">0</text>
-<g class="ci" style="animation-delay:11.509s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="672.6" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="672.6" y="332" style="animation-duration:0.15s">1</text></g>
-<text class="ch" x="672.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.509s">D</text>
-<text class="co" x="672.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:66px;--dy:-16px;animation-delay:11.509s">1</text>
-<g class="ci" style="animation-delay:11.596s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="685.8" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="685.8" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="685.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.596s">A</text>
-<text class="co" x="685.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:34px;--dy:-32px;animation-delay:11.596s">0</text>
-<g class="ci" style="animation-delay:16.581s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="474.6" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="474.6" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="474.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.581s">B</text>
-<text class="co" x="474.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:38px;--dy:-30px;animation-delay:16.581s">0</text>
-<g class="ci" style="animation-delay:16.54s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="487.8" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="487.8" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="487.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.54s">u</text>
-<text class="co" x="487.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:58px;--dy:-29px;animation-delay:16.54s">1</text>
-<g class="ci" style="animation-delay:16.759s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="501.0" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="501.0" y="332" style="animation-duration:0.24s">1</text></g>
-<text class="ch" x="501.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.759s">i</text>
-<text class="co" x="501.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:66px;--dy:-12px;animation-delay:16.759s">1</text>
-<g class="ci" style="animation-delay:16.71s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="514.2" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="514.2" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="514.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.71s">l</text>
-<text class="co" x="514.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-27px;animation-delay:16.71s">1</text>
-<g class="ci" style="animation-delay:16.775s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="527.4" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="527.4" y="332" style="animation-duration:0.17s">1</text></g>
-<text class="ch" x="527.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.775s">d</text>
-<text class="co" x="527.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-30px;animation-delay:16.775s">0</text>
-<g class="ci" style="animation-delay:16.853s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="540.6" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="540.6" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="540.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.853s">e</text>
-<text class="co" x="540.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:47px;--dy:-34px;animation-delay:16.853s">0</text>
-<g class="ci" style="animation-delay:16.866s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="553.8" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="553.8" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="553.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.866s">r</text>
-<text class="co" x="553.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:62px;--dy:-16px;animation-delay:16.866s">0</text>
-<g class="ci" style="animation-delay:16.961s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="580.2" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="580.2" y="332" style="animation-duration:0.2s">1</text></g>
-<text class="ch" x="580.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.961s">o</text>
-<text class="co" x="580.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:65px;--dy:-33px;animation-delay:16.961s">1</text>
-<g class="ci" style="animation-delay:16.866s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="593.4" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="593.4" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="593.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.866s">f</text>
-<text class="co" x="593.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:69px;--dy:-29px;animation-delay:16.866s">0</text>
-<g class="ci" style="animation-delay:16.983s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="619.8" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="619.8" y="332" style="animation-duration:0.19s">1</text></g>
-<text class="ch" x="619.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.983s">C</text>
-<text class="co" x="619.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:58px;--dy:-20px;animation-delay:16.983s">0</text>
-<g class="ci" style="animation-delay:17.038s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="633.0" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="633.0" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="633.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.038s">o</text>
-<text class="co" x="633.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-19px;animation-delay:17.038s">0</text>
-<g class="ci" style="animation-delay:16.968s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="646.2" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="646.2" y="332" style="animation-duration:0.16s">1</text></g>
-<text class="ch" x="646.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.968s">r</text>
-<text class="co" x="646.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:28px;--dy:-34px;animation-delay:16.968s">0</text>
-<g class="ci" style="animation-delay:17.061s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="659.4" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="659.4" y="332" style="animation-duration:0.16s">1</text></g>
-<text class="ch" x="659.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.061s">t</text>
-<text class="co" x="659.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:53px;--dy:-18px;animation-delay:17.061s">1</text>
-<g class="ci" style="animation-delay:17.208s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="672.6" y="332" style="animation-duration:0.3s">0</text><text class="fb" x="672.6" y="332" style="animation-duration:0.3s">1</text></g>
-<text class="ch" x="672.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.208s">e</text>
-<text class="co" x="672.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:29px;--dy:-25px;animation-delay:17.208s">1</text>
-<g class="ci" style="animation-delay:17.258s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="685.8" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="685.8" y="332" style="animation-duration:0.15s">1</text></g>
-<text class="ch" x="685.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.258s">x</text>
-<text class="co" x="685.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:52px;--dy:-13px;animation-delay:17.258s">0</text>
-<g class="ci" style="animation-delay:17.26s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="699.0" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="699.0" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="699.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.26s">N</text>
-<text class="co" x="699.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-9px;animation-delay:17.26s">1</text>
-<g class="ci" style="animation-delay:17.313s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="712.2" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="712.2" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="712.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.313s">E</text>
-<text class="co" x="712.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:41px;--dy:-15px;animation-delay:17.313s">0</text>
-<g class="ci" style="animation-delay:17.306s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="725.4" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="725.4" y="332" style="animation-duration:0.18s">1</text></g>
-<text class="ch" x="725.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.306s">T</text>
-<text class="co" x="725.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:60px;--dy:-14px;animation-delay:17.306s">1</text>
-<g class="ci" style="animation-delay:22.117s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="388.8" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="388.8" y="332" style="animation-duration:0.26s">1</text></g>
-<text class="ch" x="388.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.117s">A</text>
-<text class="co" x="388.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:60px;--dy:-16px;animation-delay:22.117s">0</text>
-<g class="ci" style="animation-delay:22.205s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="402.0" y="332" style="animation-duration:0.3s">0</text><text class="fb" x="402.0" y="332" style="animation-duration:0.3s">1</text></g>
-<text class="ch" x="402.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.205s">I</text>
-<text class="co" x="402.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-14px;animation-delay:22.205s">1</text>
-<g class="ci" style="animation-delay:22.3s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="428.4" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="428.4" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="428.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.3s">S</text>
-<text class="co" x="428.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:24px;--dy:-30px;animation-delay:22.3s">1</text>
-<g class="ci" style="animation-delay:22.306s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="441.6" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="441.6" y="332" style="animation-duration:0.18s">1</text></g>
-<text class="ch" x="441.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.306s">e</text>
-<text class="co" x="441.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:30px;--dy:-27px;animation-delay:22.306s">0</text>
-<g class="ci" style="animation-delay:22.258s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="454.8" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="454.8" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="454.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.258s">c</text>
-<text class="co" x="454.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:39px;--dy:-14px;animation-delay:22.258s">0</text>
-<g class="ci" style="animation-delay:22.224s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.14s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.14s">1</text></g>
-<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.224s">u</text>
-<text class="co" x="468.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:27px;--dy:-9px;animation-delay:22.224s">1</text>
-<g class="ci" style="animation-delay:22.385s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.385s">r</text>
-<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:64px;--dy:-31px;animation-delay:22.385s">0</text>
-<g class="ci" style="animation-delay:22.334s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="494.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="494.4" y="332" style="animation-duration:0.26s">1</text></g>
-<text class="ch" x="494.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.334s">i</text>
-<text class="co" x="494.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:25px;--dy:-11px;animation-delay:22.334s">0</text>
-<g class="ci" style="animation-delay:22.515s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.515s">t</text>
-<text class="co" x="507.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:62px;--dy:-29px;animation-delay:22.515s">1</text>
-<g class="ci" style="animation-delay:22.449s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.449s">y</text>
-<text class="co" x="520.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:60px;--dy:-9px;animation-delay:22.449s">0</text>
-<g class="ci" style="animation-delay:22.421s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.421s">a</text>
-<text class="co" x="547.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:50px;--dy:-33px;animation-delay:22.421s">1</text>
-<g class="ci" style="animation-delay:22.503s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="560.4" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="560.4" y="332" style="animation-duration:0.24s">1</text></g>
-<text class="ch" x="560.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.503s">n</text>
-<text class="co" x="560.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:52px;--dy:-18px;animation-delay:22.503s">0</text>
-<g class="ci" style="animation-delay:22.587s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.15s">1</text></g>
-<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.587s">d</text>
-<text class="co" x="573.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:59px;--dy:-33px;animation-delay:22.587s">1</text>
-<g class="ci" style="animation-delay:22.687s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.687s">A</text>
-<text class="co" x="600.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:57px;--dy:-17px;animation-delay:22.687s">1</text>
-<g class="ci" style="animation-delay:22.643s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.643s">n</text>
-<text class="co" x="613.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-34px;animation-delay:22.643s">1</text>
-<g class="ci" style="animation-delay:22.768s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="626.4" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="626.4" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="626.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.768s">o</text>
-<text class="co" x="626.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:29px;--dy:-11px;animation-delay:22.768s">0</text>
-<g class="ci" style="animation-delay:22.705s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.705s">m</text>
-<text class="co" x="639.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-21px;animation-delay:22.705s">1</text>
-<g class="ci" style="animation-delay:22.753s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.2s">1</text></g>
-<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.753s">a</text>
-<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:23px;--dy:-32px;animation-delay:22.753s">0</text>
-<g class="ci" style="animation-delay:22.803s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="666.0" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="666.0" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="666.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.803s">l</text>
-<text class="co" x="666.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-20px;animation-delay:22.803s">1</text>
-<g class="ci" style="animation-delay:22.959s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.17s">1</text></g>
-<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.959s">y</text>
-<text class="co" x="679.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:26px;--dy:-12px;animation-delay:22.959s">1</text>
-<g class="ci" style="animation-delay:22.988s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="705.6" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="705.6" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="705.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.988s">D</text>
-<text class="co" x="705.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:69px;--dy:-13px;animation-delay:22.988s">0</text>
-<g class="ci" style="animation-delay:22.884s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.28s">1</text></g>
-<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.884s">e</text>
-<text class="co" x="718.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-25px;animation-delay:22.884s">0</text>
-<g class="ci" style="animation-delay:23.002s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="732.0" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="732.0" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="732.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:23.002s">t</text>
-<text class="co" x="732.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:48px;--dy:-25px;animation-delay:23.002s">0</text>
-<g class="ci" style="animation-delay:22.99s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="745.2" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="745.2" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="745.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.99s">e</text>
-<text class="co" x="745.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-36px;animation-delay:22.99s">1</text>
-<g class="ci" style="animation-delay:22.995s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="758.4" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="758.4" y="332" style="animation-duration:0.21s">1</text></g>
-<text class="ch" x="758.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.995s">c</text>
-<text class="co" x="758.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-36px;animation-delay:22.995s">1</text>
-<g class="ci" style="animation-delay:23.032s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="771.6" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="771.6" y="332" style="animation-duration:0.18s">1</text></g>
-<text class="ch" x="771.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:23.032s">t</text>
-<text class="co" x="771.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-13px;animation-delay:23.032s">0</text>
-<g class="ci" style="animation-delay:23.053s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="784.8" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="784.8" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="784.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:23.053s">i</text>
-<text class="co" x="784.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-34px;animation-delay:23.053s">0</text>
-<g class="ci" style="animation-delay:23.103s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="798.0" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="798.0" y="332" style="animation-duration:0.24s">1</text></g>
-<text class="ch" x="798.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:23.103s">o</text>
-<text class="co" x="798.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:68px;--dy:-10px;animation-delay:23.103s">0</text>
-<g class="ci" style="animation-delay:23.165s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="811.2" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="811.2" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="811.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:23.165s">n</text>
-<text class="co" x="811.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:28px;--dy:-24px;animation-delay:23.165s">1</text>
-<g class="ci" style="animation-delay:27.621s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="388.8" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="388.8" y="332" style="animation-duration:0.16s">1</text></g>
-<text class="ch" x="388.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.621s">I</text>
-<text class="co" x="388.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:37px;--dy:-12px;animation-delay:27.621s">1</text>
-<g class="ci" style="animation-delay:27.565s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="402.0" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="402.0" y="332" style="animation-duration:0.19s">1</text></g>
-<text class="ch" x="402.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.565s">n</text>
-<text class="co" x="402.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-17px;animation-delay:27.565s">0</text>
-<g class="ci" style="animation-delay:27.606s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="415.2" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="415.2" y="332" style="animation-duration:0.26s">1</text></g>
-<text class="ch" x="415.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.606s">f</text>
-<text class="co" x="415.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-25px;animation-delay:27.606s">0</text>
-<g class="ci" style="animation-delay:27.74s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="428.4" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="428.4" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="428.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.74s">o</text>
-<text class="co" x="428.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:50px;--dy:-20px;animation-delay:27.74s">1</text>
-<g class="ci" style="animation-delay:27.837s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="441.6" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="441.6" y="332" style="animation-duration:0.17s">1</text></g>
-<text class="ch" x="441.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.837s">r</text>
-<text class="co" x="441.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:19px;--dy:-12px;animation-delay:27.837s">0</text>
-<g class="ci" style="animation-delay:27.795s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="454.8" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="454.8" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="454.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.795s">m</text>
-<text class="co" x="454.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:18px;--dy:-34px;animation-delay:27.795s">1</text>
-<g class="ci" style="animation-delay:27.735s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.735s">a</text>
-<text class="co" x="468.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-17px;animation-delay:27.735s">1</text>
-<g class="ci" style="animation-delay:27.899s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.18s">1</text></g>
-<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.899s">t</text>
-<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-14px;animation-delay:27.899s">1</text>
-<g class="ci" style="animation-delay:27.971s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="494.4" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="494.4" y="332" style="animation-duration:0.2s">1</text></g>
-<text class="ch" x="494.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.971s">i</text>
-<text class="co" x="494.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:25px;--dy:-29px;animation-delay:27.971s">1</text>
-<g class="ci" style="animation-delay:27.999s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.2s">1</text></g>
-<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.999s">o</text>
-<text class="co" x="507.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:39px;--dy:-24px;animation-delay:27.999s">0</text>
-<g class="ci" style="animation-delay:27.991s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.14s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.14s">1</text></g>
-<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.991s">n</text>
-<text class="co" x="520.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:32px;--dy:-15px;animation-delay:27.991s">1</text>
-<g class="ci" style="animation-delay:27.992s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.26s">1</text></g>
-<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.992s">R</text>
-<text class="co" x="547.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:30px;--dy:-16px;animation-delay:27.992s">0</text>
-<g class="ci" style="animation-delay:28.117s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="560.4" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="560.4" y="332" style="animation-duration:0.21s">1</text></g>
-<text class="ch" x="560.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.117s">e</text>
-<text class="co" x="560.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:42px;--dy:-8px;animation-delay:28.117s">1</text>
-<g class="ci" style="animation-delay:28.062s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.29s">1</text></g>
-<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.062s">t</text>
-<text class="co" x="573.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:22px;--dy:-20px;animation-delay:28.062s">0</text>
-<g class="ci" style="animation-delay:28.096s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="586.8" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="586.8" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="586.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.096s">r</text>
-<text class="co" x="586.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:57px;--dy:-30px;animation-delay:28.096s">0</text>
-<g class="ci" style="animation-delay:28.228s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.228s">i</text>
-<text class="co" x="600.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:66px;--dy:-30px;animation-delay:28.228s">1</text>
-<g class="ci" style="animation-delay:28.134s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.24s">1</text></g>
-<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.134s">e</text>
-<text class="co" x="613.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-38px;animation-delay:28.134s">0</text>
-<g class="ci" style="animation-delay:28.297s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="626.4" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="626.4" y="332" style="animation-duration:0.2s">1</text></g>
-<text class="ch" x="626.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.297s">v</text>
-<text class="co" x="626.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:49px;--dy:-15px;animation-delay:28.297s">1</text>
-<g class="ci" style="animation-delay:28.357s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.357s">a</text>
-<text class="co" x="639.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:30px;--dy:-8px;animation-delay:28.357s">1</text>
-<g class="ci" style="animation-delay:28.335s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.335s">l</text>
-<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:62px;--dy:-12px;animation-delay:28.335s">1</text>
-<g class="ci" style="animation-delay:28.329s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.329s">a</text>
-<text class="co" x="679.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:61px;--dy:-18px;animation-delay:28.329s">0</text>
-<g class="ci" style="animation-delay:28.412s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="692.4" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="692.4" y="332" style="animation-duration:0.16s">1</text></g>
-<text class="ch" x="692.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.412s">t</text>
-<text class="co" x="692.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:44px;--dy:-14px;animation-delay:28.412s">0</text>
-<g class="ci" style="animation-delay:28.464s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.19s">1</text></g>
-<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.464s">t</text>
-<text class="co" x="718.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-23px;animation-delay:28.464s">0</text>
-<g class="ci" style="animation-delay:28.43s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="732.0" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="732.0" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="732.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.43s">h</text>
-<text class="co" x="732.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-23px;animation-delay:28.43s">1</text>
-<g class="ci" style="animation-delay:28.64s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="745.2" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="745.2" y="332" style="animation-duration:0.25s">1</text></g>
-<text class="ch" x="745.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.64s">e</text>
-<text class="co" x="745.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:61px;--dy:-33px;animation-delay:28.64s">0</text>
-<g class="ci" style="animation-delay:28.667s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="771.6" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="771.6" y="332" style="animation-duration:0.23s">1</text></g>
-<text class="ch" x="771.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.667s">E</text>
-<text class="co" x="771.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:41px;--dy:-29px;animation-delay:28.667s">1</text>
-<g class="ci" style="animation-delay:28.632s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="784.8" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="784.8" y="332" style="animation-duration:0.27s">1</text></g>
-<text class="ch" x="784.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.632s">d</text>
-<text class="co" x="784.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:46px;--dy:-22px;animation-delay:28.632s">0</text>
-<g class="ci" style="animation-delay:28.727s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="798.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="798.0" y="332" style="animation-duration:0.22s">1</text></g>
-<text class="ch" x="798.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.727s">g</text>
-<text class="co" x="798.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:18px;--dy:-18px;animation-delay:28.727s">1</text>
-<g class="ci" style="animation-delay:28.714s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="811.2" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="811.2" y="332" style="animation-duration:0.2s">1</text></g>
-<text class="ch" x="811.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.714s">e</text>
-<text class="co" x="811.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:19px;--dy:-22px;animation-delay:28.714s">0</text>
+<g class="ci" style="animation-delay:11.16s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="441.6" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="441.6" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="441.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.16s">E</text>
+<text class="co" x="441.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:25px;--dy:-32px;animation-delay:11.16s">1</text>
+<g class="ci" style="animation-delay:11.037s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="454.8" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="454.8" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="454.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.037s">d</text>
+<text class="co" x="454.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-17px;animation-delay:11.037s">0</text>
+<g class="ci" style="animation-delay:11.236s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.236s">g</text>
+<text class="co" x="468.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:60px;--dy:-32px;animation-delay:11.236s">0</text>
+<g class="ci" style="animation-delay:11.269s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.269s">e</text>
+<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:24px;--dy:-33px;animation-delay:11.269s">0</text>
+<g class="ci" style="animation-delay:11.337s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.337s">C</text>
+<text class="co" x="507.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-26px;animation-delay:11.337s">0</text>
+<g class="ci" style="animation-delay:11.378s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.18s">1</text></g>
+<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.378s">o</text>
+<text class="co" x="520.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:49px;--dy:-33px;animation-delay:11.378s">0</text>
+<g class="ci" style="animation-delay:11.268s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="534.0" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="534.0" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="534.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.268s">m</text>
+<text class="co" x="534.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-28px;animation-delay:11.268s">1</text>
+<g class="ci" style="animation-delay:11.434s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.434s">p</text>
+<text class="co" x="547.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:31px;--dy:-19px;animation-delay:11.434s">1</text>
+<g class="ci" style="animation-delay:11.358s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="560.4" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="560.4" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="560.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.358s">u</text>
+<text class="co" x="560.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:59px;--dy:-18px;animation-delay:11.358s">0</text>
+<g class="ci" style="animation-delay:11.505s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.505s">t</text>
+<text class="co" x="573.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:26px;--dy:-25px;animation-delay:11.505s">0</text>
+<g class="ci" style="animation-delay:11.474s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="586.8" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="586.8" y="332" style="animation-duration:0.15s">1</text></g>
+<text class="ch" x="586.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.474s">i</text>
+<text class="co" x="586.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:66px;--dy:-16px;animation-delay:11.474s">1</text>
+<g class="ci" style="animation-delay:11.561s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.561s">n</text>
+<text class="co" x="600.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:34px;--dy:-32px;animation-delay:11.561s">0</text>
+<g class="ci" style="animation-delay:11.536s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.536s">g</text>
+<text class="co" x="613.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:38px;--dy:-30px;animation-delay:11.536s">0</text>
+<g class="ci" style="animation-delay:11.53s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.53s">F</text>
+<text class="co" x="639.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:58px;--dy:-29px;animation-delay:11.53s">1</text>
+<g class="ci" style="animation-delay:11.749s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.749s">r</text>
+<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:66px;--dy:-12px;animation-delay:11.749s">1</text>
+<g class="ci" style="animation-delay:11.7s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="666.0" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="666.0" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="666.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.7s">a</text>
+<text class="co" x="666.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-27px;animation-delay:11.7s">1</text>
+<g class="ci" style="animation-delay:11.765s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.765s">m</text>
+<text class="co" x="679.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-30px;animation-delay:11.765s">0</text>
+<g class="ci" style="animation-delay:11.843s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="692.4" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="692.4" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="692.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.843s">e</text>
+<text class="co" x="692.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:47px;--dy:-34px;animation-delay:11.843s">0</text>
+<g class="ci" style="animation-delay:11.856s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="705.6" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="705.6" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="705.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.856s">w</text>
+<text class="co" x="705.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:62px;--dy:-16px;animation-delay:11.856s">0</text>
+<g class="ci" style="animation-delay:11.916s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.916s">o</text>
+<text class="co" x="718.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:65px;--dy:-33px;animation-delay:11.916s">1</text>
+<g class="ci" style="animation-delay:11.821s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="732.0" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="732.0" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="732.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.821s">r</text>
+<text class="co" x="732.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:69px;--dy:-29px;animation-delay:11.821s">0</text>
+<g class="ci" style="animation-delay:11.903s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="745.2" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="745.2" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="745.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.903s">k</text>
+<text class="co" x="745.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:58px;--dy:-20px;animation-delay:11.903s">0</text>
+<g class="ci" style="animation-delay:11.958s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="758.4" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="758.4" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="758.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:11.958s">s</text>
+<text class="co" x="758.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-19px;animation-delay:11.958s">0</text>
+<g class="ci" style="animation-delay:16.513s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="461.4" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="461.4" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="461.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.513s">D</text>
+<text class="co" x="461.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:28px;--dy:-34px;animation-delay:16.513s">0</text>
+<g class="ci" style="animation-delay:16.606s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="474.6" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="474.6" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="474.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.606s">e</text>
+<text class="co" x="474.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:53px;--dy:-18px;animation-delay:16.606s">1</text>
+<g class="ci" style="animation-delay:16.753s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="487.8" y="332" style="animation-duration:0.3s">0</text><text class="fb" x="487.8" y="332" style="animation-duration:0.3s">1</text></g>
+<text class="ch" x="487.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.753s">c</text>
+<text class="co" x="487.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:29px;--dy:-25px;animation-delay:16.753s">1</text>
+<g class="ci" style="animation-delay:16.803s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="501.0" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="501.0" y="332" style="animation-duration:0.15s">1</text></g>
+<text class="ch" x="501.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.803s">e</text>
+<text class="co" x="501.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:52px;--dy:-13px;animation-delay:16.803s">0</text>
+<g class="ci" style="animation-delay:16.805s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="514.2" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="514.2" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="514.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.805s">n</text>
+<text class="co" x="514.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-9px;animation-delay:16.805s">1</text>
+<g class="ci" style="animation-delay:16.858s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="527.4" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="527.4" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="527.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.858s">t</text>
+<text class="co" x="527.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:41px;--dy:-15px;animation-delay:16.858s">0</text>
+<g class="ci" style="animation-delay:16.851s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="540.6" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="540.6" y="332" style="animation-duration:0.18s">1</text></g>
+<text class="ch" x="540.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.851s">r</text>
+<text class="co" x="540.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:60px;--dy:-14px;animation-delay:16.851s">1</text>
+<g class="ci" style="animation-delay:16.862s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="553.8" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="553.8" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="553.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.862s">a</text>
+<text class="co" x="553.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:60px;--dy:-16px;animation-delay:16.862s">0</text>
+<g class="ci" style="animation-delay:16.95s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="567.0" y="332" style="animation-duration:0.3s">0</text><text class="fb" x="567.0" y="332" style="animation-duration:0.3s">1</text></g>
+<text class="ch" x="567.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.95s">l</text>
+<text class="co" x="567.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-14px;animation-delay:16.95s">1</text>
+<g class="ci" style="animation-delay:17.01s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="580.2" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="580.2" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="580.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.01s">i</text>
+<text class="co" x="580.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:24px;--dy:-30px;animation-delay:17.01s">1</text>
+<g class="ci" style="animation-delay:17.016s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="593.4" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="593.4" y="332" style="animation-duration:0.18s">1</text></g>
+<text class="ch" x="593.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.016s">z</text>
+<text class="co" x="593.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:30px;--dy:-27px;animation-delay:17.016s">0</text>
+<g class="ci" style="animation-delay:16.968s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="606.6" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="606.6" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="606.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.968s">e</text>
+<text class="co" x="606.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:39px;--dy:-14px;animation-delay:16.968s">0</text>
+<g class="ci" style="animation-delay:16.934s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="619.8" y="332" style="animation-duration:0.14s">0</text><text class="fb" x="619.8" y="332" style="animation-duration:0.14s">1</text></g>
+<text class="ch" x="619.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:16.934s">d</text>
+<text class="co" x="619.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:27px;--dy:-9px;animation-delay:16.934s">1</text>
+<g class="ci" style="animation-delay:17.13s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="646.2" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="646.2" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="646.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.13s">L</text>
+<text class="co" x="646.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:64px;--dy:-31px;animation-delay:17.13s">0</text>
+<g class="ci" style="animation-delay:17.079s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="659.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="659.4" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="659.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.079s">e</text>
+<text class="co" x="659.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:25px;--dy:-11px;animation-delay:17.079s">0</text>
+<g class="ci" style="animation-delay:17.26s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="672.6" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="672.6" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="672.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.26s">a</text>
+<text class="co" x="672.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:62px;--dy:-29px;animation-delay:17.26s">1</text>
+<g class="ci" style="animation-delay:17.194s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="685.8" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="685.8" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="685.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.194s">r</text>
+<text class="co" x="685.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:60px;--dy:-9px;animation-delay:17.194s">0</text>
+<g class="ci" style="animation-delay:17.131s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="699.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="699.0" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="699.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.131s">n</text>
+<text class="co" x="699.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:50px;--dy:-33px;animation-delay:17.131s">1</text>
+<g class="ci" style="animation-delay:17.213s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="712.2" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="712.2" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="712.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.213s">i</text>
+<text class="co" x="712.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:52px;--dy:-18px;animation-delay:17.213s">0</text>
+<g class="ci" style="animation-delay:17.297s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="725.4" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="725.4" y="332" style="animation-duration:0.15s">1</text></g>
+<text class="ch" x="725.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.297s">n</text>
+<text class="co" x="725.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:59px;--dy:-33px;animation-delay:17.297s">1</text>
+<g class="ci" style="animation-delay:17.362s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="738.6" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="738.6" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="738.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:17.362s">g</text>
+<text class="co" x="738.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:57px;--dy:-17px;animation-delay:17.362s">1</text>
+<g class="ci" style="animation-delay:22.048s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.048s">N</text>
+<text class="co" x="468.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-34px;animation-delay:22.048s">1</text>
+<g class="ci" style="animation-delay:22.173s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.173s">e</text>
+<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:29px;--dy:-11px;animation-delay:22.173s">0</text>
+<g class="ci" style="animation-delay:22.11s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="494.4" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="494.4" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="494.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.11s">u</text>
+<text class="co" x="494.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-21px;animation-delay:22.11s">1</text>
+<g class="ci" style="animation-delay:22.158s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.158s">r</text>
+<text class="co" x="507.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:23px;--dy:-32px;animation-delay:22.158s">0</text>
+<g class="ci" style="animation-delay:22.208s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.208s">o</text>
+<text class="co" x="520.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-20px;animation-delay:22.208s">1</text>
+<g class="ci" style="animation-delay:22.364s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="534.0" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="534.0" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="534.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.364s">m</text>
+<text class="co" x="534.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:26px;--dy:-12px;animation-delay:22.364s">1</text>
+<g class="ci" style="animation-delay:22.358s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.358s">o</text>
+<text class="co" x="547.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:69px;--dy:-13px;animation-delay:22.358s">0</text>
+<g class="ci" style="animation-delay:22.254s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="560.4" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="560.4" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="560.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.254s">r</text>
+<text class="co" x="560.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-25px;animation-delay:22.254s">0</text>
+<g class="ci" style="animation-delay:22.372s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.372s">p</text>
+<text class="co" x="573.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:48px;--dy:-25px;animation-delay:22.372s">0</text>
+<g class="ci" style="animation-delay:22.36s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="586.8" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="586.8" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="586.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.36s">h</text>
+<text class="co" x="586.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-36px;animation-delay:22.36s">1</text>
+<g class="ci" style="animation-delay:22.365s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.365s">i</text>
+<text class="co" x="600.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-36px;animation-delay:22.365s">1</text>
+<g class="ci" style="animation-delay:22.402s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.18s">1</text></g>
+<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.402s">c</text>
+<text class="co" x="613.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-13px;animation-delay:22.402s">0</text>
+<g class="ci" style="animation-delay:22.458s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.458s">R</text>
+<text class="co" x="639.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-34px;animation-delay:22.458s">0</text>
+<g class="ci" style="animation-delay:22.508s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.508s">e</text>
+<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:68px;--dy:-10px;animation-delay:22.508s">0</text>
+<g class="ci" style="animation-delay:22.57s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="666.0" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="666.0" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="666.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.57s">s</text>
+<text class="co" x="666.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:28px;--dy:-24px;animation-delay:22.57s">1</text>
+<g class="ci" style="animation-delay:22.681s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.681s">e</text>
+<text class="co" x="679.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:37px;--dy:-12px;animation-delay:22.681s">1</text>
+<g class="ci" style="animation-delay:22.625s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="692.4" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="692.4" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="692.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.625s">a</text>
+<text class="co" x="692.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-17px;animation-delay:22.625s">0</text>
+<g class="ci" style="animation-delay:22.666s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="705.6" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="705.6" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="705.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.666s">r</text>
+<text class="co" x="705.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-25px;animation-delay:22.666s">0</text>
+<g class="ci" style="animation-delay:22.8s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.8s">c</text>
+<text class="co" x="718.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:50px;--dy:-20px;animation-delay:22.8s">1</text>
+<g class="ci" style="animation-delay:22.897s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="732.0" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="732.0" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="732.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:22.897s">h</text>
+<text class="co" x="732.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:19px;--dy:-12px;animation-delay:22.897s">0</text>
+<g class="ci" style="animation-delay:27.62s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="296.4" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="296.4" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="296.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.62s">A</text>
+<text class="co" x="296.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:18px;--dy:-34px;animation-delay:27.62s">1</text>
+<g class="ci" style="animation-delay:27.56s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="309.6" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="309.6" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="309.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.56s">u</text>
+<text class="co" x="309.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-17px;animation-delay:27.56s">1</text>
+<g class="ci" style="animation-delay:27.724s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="322.8" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="322.8" y="332" style="animation-duration:0.18s">1</text></g>
+<text class="ch" x="322.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.724s">t</text>
+<text class="co" x="322.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-14px;animation-delay:27.724s">1</text>
+<g class="ci" style="animation-delay:27.796s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="336.0" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="336.0" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="336.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.796s">h</text>
+<text class="co" x="336.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:25px;--dy:-29px;animation-delay:27.796s">1</text>
+<g class="ci" style="animation-delay:27.824s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="349.2" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="349.2" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="349.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.824s">o</text>
+<text class="co" x="349.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:39px;--dy:-24px;animation-delay:27.824s">0</text>
+<g class="ci" style="animation-delay:27.816s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="362.4" y="332" style="animation-duration:0.14s">0</text><text class="fb" x="362.4" y="332" style="animation-duration:0.14s">1</text></g>
+<text class="ch" x="362.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.816s">r</text>
+<text class="co" x="362.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:32px;--dy:-15px;animation-delay:27.816s">1</text>
+<g class="ci" style="animation-delay:27.817s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="388.8" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="388.8" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="388.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.817s">o</text>
+<text class="co" x="388.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:30px;--dy:-16px;animation-delay:27.817s">0</text>
+<g class="ci" style="animation-delay:27.942s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="402.0" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="402.0" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="402.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.942s">f</text>
+<text class="co" x="402.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:42px;--dy:-8px;animation-delay:27.942s">1</text>
+<g class="ci" style="animation-delay:27.922s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="428.4" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="428.4" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="428.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.922s">C</text>
+<text class="co" x="428.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:22px;--dy:-20px;animation-delay:27.922s">0</text>
+<g class="ci" style="animation-delay:27.956s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="441.6" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="441.6" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="441.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.956s">o</text>
+<text class="co" x="441.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:57px;--dy:-30px;animation-delay:27.956s">0</text>
+<g class="ci" style="animation-delay:28.088s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="454.8" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="454.8" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="454.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.088s">r</text>
+<text class="co" x="454.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:66px;--dy:-30px;animation-delay:28.088s">1</text>
+<g class="ci" style="animation-delay:27.994s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:27.994s">t</text>
+<text class="co" x="468.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-38px;animation-delay:27.994s">0</text>
+<g class="ci" style="animation-delay:28.157s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.157s">e</text>
+<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:49px;--dy:-15px;animation-delay:28.157s">1</text>
+<g class="ci" style="animation-delay:28.217s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="494.4" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="494.4" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="494.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.217s">x</text>
+<text class="co" x="494.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:30px;--dy:-8px;animation-delay:28.217s">1</text>
+<g class="ci" style="animation-delay:28.195s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.195s">N</text>
+<text class="co" x="507.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:62px;--dy:-12px;animation-delay:28.195s">1</text>
+<g class="ci" style="animation-delay:28.154s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.154s">E</text>
+<text class="co" x="520.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:61px;--dy:-18px;animation-delay:28.154s">0</text>
+<g class="ci" style="animation-delay:28.237s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="534.0" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="534.0" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="534.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.237s">T</text>
+<text class="co" x="534.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:44px;--dy:-14px;animation-delay:28.237s">0</text>
+<g class="ci" style="animation-delay:28.254s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.254s">,</text>
+<text class="co" x="547.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-23px;animation-delay:28.254s">0</text>
+<g class="ci" style="animation-delay:28.255s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.255s">H</text>
+<text class="co" x="573.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-23px;animation-delay:28.255s">1</text>
+<g class="ci" style="animation-delay:28.465s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="586.8" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="586.8" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="586.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.465s">a</text>
+<text class="co" x="586.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:61px;--dy:-33px;animation-delay:28.465s">0</text>
+<g class="ci" style="animation-delay:28.457s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.457s">D</text>
+<text class="co" x="600.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:41px;--dy:-29px;animation-delay:28.457s">1</text>
+<g class="ci" style="animation-delay:28.422s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.422s">A</text>
+<text class="co" x="613.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:46px;--dy:-22px;animation-delay:28.422s">0</text>
+<g class="ci" style="animation-delay:28.552s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.552s">S</text>
+<text class="co" x="639.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:18px;--dy:-18px;animation-delay:28.552s">1</text>
+<g class="ci" style="animation-delay:28.539s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.539s">y</text>
+<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:19px;--dy:-22px;animation-delay:28.539s">0</text>
+<g class="ci" style="animation-delay:28.659s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="666.0" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="666.0" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="666.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.659s">s</text>
+<text class="co" x="666.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:22px;--dy:-30px;animation-delay:28.659s">0</text>
+<g class="ci" style="animation-delay:28.562s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.562s">t</text>
+<text class="co" x="679.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:48px;--dy:-15px;animation-delay:28.562s">1</text>
+<g class="ci" style="animation-delay:28.63s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="692.4" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="692.4" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="692.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.63s">e</text>
+<text class="co" x="692.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-10px;animation-delay:28.63s">0</text>
+<g class="ci" style="animation-delay:28.739s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="705.6" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="705.6" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="705.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.739s">m</text>
+<text class="co" x="705.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:70px;--dy:-18px;animation-delay:28.739s">1</text>
+<g class="ci" style="animation-delay:28.683s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.683s">s</text>
+<text class="co" x="718.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:20px;--dy:-32px;animation-delay:28.683s">1</text>
+<g class="ci" style="animation-delay:28.834s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="745.2" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="745.2" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="745.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.834s">a</text>
+<text class="co" x="745.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:31px;--dy:-31px;animation-delay:28.834s">0</text>
+<g class="ci" style="animation-delay:28.882s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="758.4" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="758.4" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="758.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.882s">n</text>
+<text class="co" x="758.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:63px;--dy:-15px;animation-delay:28.882s">1</text>
+<g class="ci" style="animation-delay:28.89s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="771.6" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="771.6" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="771.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.89s">d</text>
+<text class="co" x="771.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-18px;animation-delay:28.89s">0</text>
+<g class="ci" style="animation-delay:28.887s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="798.0" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="798.0" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="798.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.887s">M</text>
+<text class="co" x="798.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:61px;--dy:-33px;animation-delay:28.887s">0</text>
+<g class="ci" style="animation-delay:28.964s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="811.2" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="811.2" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="811.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.964s">a</text>
+<text class="co" x="811.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:63px;--dy:-26px;animation-delay:28.964s">0</text>
+<g class="ci" style="animation-delay:28.929s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="824.4" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="824.4" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="824.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:28.929s">n</text>
+<text class="co" x="824.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:19px;--dy:-36px;animation-delay:28.929s">1</text>
+<g class="ci" style="animation-delay:29.108s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="837.6" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="837.6" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="837.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:29.108s">y</text>
+<text class="co" x="837.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:51px;--dy:-22px;animation-delay:29.108s">1</text>
+<g class="ci" style="animation-delay:29.103s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="864.0" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="864.0" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="864.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:29.103s">m</text>
+<text class="co" x="864.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-20px;animation-delay:29.103s">1</text>
+<g class="ci" style="animation-delay:29.217s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="877.2" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="877.2" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="877.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:29.217s">o</text>
+<text class="co" x="877.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:37px;--dy:-38px;animation-delay:29.217s">0</text>
+<g class="ci" style="animation-delay:29.257s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="890.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="890.4" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="890.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:29.257s">r</text>
+<text class="co" x="890.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-30px;animation-delay:29.257s">1</text>
+<g class="ci" style="animation-delay:29.229s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="903.6" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="903.6" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="903.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:29.229s">e</text>
+<text class="co" x="903.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:54px;--dy:-31px;animation-delay:29.229s">1</text>
+<g class="ci" style="animation-delay:33.097s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="388.8" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="388.8" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="388.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.097s">A</text>
+<text class="co" x="388.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:34px;--dy:-38px;animation-delay:33.097s">1</text>
+<g class="ci" style="animation-delay:33.114s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="402.0" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="402.0" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="402.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.114s">I</text>
+<text class="co" x="402.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-19px;animation-delay:33.114s">0</text>
+<g class="ci" style="animation-delay:33.113s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="428.4" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="428.4" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="428.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.113s">S</text>
+<text class="co" x="428.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:23px;--dy:-16px;animation-delay:33.113s">0</text>
+<g class="ci" style="animation-delay:33.172s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="441.6" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="441.6" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="441.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.172s">e</text>
+<text class="co" x="441.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:18px;--dy:-20px;animation-delay:33.172s">0</text>
+<g class="ci" style="animation-delay:33.208s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="454.8" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="454.8" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="454.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.208s">c</text>
+<text class="co" x="454.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:65px;--dy:-11px;animation-delay:33.208s">0</text>
+<g class="ci" style="animation-delay:33.328s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.328s">u</text>
+<text class="co" x="468.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:49px;--dy:-31px;animation-delay:33.328s">1</text>
+<g class="ci" style="animation-delay:33.256s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.256s">r</text>
+<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:41px;--dy:-28px;animation-delay:33.256s">0</text>
+<g class="ci" style="animation-delay:33.452s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="494.4" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="494.4" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="494.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.452s">i</text>
+<text class="co" x="494.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:33px;--dy:-31px;animation-delay:33.452s">1</text>
+<g class="ci" style="animation-delay:33.424s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.424s">t</text>
+<text class="co" x="507.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:65px;--dy:-17px;animation-delay:33.424s">0</text>
+<g class="ci" style="animation-delay:33.498s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.498s">y</text>
+<text class="co" x="520.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:32px;--dy:-22px;animation-delay:33.498s">0</text>
+<g class="ci" style="animation-delay:33.582s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.582s">a</text>
+<text class="co" x="547.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-30px;animation-delay:33.582s">1</text>
+<g class="ci" style="animation-delay:33.579s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="560.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="560.4" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="560.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.579s">n</text>
+<text class="co" x="560.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-18px;animation-delay:33.579s">0</text>
+<g class="ci" style="animation-delay:33.517s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.517s">d</text>
+<text class="co" x="573.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:59px;--dy:-18px;animation-delay:33.517s">0</text>
+<g class="ci" style="animation-delay:33.603s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.603s">A</text>
+<text class="co" x="600.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:50px;--dy:-32px;animation-delay:33.603s">1</text>
+<g class="ci" style="animation-delay:33.666s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.666s">n</text>
+<text class="co" x="613.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:56px;--dy:-29px;animation-delay:33.666s">0</text>
+<g class="ci" style="animation-delay:33.771s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="626.4" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="626.4" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="626.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.771s">o</text>
+<text class="co" x="626.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:38px;--dy:-20px;animation-delay:33.771s">0</text>
+<g class="ci" style="animation-delay:33.792s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.14s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.14s">1</text></g>
+<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.792s">m</text>
+<text class="co" x="639.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-28px;animation-delay:33.792s">0</text>
+<g class="ci" style="animation-delay:33.795s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.795s">a</text>
+<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:21px;--dy:-27px;animation-delay:33.795s">1</text>
+<g class="ci" style="animation-delay:33.882s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="666.0" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="666.0" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="666.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.882s">l</text>
+<text class="co" x="666.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:31px;--dy:-35px;animation-delay:33.882s">0</text>
+<g class="ci" style="animation-delay:33.894s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.894s">y</text>
+<text class="co" x="679.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:24px;--dy:-8px;animation-delay:33.894s">0</text>
+<g class="ci" style="animation-delay:33.957s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="705.6" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="705.6" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="705.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.957s">D</text>
+<text class="co" x="705.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:55px;--dy:-26px;animation-delay:33.957s">1</text>
+<g class="ci" style="animation-delay:34.051s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.051s">e</text>
+<text class="co" x="718.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:50px;--dy:-18px;animation-delay:34.051s">0</text>
+<g class="ci" style="animation-delay:33.924s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="732.0" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="732.0" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="732.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:33.924s">t</text>
+<text class="co" x="732.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:25px;--dy:-17px;animation-delay:33.924s">1</text>
+<g class="ci" style="animation-delay:34.067s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="745.2" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="745.2" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="745.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.067s">e</text>
+<text class="co" x="745.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:26px;--dy:-31px;animation-delay:34.067s">1</text>
+<g class="ci" style="animation-delay:34.12s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="758.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="758.4" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="758.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.12s">c</text>
+<text class="co" x="758.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:24px;--dy:-9px;animation-delay:34.12s">0</text>
+<g class="ci" style="animation-delay:34.023s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="771.6" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="771.6" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="771.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.023s">t</text>
+<text class="co" x="771.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-13px;animation-delay:34.023s">0</text>
+<g class="ci" style="animation-delay:34.209s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="784.8" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="784.8" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="784.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.209s">i</text>
+<text class="co" x="784.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:52px;--dy:-27px;animation-delay:34.209s">1</text>
+<g class="ci" style="animation-delay:34.136s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="798.0" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="798.0" y="332" style="animation-duration:0.15s">1</text></g>
+<text class="ch" x="798.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.136s">o</text>
+<text class="co" x="798.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:27px;--dy:-30px;animation-delay:34.136s">1</text>
+<g class="ci" style="animation-delay:34.229s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="811.2" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="811.2" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="811.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:34.229s">n</text>
+<text class="co" x="811.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-14px;animation-delay:34.229s">1</text>
+<g class="ci" style="animation-delay:38.69s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="388.8" y="332" style="animation-duration:0.28s">0</text><text class="fb" x="388.8" y="332" style="animation-duration:0.28s">1</text></g>
+<text class="ch" x="388.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.69s">I</text>
+<text class="co" x="388.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:45px;--dy:-23px;animation-delay:38.69s">1</text>
+<g class="ci" style="animation-delay:38.7s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="402.0" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="402.0" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="402.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.7s">n</text>
+<text class="co" x="402.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-12px;animation-delay:38.7s">1</text>
+<g class="ci" style="animation-delay:38.742s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="415.2" y="332" style="animation-duration:0.27s">0</text><text class="fb" x="415.2" y="332" style="animation-duration:0.27s">1</text></g>
+<text class="ch" x="415.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.742s">f</text>
+<text class="co" x="415.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:55px;--dy:-20px;animation-delay:38.742s">1</text>
+<g class="ci" style="animation-delay:38.691s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="428.4" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="428.4" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="428.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.691s">o</text>
+<text class="co" x="428.4" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:67px;--dy:-9px;animation-delay:38.691s">0</text>
+<g class="ci" style="animation-delay:38.812s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="441.6" y="332" style="animation-duration:0.25s">0</text><text class="fb" x="441.6" y="332" style="animation-duration:0.25s">1</text></g>
+<text class="ch" x="441.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.812s">r</text>
+<text class="co" x="441.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:19px;--dy:-26px;animation-delay:38.812s">1</text>
+<g class="ci" style="animation-delay:38.847s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="454.8" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="454.8" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="454.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.847s">m</text>
+<text class="co" x="454.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-29px;animation-delay:38.847s">0</text>
+<g class="ci" style="animation-delay:38.711s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="468.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="468.0" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="468.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.711s">a</text>
+<text class="co" x="468.0" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:64px;--dy:-38px;animation-delay:38.711s">0</text>
+<g class="ci" style="animation-delay:38.766s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="481.2" y="332" style="animation-duration:0.18s">0</text><text class="fb" x="481.2" y="332" style="animation-duration:0.18s">1</text></g>
+<text class="ch" x="481.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.766s">t</text>
+<text class="co" x="481.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:68px;--dy:-32px;animation-delay:38.766s">1</text>
+<g class="ci" style="animation-delay:38.783s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="494.4" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="494.4" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="494.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.783s">i</text>
+<text class="co" x="494.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:43px;--dy:-10px;animation-delay:38.783s">1</text>
+<g class="ci" style="animation-delay:38.929s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="507.6" y="332" style="animation-duration:0.15s">0</text><text class="fb" x="507.6" y="332" style="animation-duration:0.15s">1</text></g>
+<text class="ch" x="507.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:38.929s">o</text>
+<text class="co" x="507.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:45px;--dy:-11px;animation-delay:38.929s">0</text>
+<g class="ci" style="animation-delay:39.022s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="520.8" y="332" style="animation-duration:0.3s">0</text><text class="fb" x="520.8" y="332" style="animation-duration:0.3s">1</text></g>
+<text class="ch" x="520.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.022s">n</text>
+<text class="co" x="520.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:49px;--dy:-31px;animation-delay:39.022s">1</text>
+<g class="ci" style="animation-delay:39.015s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="547.2" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="547.2" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="547.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.015s">R</text>
+<text class="co" x="547.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:36px;--dy:-36px;animation-delay:39.015s">0</text>
+<g class="ci" style="animation-delay:39.071s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="560.4" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="560.4" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="560.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.071s">e</text>
+<text class="co" x="560.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:44px;--dy:-23px;animation-delay:39.071s">0</text>
+<g class="ci" style="animation-delay:39.015s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="573.6" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="573.6" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="573.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.015s">t</text>
+<text class="co" x="573.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:29px;--dy:-12px;animation-delay:39.015s">1</text>
+<g class="ci" style="animation-delay:39.164s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="586.8" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="586.8" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="586.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.164s">r</text>
+<text class="co" x="586.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-29px;animation-delay:39.164s">1</text>
+<g class="ci" style="animation-delay:39.198s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="600.0" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="600.0" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="600.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.198s">i</text>
+<text class="co" x="600.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:38px;--dy:-37px;animation-delay:39.198s">0</text>
+<g class="ci" style="animation-delay:39.121s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="613.2" y="332" style="animation-duration:0.19s">0</text><text class="fb" x="613.2" y="332" style="animation-duration:0.19s">1</text></g>
+<text class="ch" x="613.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.121s">e</text>
+<text class="co" x="613.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:40px;--dy:-27px;animation-delay:39.121s">1</text>
+<g class="ci" style="animation-delay:39.213s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="626.4" y="332" style="animation-duration:0.24s">0</text><text class="fb" x="626.4" y="332" style="animation-duration:0.24s">1</text></g>
+<text class="ch" x="626.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.213s">v</text>
+<text class="co" x="626.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:66px;--dy:-36px;animation-delay:39.213s">0</text>
+<g class="ci" style="animation-delay:39.282s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="639.6" y="332" style="animation-duration:0.26s">0</text><text class="fb" x="639.6" y="332" style="animation-duration:0.26s">1</text></g>
+<text class="ch" x="639.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.282s">a</text>
+<text class="co" x="639.6" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:57px;--dy:-20px;animation-delay:39.282s">1</text>
+<g class="ci" style="animation-delay:39.319s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="652.8" y="332" style="animation-duration:0.2s">0</text><text class="fb" x="652.8" y="332" style="animation-duration:0.2s">1</text></g>
+<text class="ch" x="652.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.319s">l</text>
+<text class="co" x="652.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:43px;--dy:-23px;animation-delay:39.319s">1</text>
+<g class="ci" style="animation-delay:39.328s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="679.2" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="679.2" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="679.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.328s">a</text>
+<text class="co" x="679.2" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:41px;--dy:-27px;animation-delay:39.328s">0</text>
+<g class="ci" style="animation-delay:39.385s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="692.4" y="332" style="animation-duration:0.29s">0</text><text class="fb" x="692.4" y="332" style="animation-duration:0.29s">1</text></g>
+<text class="ch" x="692.4" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.385s">t</text>
+<text class="co" x="692.4" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:54px;--dy:-36px;animation-delay:39.385s">0</text>
+<g class="ci" style="animation-delay:39.391s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="718.8" y="332" style="animation-duration:0.14s">0</text><text class="fb" x="718.8" y="332" style="animation-duration:0.14s">1</text></g>
+<text class="ch" x="718.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.391s">t</text>
+<text class="co" x="718.8" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:68px;--dy:-18px;animation-delay:39.391s">0</text>
+<g class="ci" style="animation-delay:39.607s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="732.0" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="732.0" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="732.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.607s">h</text>
+<text class="co" x="732.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:35px;--dy:-26px;animation-delay:39.607s">0</text>
+<g class="ci" style="animation-delay:39.531s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="745.2" y="332" style="animation-duration:0.16s">0</text><text class="fb" x="745.2" y="332" style="animation-duration:0.16s">1</text></g>
+<text class="ch" x="745.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.531s">e</text>
+<text class="co" x="745.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:19px;--dy:-15px;animation-delay:39.531s">1</text>
+<g class="ci" style="animation-delay:39.606s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="771.6" y="332" style="animation-duration:0.21s">0</text><text class="fb" x="771.6" y="332" style="animation-duration:0.21s">1</text></g>
+<text class="ch" x="771.6" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.606s">E</text>
+<text class="co" x="771.6" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:43px;--dy:-24px;animation-delay:39.606s">1</text>
+<g class="ci" style="animation-delay:39.628s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="784.8" y="332" style="animation-duration:0.23s">0</text><text class="fb" x="784.8" y="332" style="animation-duration:0.23s">1</text></g>
+<text class="ch" x="784.8" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.628s">d</text>
+<text class="co" x="784.8" y="332" text-anchor="middle" fill="#ff3b5c" style="--dx:26px;--dy:-11px;animation-delay:39.628s">1</text>
+<g class="ci" style="animation-delay:39.597s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="798.0" y="332" style="animation-duration:0.17s">0</text><text class="fb" x="798.0" y="332" style="animation-duration:0.17s">1</text></g>
+<text class="ch" x="798.0" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.597s">g</text>
+<text class="co" x="798.0" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:42px;--dy:-31px;animation-delay:39.597s">0</text>
+<g class="ci" style="animation-delay:39.707s" fill="#3d9bff" text-anchor="middle"><text class="fa" x="811.2" y="332" style="animation-duration:0.22s">0</text><text class="fb" x="811.2" y="332" style="animation-duration:0.22s">1</text></g>
+<text class="ch" x="811.2" y="332" text-anchor="middle" fill="url(#hd-capInk)" style="animation-delay:39.707s">e</text>
+<text class="co" x="811.2" y="332" text-anchor="middle" fill="#7cc8ff" style="--dx:46px;--dy:-37px;animation-delay:39.707s">0</text>
 </g>
 </g>
 </svg>
