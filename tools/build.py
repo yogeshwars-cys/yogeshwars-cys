@@ -62,12 +62,6 @@ SUMMARY = ("A 3rd Year Cyber Security Undergraduate, working at the intersection
 
 REDUCED_MOTION = "@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }"
 
-# a bright dash that travels slowly around a card border, through the corners
-ORBIT_CSS = """
-  .orbit { fill: none; stroke-linecap: round; stroke-dasharray: 70 930; animation: orbit linear infinite; }
-  @keyframes orbit { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1000; } }"""
-
-
 def esc(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
@@ -78,14 +72,15 @@ def rrect(x: float, y: float, w: float, h: float, r: float) -> str:
             f"V{y + r} A{r},{r} 0 0 1 {x + r},{y} Z")
 
 
-def orbit(d: str, colors: tuple[str, str], dur: float, dash: int = 70) -> str:
-    """Two light dashes chasing each other around the border path `d` (dash is out of 1000)."""
-    out = []
-    for k, c in enumerate(colors):
-        style = f"stroke-dasharray:{dash} {1000 - dash};animation-duration:{dur}s;animation-delay:-{dur * k / 2:.1f}s"
-        out.append(f'<path class="orbit" d="{d}" pathLength="1000" stroke="{c}" stroke-width="7" stroke-opacity="0.16" style="{style}"/>')
-        out.append(f'<path class="orbit" d="{d}" pathLength="1000" stroke="{c}" stroke-width="2.2" stroke-opacity="0.95" style="{style}"/>')
-    return "".join(out)
+def shine(W: float, m: float, color: str) -> str:
+    """A fixed highlight along a card's top edge, brightest a third of the way in, like light catching glass."""
+    y, x0, x1 = m + 0.75, m + 16, W - m - 16
+    return (f'<linearGradient id="shn" gradientUnits="userSpaceOnUse" x1="{x0}" y1="0" x2="{x1}" y2="0">'
+            f'<stop offset="0" stop-color="{color}" stop-opacity="0"/><stop offset="0.24" stop-color="{color}" stop-opacity="0.85"/>'
+            f'<stop offset="0.34" stop-color="#ffffff"/><stop offset="0.5" stop-color="{color}" stop-opacity="0.5"/>'
+            f'<stop offset="1" stop-color="{color}" stop-opacity="0"/></linearGradient>'
+            f'<path d="M{x0},{y}H{x1}" stroke="url(#shn)" stroke-width="6" stroke-opacity="0.22" stroke-linecap="round"/>'
+            f'<path d="M{x0},{y}H{x1}" stroke="url(#shn)" stroke-width="1.6" stroke-linecap="round"/>')
 
 
 def wrap(text: str, width: int) -> list[str]:
@@ -415,7 +410,6 @@ def header_svg() -> str:
     100% {{ transform: translate(0, 0) scale(1); opacity: 0; }}
   }}
   @keyframes sweep {{ 0% {{ transform: translateX(0); }} 70%, 100% {{ transform: translateX({name_right - name_left + 320:.0f}px); }} }}
-  {ORBIT_CSS}
   {cap_css}
   {REDUCED_MOTION}
 </style>""")
@@ -482,7 +476,7 @@ def summary_svg() -> str:
     <stop offset="0" stop-color="{SKY}" stop-opacity="0.22"/><stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
   </radialGradient>
 </defs>
-<style>{ORBIT_CSS}
+<style>
   {REDUCED_MOTION}
 </style>
 <rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
@@ -490,7 +484,7 @@ def summary_svg() -> str:
   <ellipse cx="{W - 120}" cy="{m}" rx="360" ry="150" fill="url(#gl)"/>
 </g>
 <path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
-{orbit(frame, (BLUE, RED), 30)}
+{shine(W, m, SKY)}
 <rect x="{m + 34}" y="{m + 34}" width="4" height="{len(lines) * 34 - 4}" rx="2" fill="url(#bar)"/>
 <g font-family="{MONO}" font-size="19" fill="{INK}">{text}</g>
 <g font-family="{MONO}" font-size="12" fill="{BLUE}">{bit_field(rng, W - 260, W - 40, m + 30, m + 70, 10, 0.5)}</g>
@@ -639,7 +633,6 @@ def card_svg(i: int, p: dict) -> str:
   .tt{i} {{ fill: {light}; animation: litText{i} 6s ease-in-out infinite backwards; }}
   @keyframes lit{i} {{ 0%, 26%, 100% {{ fill: {main}; fill-opacity: .1; stroke-opacity: .5; }} 9%, 17% {{ fill: {dark}; fill-opacity: 1; stroke-opacity: 1; }} }}
   @keyframes litText{i} {{ 0%, 26%, 100% {{ fill: {light}; }} 9%, 17% {{ fill: #ffffff; }} }}
-  {ORBIT_CSS}
   {REDUCED_MOTION}
 </style>
 <rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
@@ -648,7 +641,7 @@ def card_svg(i: int, p: dict) -> str:
   <rect x="{m}" y="{m}" width="{(W - 2 * m) * 0.6:.0f}" height="3" fill="url(#bar)"/>
 </g>
 <path d="{frame}" fill="none" stroke="url(#bd)" stroke-width="1.5"/>
-{orbit(frame, (main, other), 18 + i * 2.5)}
+{shine(W, m, soft)}
 <g font-family="{MONO}" font-size="12" fill="{main}">{field}</g>
 <text x="{L}" y="{m + 56}" font-family="{MONO}" font-size="{30 if wide else 26}" font-weight="700" fill="url(#tt)">{esc(p['title'])}</text>
 {flag}
@@ -770,89 +763,32 @@ def metrics_svg(data: dict) -> str:
   .hb {{ transform-box: fill-box; transform-origin: 0 50%; animation: growH .9s cubic-bezier(.2,.7,.2,1) backwards; }}
   @keyframes growV {{ from {{ transform: scaleY(0); }} }}
   @keyframes growH {{ from {{ transform: scaleX(0); }} }}
-  {ORBIT_CSS}
   {REDUCED_MOTION}
 </style>
 <rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
 <g clip-path="url(#c)"><ellipse cx="{W - 160}" cy="{m}" rx="420" ry="170" fill="url(#gl)"/></g>
 <path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
-{orbit(frame, (BLUE, RED), 34)}
+{shine(W, m, SKY)}
 {chr(10).join(out)}
 </svg>
 """
 
 
 # ---------------------------------------------------------------------------
-# Backdrop: one big glyph-lattice cube glowing through frosted glass
+# Backdrop: coloured fog behind frosted glass
 # ---------------------------------------------------------------------------
-# A single isometric cube built from a hex lattice of tiny glyphs sits behind the
-# page. Its colour reaches the glass as fog: one pre-blurred raster that breathes
-# in and out (cheap to draw each frame, unlike a live blur filter),
-# with the lattice itself only faintly visible through them.
+# Soft blue, green and red glows, laid out along a page-sized cube, show through
+# the glass. They are one static, pre-blurred raster, so the backdrop costs a
+# single image draw per frame and no filters or animation.
 
-PITCH = 10.0                        # lattice spacing
-LAT_SCALE = 1.6                     # the lattice is drawn larger to suit one page-sized shape
-ROW_H = PITCH * math.sqrt(3) / 2
-LAT_COLS, LAT_ROWS = 12, 12         # tile size in cells; rows must be even so the offset rows wrap
-TILE_W, TILE_H = LAT_COLS * PITCH, LAT_ROWS * ROW_H
-
-# colour -> (lattice, lit lattice)
-SIM = {
-    "green": ("#52c45c", "#c6ff8a"),
-    "blue": ("#3d88ff", "#a8dcff"),
-    "red": ("#ec3a62", "#ffb3c1"),
-}
-
-GLYPH_DEFS = """
-  <polygon id="gx-hx" points="0,-4 3.46,-2 3.46,2 0,4 -3.46,2 -3.46,-2" fill="currentColor"/>
-  <path id="gx-st" d="M0,-4V4M-3.46,-2L3.46,2M-3.46,2L3.46,-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-  <path id="gx-y" d="M0,0V-4M0,0L3.46,2M0,0L-3.46,2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-  <circle id="gx-o" r="2.6" fill="currentColor"/>"""
-
-
-def lattice_cells(rng: random.Random) -> dict[tuple[int, int], tuple[str, float]]:
-    cells = {}
-    for j in range(LAT_ROWS):
-        for i in range(LAT_COLS):
-            if rng.random() < 0.06:
-                continue
-            kind = rng.choices(["hx", "st", "y", "o"], weights=[4, 3, 3, 1])[0]
-            cells[(i, j)] = (kind, round(rng.uniform(0.35, 1.0), 2))
-    return cells
-
-
-def lattice_xy(i: int, j: int) -> tuple[float, float]:
-    return i * PITCH + (j % 2) * PITCH / 2 + PITCH / 4, j * ROW_H + ROW_H / 2
-
-
-def lattice_defs(cells: dict) -> str:
-    """One tile of glyphs, drawn 3x3 so the baked blur wraps across tile edges, and a pattern per colour."""
-    glyphs = "".join(f'<use href="#gx-{k}" x="{x:.2f}" y="{y:.2f}" opacity="{a}"/>'
-                     for (i, j), (k, a) in cells.items() for x, y in [lattice_xy(i, j)])
-    nine = "".join(f'<use href="#lat" x="{dx * TILE_W:.2f}" y="{dy * TILE_H:.2f}"/>' for dx in (-1, 0, 1) for dy in (-1, 0, 1))
-    out = [GLYPH_DEFS, f'<g id="lat">{glyphs}</g>', f'<g id="lat9">{nine}</g>',
-           '<filter id="frost"><feGaussianBlur stdDeviation="0.7"/></filter>',
-           '<filter id="bloomT"><feGaussianBlur stdDeviation="2.8" result="g"/><feGaussianBlur in="SourceGraphic" stdDeviation="0.45" result="s"/>'
-           '<feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="s"/></feMerge></filter>']
-    for name, (base, hot) in SIM.items():
-        tile = f'width="{TILE_W:.2f}" height="{TILE_H:.2f}" patternUnits="userSpaceOnUse" patternTransform="scale({LAT_SCALE})"'
-        out.append(f'<pattern id="lb-{name}" {tile} color="{base}"><use href="#lat9" filter="url(#frost)"/></pattern>')
-        out.append(f'<pattern id="lh-{name}" {tile} color="{hot}"><use href="#lat9" filter="url(#bloomT)"/></pattern>')
-        out.append(f'<radialGradient id="halo-{name}"><stop offset="0" stop-color="{hot}" stop-opacity="0.6"/>'
-                   f'<stop offset="1" stop-color="{hot}" stop-opacity="0"/></radialGradient>')
-    return "\n  ".join(out)
+GLASS_TINT = 0.5                    # how dense the fog is: higher dims the colours more
+FOG_SCALE = 6                       # the fog raster is drawn at 1/6 size; it is blurred anyway
+FOG_COLORS = ["#3d88ff", "#52c45c", "#ec3a62"]   # blue, green, red
 
 
 def hexagon(cx: float, cy: float, r: float) -> list[tuple[float, float]]:
     """Pointy-top hexagon, clockwise from the top vertex."""
     return [(cx + r * math.cos(math.radians(-90 + 60 * k)), cy + r * math.sin(math.radians(-90 + 60 * k))) for k in range(6)]
-
-
-
-
-GLASS_TINT = 0.5                    # how dense the fog is: higher hides more of the cube
-FOG_SCALE = 6                       # fog rasters are drawn at 1/6 size; they are blurred anyway
-FOG_ORDER = ["blue", "green", "red"]
 
 
 def cube_segments(cx: float, cy: float, r: float) -> list[tuple[tuple[float, float], tuple[float, float]]]:
@@ -882,38 +818,13 @@ def fog_glow(W: float, H: float, groups: list[tuple[str, list]], width: float, b
     return base64.b64encode(buf.getvalue()).decode()
 
 
-def fog_layer(W: float, H: float) -> tuple[str, str]:
-    """(defs, body): the cube's coloured fog, its faint lattice, and light pulsing along its edges."""
-    cells = lattice_cells(random.Random(41))
+def fog_layer(W: float, H: float) -> str:
+    """The coloured fog: each cube edge diffused into a glow, colours cycling blue, green, red."""
     cx, cy, r = W / 2, H * 0.5, H * 0.42
     segs = cube_segments(cx, cy, r)
-    width = r * 0.17
-    color_of = [FOG_ORDER[k % 3] for k in range(len(segs))]
-
-    defs = [lattice_defs(cells)]
-    body = []
-    groups = [(SIM[name][0], [sg for sg, c in zip(segs, color_of) if c == name]) for name in FOG_ORDER]
-    body.append(f'<image class="fog" width="{W}" height="{H}" preserveAspectRatio="none" '
-                f'href="data:image/png;base64,{fog_glow(W, H, groups, width * 1.3, 70)}"/>')
-
-    ax, ay = math.cos(math.radians(-30)), math.sin(math.radians(-30))
-    dur = 7.0
-    for (a, b), name in zip(segs, color_of):
-        d = f"M{a[0]:.1f},{a[1]:.1f}L{b[0]:.1f},{b[1]:.1f}"
-        # nested strokes, faint at the rim and denser at the core, fake the soft edge a blur would give
-        for k in (1.0, 0.72, 0.45):
-            body.append(f'<path d="{d}" fill="none" stroke="url(#lb-{name})" stroke-width="{width * k:.0f}" stroke-linecap="round" opacity="0.09"/>')
-        u = (((a[0] + b[0]) / 2 - cx) * ax + ((a[1] + b[1]) / 2 - cy) * ay) / (2 * r) + 0.5   # 0..1 along the sweep
-        body.append(f'<path class="lt" d="{d}" fill="none" stroke="url(#lh-{name})" stroke-width="{width * 0.4:.0f}" stroke-linecap="round" '
-                    f'style="animation-duration:{dur}s;animation-delay:{u * dur * 0.5 - dur:.2f}s"/>')
-    return "\n  ".join(defs), "\n".join(body)
-
-
-FOG_CSS = """
-  .fog { animation: fog 12s ease-in-out infinite alternate; }
-  .lt { opacity: 0; animation: lit ease-in-out infinite; }
-  @keyframes fog { from { opacity: 0.6; } to { opacity: 1; } }
-  @keyframes lit { 0%, 100% { opacity: 0; } 14% { opacity: 0.35; } 34% { opacity: 0; } }"""
+    groups = [(c, segs[k::3]) for k, c in enumerate(FOG_COLORS)]
+    return (f'<image width="{W}" height="{H}" preserveAspectRatio="none" '
+            f'href="data:image/png;base64,{fog_glow(W, H, groups, r * 0.22, 70)}"/>')
 
 
 def frost_tile(size: int = 128) -> str:
@@ -926,7 +837,6 @@ def frost_tile(size: int = 128) -> str:
     buf = io.BytesIO()
     img.save(buf, "PNG", optimize=True)
     return base64.b64encode(buf.getvalue()).decode()
-
 
 
 
@@ -979,12 +889,10 @@ def profile_svg(data: dict) -> str:
     H = round(y + 16)
 
     frame = rrect(0.75, 0.75, W - 1.5, H - 1.5, 13.5)
-    skew = math.tan(math.radians(16)) * H
-    fog_defs, fog = fog_layer(W, H)
+    fog = fog_layer(W, H)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pt">
 <title id="pt">Yogeshwar S: profile</title>
 <defs>
-  {fog_defs}
   <pattern id="frost" width="128" height="128" patternUnits="userSpaceOnUse">
     <image width="128" height="128" href="data:image/png;base64,{frost_tile()}"/>
   </pattern>
@@ -992,11 +900,6 @@ def profile_svg(data: dict) -> str:
     <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
     <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
   </radialGradient>
-  <linearGradient id="glint" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
-    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.1"/>
-    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-  </linearGradient>
   <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#9aa3b0" stop-opacity="0.9"/>
     <stop offset="0.5" stop-color="#3a404a"/>
@@ -1005,10 +908,6 @@ def profile_svg(data: dict) -> str:
   <clipPath id="page"><rect width="{W}" height="{H}" rx="14"/></clipPath>
 </defs>
 <style>
-  .glint {{ animation: glint 16s ease-in-out infinite; }}
-  @keyframes glint {{ 0% {{ transform: translateX(0); }} 60%, 100% {{ transform: translateX({W + skew + 900:.0f}px); }} }}
-  {FOG_CSS}
-  {ORBIT_CSS}
   {REDUCED_MOTION}
 </style>
 <g clip-path="url(#page)">
@@ -1018,11 +917,10 @@ def profile_svg(data: dict) -> str:
   <rect width="{W}" height="{H}" fill="#070b11" fill-opacity="{GLASS_TINT}"/>
   <rect width="{W}" height="{H}" fill="url(#frost)"/>
   <rect width="{W}" height="{H}" fill="url(#vignette)"/>
-  <g transform="skewX(-16)"><rect class="glint" x="{-560:.0f}" y="0" width="420" height="{H}" fill="url(#glint)"/></g>
   {chr(10).join(parts)}
 </g>
 <path d="{frame}" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
-{orbit(frame, (BLUE, RED), 70, dash=14)}
+{shine(W, 0, SKY)}
 </svg>
 """
 
