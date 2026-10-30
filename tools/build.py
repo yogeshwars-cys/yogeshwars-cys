@@ -27,24 +27,22 @@ FONT_PATH = "C:/Windows/Fonts/seguibl.ttf"  # Segoe UI Black, only used to raste
 
 MONO = "'JetBrains Mono', 'Cascadia Code', SFMono-Regular, Consolas, Menlo, 'Liberation Mono', monospace"
 
-PAPER = "#ffffff"
-LINE = "#e2e9f6"
-INK = "#0b1530"
-INK2 = "#3d4b66"
-MUTED = "#69778f"
-NAVY = "#0a2463"
-BLUE = "#1f6fff"
-SKY = "#6fb6ff"
-RED = "#f0284a"
-RED_DEEP = "#9f1239"
+PAPER = "#0a0f1c"
+LINE = "#26324a"
+INK = "#e8eef8"
+INK2 = "#a9b8d0"
+MUTED = "#7f8ca6"
+WHITE = "#ffffff"
+BLUE = "#3d9bff"
+SKY = "#7cc8ff"
+RED = "#ff3b5c"
 GREEN = "#10b981"
-GREEN_DEEP = "#047857"
 
-# accent -> (main, deep, soft)
+# accent -> (main, light, soft, dark): light tints titles and tag text, dark fills a lit tag
 ACCENTS = {
-    "blue": (BLUE, NAVY, SKY),
-    "red": (RED, RED_DEEP, "#fda4af"),
-    "green": (GREEN, GREEN_DEEP, "#6ee7b7"),
+    "blue": (BLUE, "#9fd2ff", SKY, "#1f5fd6"),
+    "red": (RED, "#ff9aac", "#ff6b85", "#be123c"),
+    "green": (GREEN, "#86efac", "#34d399", "#047857"),
 }
 
 CAPTIONS = [
@@ -119,7 +117,7 @@ def bit_field(rng: random.Random, x0: float, x1: float, y0: float, y1: float, st
 
 def card_defs(W: float, H: float, m: float, r: float, shadow: str) -> str:
     return f"""<filter id="sh" x="-5%" y="-10%" width="110%" height="130%">
-    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="{shadow}" flood-opacity="0.13"/>
+    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.55"/>
   </filter>
   <clipPath id="c"><rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="{r}"/></clipPath>"""
 
@@ -333,14 +331,14 @@ def header_svg() -> str:
            '<desc id="d">The name YOGESHWAR drawn in character art, its edges disintegrating into drifting binary digits. '
            f'Below it, captions decode from binary in turn: {esc(", ".join(CAPTIONS))}.</desc>']
     out.append(f"""<defs>
-  <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="{name_left:.0f}" y1="{name_top:.0f}" x2="{name_right:.0f}" y2="{name_bottom + 120:.0f}">
-    <stop offset="0" stop-color="{NAVY}"/>
-    <stop offset="0.45" stop-color="#1747c9"/>
-    <stop offset="0.8" stop-color="{BLUE}"/>
-    <stop offset="1" stop-color="#4ea3ff"/>
+  <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="{name_left:.0f}" y1="{name_top:.0f}" x2="{name_left + 260:.0f}" y2="{name_bottom + 160:.0f}">
+    <stop offset="0" stop-color="{WHITE}"/>
+    <stop offset="0.45" stop-color="#e8f4ff"/>
+    <stop offset="0.75" stop-color="{SKY}"/>
+    <stop offset="1" stop-color="{BLUE}"/>
   </linearGradient>
   <linearGradient id="capInk" gradientUnits="userSpaceOnUse" x1="300" y1="0" x2="900" y2="0">
-    <stop offset="0" stop-color="{NAVY}"/><stop offset="0.6" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/>
+    <stop offset="0" stop-color="{WHITE}"/><stop offset="0.6" stop-color="#9fd2ff"/><stop offset="1" stop-color="#ff6b85"/>
   </linearGradient>
   <linearGradient id="ghost" gradientUnits="userSpaceOnUse" x1="{name_left:.0f}" y1="0" x2="{name_right:.0f}" y2="0">
     <stop offset="0" stop-color="{RED}" stop-opacity="0.75"/>
@@ -350,27 +348,27 @@ def header_svg() -> str:
   </linearGradient>
   <linearGradient id="sheenGrad" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
-    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.5"/>
+    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.3"/>
     <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
   </linearGradient>
   <linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="{SKY}"/><stop offset="0.5" stop-color="{LINE}"/><stop offset="1" stop-color="#fda4af"/>
   </linearGradient>
   <radialGradient id="glowBlue" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{SKY}" stop-opacity="0.32"/>
-    <stop offset="0.6" stop-color="{SKY}" stop-opacity="0.1"/>
-    <stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
+    <stop offset="0" stop-color="{BLUE}" stop-opacity="0.4"/>
+    <stop offset="0.6" stop-color="#1f5fd6" stop-opacity="0.12"/>
+    <stop offset="1" stop-color="#1f5fd6" stop-opacity="0"/>
   </radialGradient>
   <radialGradient id="glowRed" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{RED}" stop-opacity="0.16"/>
+    <stop offset="0" stop-color="{RED}" stop-opacity="0.3"/>
     <stop offset="1" stop-color="{RED}" stop-opacity="0"/>
   </radialGradient>
   <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
     <circle cx="1" cy="1" r="1" fill="{BLUE}" fill-opacity="0.08"/>
   </pattern>
   <filter id="bloom" x="-10%" y="-30%" width="120%" height="160%">
-    <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b"/>
-    <feFlood flood-color="{SKY}" flood-opacity="0.6"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b"/>
+    <feFlood flood-color="{BLUE}" flood-opacity="0.85"/>
     <feComposite in2="b" operator="in" result="g"/>
     <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
@@ -512,7 +510,7 @@ def section_svg(title: str) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(title)}">
 <defs>
   <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{NAVY}"/><stop offset="1" stop-color="{BLUE}"/>
+    <stop offset="0" stop-color="{WHITE}"/><stop offset="1" stop-color="{SKY}"/>
   </linearGradient>
   <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="{BLUE}"/><stop offset="0.6" stop-color="{RED}"/><stop offset="1" stop-color="{RED}" stop-opacity="0"/>
@@ -581,7 +579,7 @@ def card_svg(i: int, p: dict) -> str:
     wide = p.get("wide", False)
     m = 14
     W, H = (1200, 258) if wide else (600, 278)
-    main, deep, soft = ACCENTS[p["accent"]]
+    main, light, soft, dark = ACCENTS[p["accent"]]
     other = RED if p["accent"] != "red" else BLUE
     lines = wrap(p["desc"], 66 if wide else 60)
     assert len(lines) <= 4, (p["slug"], lines)
@@ -622,23 +620,23 @@ def card_svg(i: int, p: dict) -> str:
     <stop offset="1" stop-color="{other}" stop-opacity="0.35"/>
   </linearGradient>
   <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{deep}"/><stop offset="1" stop-color="{main}"/>
+    <stop offset="0" stop-color="{WHITE}"/><stop offset="1" stop-color="{light}"/>
   </linearGradient>
   <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{deep}"/><stop offset="1" stop-color="{main}"/>
+    <stop offset="0" stop-color="{dark}"/><stop offset="1" stop-color="{main}"/>
   </linearGradient>
   <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="{main}"/><stop offset="1" stop-color="{main}" stop-opacity="0"/>
   </linearGradient>
   <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{soft}" stop-opacity="{0.38 if p.get('flagship') else 0.26}"/><stop offset="1" stop-color="{soft}" stop-opacity="0"/>
+    <stop offset="0" stop-color="{soft}" stop-opacity="{0.3 if p.get('flagship') else 0.2}"/><stop offset="1" stop-color="{soft}" stop-opacity="0"/>
   </radialGradient>
 </defs>
 <style>
-  .tg{i} {{ fill: {main}; fill-opacity: .07; stroke: {main}; stroke-opacity: .45; animation: lit{i} 6s ease-in-out infinite backwards; }}
-  .tt{i} {{ fill: {deep}; animation: litText{i} 6s ease-in-out infinite backwards; }}
-  @keyframes lit{i} {{ 0%, 26%, 100% {{ fill-opacity: .07; stroke-opacity: .45; }} 9%, 17% {{ fill-opacity: 1; stroke-opacity: 1; }} }}
-  @keyframes litText{i} {{ 0%, 26%, 100% {{ fill: {deep}; }} 9%, 17% {{ fill: #ffffff; }} }}
+  .tg{i} {{ fill: {main}; fill-opacity: .1; stroke: {main}; stroke-opacity: .5; animation: lit{i} 6s ease-in-out infinite backwards; }}
+  .tt{i} {{ fill: {light}; animation: litText{i} 6s ease-in-out infinite backwards; }}
+  @keyframes lit{i} {{ 0%, 26%, 100% {{ fill: {main}; fill-opacity: .1; stroke-opacity: .5; }} 9%, 17% {{ fill: {dark}; fill-opacity: 1; stroke-opacity: 1; }} }}
+  @keyframes litText{i} {{ 0%, 26%, 100% {{ fill: {light}; }} 9%, 17% {{ fill: #ffffff; }} }}
   {ORBIT_CSS}
   {REDUCED_MOTION}
 </style>
@@ -709,7 +707,7 @@ def metrics_svg(data: dict) -> str:
     out.append(f'<text x="{L}" y="{m + 210}" font-size="12.5" fill="{MUTED}">{fmt_date(weeks[0]["start"])} to {fmt_date(data["as_of"])}</text>')
     for tick in range(0, top + 1, 5):
         y = py1 - (py1 - py0) * tick / top
-        out.append(f'<rect x="{px0}" y="{y:.1f}" width="{px1 - px0}" height="1" fill="{LINE if tick else "#c9d3e6"}"/>')
+        out.append(f'<rect x="{px0}" y="{y:.1f}" width="{px1 - px0}" height="1" fill="{LINE if tick else "#3a4660"}"/>')
         out.append(f'<text x="{px0 - 10}" y="{y + 4:.1f}" text-anchor="end" font-size="11.5" fill="{MUTED}">{tick}</text>')
     band = (px1 - px0) / len(weeks)
     bw = band - 4
@@ -737,7 +735,7 @@ def metrics_svg(data: dict) -> str:
     for k, (name, share) in enumerate(data["lang_share"]):
         y = m + 252 + k * 33
         w = max(6, (lbar1 - lbar0) * share / biggest)
-        fill = "#b9c3d6" if name == "Other" else "url(#barH)"
+        fill = "#4b5873" if name == "Other" else "url(#barH)"
         out.append(f'<text x="{lx}" y="{y + 10}" font-size="13" fill="{INK}">{esc(name)}</text>')
         out.append(f'<rect class="hb" x="{lbar0}" y="{y}" width="{w:.1f}" height="12" rx="4" fill="{fill}" style="animation-delay:{0.3 + k * 0.06:.2f}s"/>')
         out.append(f'<text x="{lbar0 + w + 8:.1f}" y="{y + 10}" font-size="12.5" fill="{INK2}">{share * 100:.1f}%</text>')
@@ -752,7 +750,7 @@ def metrics_svg(data: dict) -> str:
 <defs>
   {card_defs(W, H, m, 16, BLUE)}
   <linearGradient id="num" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{NAVY}"/><stop offset="1" stop-color="{BLUE}"/>
+    <stop offset="0" stop-color="{WHITE}"/><stop offset="1" stop-color="{SKY}"/>
   </linearGradient>
   <linearGradient id="barV" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{SKY}"/>
@@ -807,8 +805,8 @@ def brushed(rng: random.Random, w: float, h: float) -> str:
         light = rng.random() < 0.55
         out.append(
             f'<rect x="{rng.uniform(-w * 0.3, w):.0f}" y="{rng.uniform(0, h):.1f}" width="{rng.uniform(w * 0.2, w * 0.9):.0f}" '
-            f'height="{rng.uniform(0.4, 1.1):.2f}" fill="{"#ffffff" if light else "#4b5563"}" '
-            f'fill-opacity="{rng.uniform(0.04, 0.16 if light else 0.08):.3f}"/>'
+            f'height="{rng.uniform(0.4, 1.1):.2f}" fill="{"#ffffff" if light else "#000000"}" '
+            f'fill-opacity="{rng.uniform(0.02, 0.07 if light else 0.18):.3f}"/>'
         )
     return "".join(out)
 
@@ -850,28 +848,28 @@ def profile_svg(data: dict) -> str:
 <title id="pt">Yogeshwar S: profile</title>
 <defs>
   <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#b4bac3"/>
-    <stop offset="0.16" stop-color="#e3e6ea"/>
-    <stop offset="0.33" stop-color="#c2c7cf"/>
-    <stop offset="0.5" stop-color="#eceef1"/>
-    <stop offset="0.68" stop-color="#bcc2ca"/>
-    <stop offset="0.85" stop-color="#dde0e5"/>
-    <stop offset="1" stop-color="#aab0b9"/>
+    <stop offset="0" stop-color="#22262d"/>
+    <stop offset="0.16" stop-color="#3a3f48"/>
+    <stop offset="0.33" stop-color="#2a2e35"/>
+    <stop offset="0.5" stop-color="#454b55"/>
+    <stop offset="0.68" stop-color="#2b2f37"/>
+    <stop offset="0.85" stop-color="#3b4049"/>
+    <stop offset="1" stop-color="#1d2026"/>
   </linearGradient>
   <pattern id="grain" width="{W}" height="180" patternUnits="userSpaceOnUse">{brushed(rng, W, 180)}</pattern>
   <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75">
-    <stop offset="0.6" stop-color="#1f2937" stop-opacity="0"/>
-    <stop offset="1" stop-color="#1f2937" stop-opacity="0.22"/>
+    <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
   </radialGradient>
   <linearGradient id="glint" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
-    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.38"/>
+    <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.1"/>
     <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
   </linearGradient>
   <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
-    <stop offset="0.5" stop-color="#9aa1ab"/>
-    <stop offset="1" stop-color="#6b7280"/>
+    <stop offset="0" stop-color="#9aa3b0" stop-opacity="0.9"/>
+    <stop offset="0.5" stop-color="#3a404a"/>
+    <stop offset="1" stop-color="#14171c"/>
   </linearGradient>
   <clipPath id="page"><rect width="{W}" height="{H}" rx="14"/></clipPath>
 </defs>
