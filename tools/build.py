@@ -10,7 +10,9 @@ dissolve again in a loop. Everything is plain SVG + CSS so it animates inside
 GitHub's <img>, and all motion stops under prefers-reduced-motion.
 """
 
+import base64
 import datetime as dt
+import io
 import json
 import math
 import random
@@ -18,7 +20,7 @@ import re
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
@@ -781,7 +783,155 @@ def metrics_svg(data: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Page: every piece composed onto one brushed-metal sheet
+# Backdrop: one big glyph-lattice cube glowing through frosted glass
+# ---------------------------------------------------------------------------
+# A single isometric cube built from a hex lattice of tiny glyphs sits behind the
+# page. Its colour reaches the glass as fog: one pre-blurred raster that breathes
+# in and out (cheap to draw each frame, unlike a live blur filter),
+# with the lattice itself only faintly visible through them.
+
+PITCH = 10.0                        # lattice spacing
+LAT_SCALE = 1.6                     # the lattice is drawn larger to suit one page-sized shape
+ROW_H = PITCH * math.sqrt(3) / 2
+LAT_COLS, LAT_ROWS = 12, 12         # tile size in cells; rows must be even so the offset rows wrap
+TILE_W, TILE_H = LAT_COLS * PITCH, LAT_ROWS * ROW_H
+
+# colour -> (lattice, lit lattice)
+SIM = {
+    "green": ("#52c45c", "#c6ff8a"),
+    "blue": ("#3d88ff", "#a8dcff"),
+    "red": ("#ec3a62", "#ffb3c1"),
+}
+
+GLYPH_DEFS = """
+  <polygon id="gx-hx" points="0,-4 3.46,-2 3.46,2 0,4 -3.46,2 -3.46,-2" fill="currentColor"/>
+  <path id="gx-st" d="M0,-4V4M-3.46,-2L3.46,2M-3.46,2L3.46,-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+  <path id="gx-y" d="M0,0V-4M0,0L3.46,2M0,0L-3.46,2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  <circle id="gx-o" r="2.6" fill="currentColor"/>"""
+
+
+def lattice_cells(rng: random.Random) -> dict[tuple[int, int], tuple[str, float]]:
+    cells = {}
+    for j in range(LAT_ROWS):
+        for i in range(LAT_COLS):
+            if rng.random() < 0.06:
+                continue
+            kind = rng.choices(["hx", "st", "y", "o"], weights=[4, 3, 3, 1])[0]
+            cells[(i, j)] = (kind, round(rng.uniform(0.35, 1.0), 2))
+    return cells
+
+
+def lattice_xy(i: int, j: int) -> tuple[float, float]:
+    return i * PITCH + (j % 2) * PITCH / 2 + PITCH / 4, j * ROW_H + ROW_H / 2
+
+
+def lattice_defs(cells: dict) -> str:
+    """One tile of glyphs, drawn 3x3 so the baked blur wraps across tile edges, and a pattern per colour."""
+    glyphs = "".join(f'<use href="#gx-{k}" x="{x:.2f}" y="{y:.2f}" opacity="{a}"/>'
+                     for (i, j), (k, a) in cells.items() for x, y in [lattice_xy(i, j)])
+    nine = "".join(f'<use href="#lat" x="{dx * TILE_W:.2f}" y="{dy * TILE_H:.2f}"/>' for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+    out = [GLYPH_DEFS, f'<g id="lat">{glyphs}</g>', f'<g id="lat9">{nine}</g>',
+           '<filter id="frost"><feGaussianBlur stdDeviation="0.7"/></filter>',
+           '<filter id="bloomT"><feGaussianBlur stdDeviation="2.8" result="g"/><feGaussianBlur in="SourceGraphic" stdDeviation="0.45" result="s"/>'
+           '<feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="s"/></feMerge></filter>']
+    for name, (base, hot) in SIM.items():
+        tile = f'width="{TILE_W:.2f}" height="{TILE_H:.2f}" patternUnits="userSpaceOnUse" patternTransform="scale({LAT_SCALE})"'
+        out.append(f'<pattern id="lb-{name}" {tile} color="{base}"><use href="#lat9" filter="url(#frost)"/></pattern>')
+        out.append(f'<pattern id="lh-{name}" {tile} color="{hot}"><use href="#lat9" filter="url(#bloomT)"/></pattern>')
+        out.append(f'<radialGradient id="halo-{name}"><stop offset="0" stop-color="{hot}" stop-opacity="0.6"/>'
+                   f'<stop offset="1" stop-color="{hot}" stop-opacity="0"/></radialGradient>')
+    return "\n  ".join(out)
+
+
+def hexagon(cx: float, cy: float, r: float) -> list[tuple[float, float]]:
+    """Pointy-top hexagon, clockwise from the top vertex."""
+    return [(cx + r * math.cos(math.radians(-90 + 60 * k)), cy + r * math.sin(math.radians(-90 + 60 * k))) for k in range(6)]
+
+
+
+
+GLASS_TINT = 0.5                    # how dense the fog is: higher hides more of the cube
+FOG_SCALE = 6                       # fog rasters are drawn at 1/6 size; they are blurred anyway
+FOG_ORDER = ["blue", "green", "red"]
+
+
+def cube_segments(cx: float, cy: float, r: float) -> list[tuple[tuple[float, float], tuple[float, float]]]:
+    """Wireframe cube: the hexagon outline plus spokes from the centre to every vertex."""
+    v = hexagon(cx, cy, r)
+    return [(v[k], v[(k + 1) % 6]) for k in range(6)] + [((cx, cy), p) for p in v]
+
+
+def fog_glow(W: float, H: float, groups: list[tuple[str, list]], width: float, blur: float) -> str:
+    """Base64 RGBA PNG of each (colour, segments) group diffused into soft glow and blended
+    into one image (one draw per frame instead of one per colour), at 1/FOG_SCALE size."""
+    w, h = math.ceil(W / FOG_SCALE), math.ceil(H / FOG_SCALE)
+    rgb, cover = np.zeros((h, w, 3)), np.zeros((h, w))
+    for color, segs in groups:
+        mask = Image.new("L", (w, h), 0)
+        draw = ImageDraw.Draw(mask)
+        for a, b in segs:
+            draw.line([(a[0] / FOG_SCALE, a[1] / FOG_SCALE), (b[0] / FOG_SCALE, b[1] / FOG_SCALE)], fill=255, width=round(width / FOG_SCALE))
+        m = np.asarray(mask.filter(ImageFilter.GaussianBlur(blur / FOG_SCALE)), dtype=np.float64) / 255
+        rgb += m[..., None] * np.array([int(color[k:k + 2], 16) for k in (1, 3, 5)])
+        cover += m
+    rgb /= np.maximum(cover, 1e-6)[..., None]   # colour-weighted mix where glows overlap
+    alpha = np.clip(cover, 0, 1) * 255
+    img = Image.fromarray(np.dstack([rgb, alpha]).round().astype(np.uint8), "RGBA")
+    buf = io.BytesIO()
+    img.save(buf, "PNG", optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
+
+
+def fog_layer(W: float, H: float) -> tuple[str, str]:
+    """(defs, body): the cube's coloured fog, its faint lattice, and light pulsing along its edges."""
+    cells = lattice_cells(random.Random(41))
+    cx, cy, r = W / 2, H * 0.5, H * 0.42
+    segs = cube_segments(cx, cy, r)
+    width = r * 0.17
+    color_of = [FOG_ORDER[k % 3] for k in range(len(segs))]
+
+    defs = [lattice_defs(cells)]
+    body = []
+    groups = [(SIM[name][0], [sg for sg, c in zip(segs, color_of) if c == name]) for name in FOG_ORDER]
+    body.append(f'<image class="fog" width="{W}" height="{H}" preserveAspectRatio="none" '
+                f'href="data:image/png;base64,{fog_glow(W, H, groups, width * 1.3, 70)}"/>')
+
+    ax, ay = math.cos(math.radians(-30)), math.sin(math.radians(-30))
+    dur = 7.0
+    for (a, b), name in zip(segs, color_of):
+        d = f"M{a[0]:.1f},{a[1]:.1f}L{b[0]:.1f},{b[1]:.1f}"
+        # nested strokes, faint at the rim and denser at the core, fake the soft edge a blur would give
+        for k in (1.0, 0.72, 0.45):
+            body.append(f'<path d="{d}" fill="none" stroke="url(#lb-{name})" stroke-width="{width * k:.0f}" stroke-linecap="round" opacity="0.09"/>')
+        u = (((a[0] + b[0]) / 2 - cx) * ax + ((a[1] + b[1]) / 2 - cy) * ay) / (2 * r) + 0.5   # 0..1 along the sweep
+        body.append(f'<path class="lt" d="{d}" fill="none" stroke="url(#lh-{name})" stroke-width="{width * 0.4:.0f}" stroke-linecap="round" '
+                    f'style="animation-duration:{dur}s;animation-delay:{u * dur * 0.5 - dur:.2f}s"/>')
+    return "\n  ".join(defs), "\n".join(body)
+
+
+FOG_CSS = """
+  .fog { animation: fog 12s ease-in-out infinite alternate; }
+  .lt { opacity: 0; animation: lit ease-in-out infinite; }
+  @keyframes fog { from { opacity: 0.6; } to { opacity: 1; } }
+  @keyframes lit { 0%, 100% { opacity: 0; } 14% { opacity: 0.35; } 34% { opacity: 0; } }"""
+
+
+def frost_tile(size: int = 128) -> str:
+    """A small RGBA noise tile (base64 PNG) for the frosted grain of the glass."""
+    rng = np.random.default_rng(9)
+    lum = rng.random((size, size))
+    rgb = np.where(lum[..., None] > 0.5, 255, 0).astype(np.uint8).repeat(3, axis=2)
+    alpha = (np.abs(lum - 0.5) * 2) ** 3 * 46
+    img = Image.fromarray(np.dstack([rgb, alpha.astype(np.uint8)]), "RGBA")
+    buf = io.BytesIO()
+    img.save(buf, "PNG", optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
+
+
+
+
+# ---------------------------------------------------------------------------
+# Page: every piece composed onto one sheet of frosted glass
 # ---------------------------------------------------------------------------
 # GitHub can't style a README's background, and separate images always leave
 # seams of the page colour between them, so the whole README is one image.
@@ -796,19 +946,6 @@ def nest(svg: str, ns: str, x: float, y: float, width: float) -> tuple[str, floa
     body = re.sub(r"url\(#([\w-]+)\)", lambda mt: f"url(#{ns}-{mt.group(1)})", body)
     height = width * vh / vw
     return f'<svg x="{x:.1f}" y="{y:.1f}" width="{width:.1f}" height="{height:.1f}" viewBox="0 0 {vw:g} {vh:g}">{body}</svg>', height
-
-
-def brushed(rng: random.Random, w: float, h: float) -> str:
-    """Hairline streaks for a brushed-steel grain."""
-    out = []
-    for _ in range(int(h * 1.2)):
-        light = rng.random() < 0.55
-        out.append(
-            f'<rect x="{rng.uniform(-w * 0.3, w):.0f}" y="{rng.uniform(0, h):.1f}" width="{rng.uniform(w * 0.2, w * 0.9):.0f}" '
-            f'height="{rng.uniform(0.4, 1.1):.2f}" fill="{"#ffffff" if light else "#000000"}" '
-            f'fill-opacity="{rng.uniform(0.02, 0.07 if light else 0.18):.3f}"/>'
-        )
-    return "".join(out)
 
 
 def profile_svg(data: dict) -> str:
@@ -841,22 +978,16 @@ def profile_svg(data: dict) -> str:
     y += put(section_svg("All repositories ↗"), "s3", pad, inner)
     H = round(y + 16)
 
-    rng = random.Random(3)
     frame = rrect(0.75, 0.75, W - 1.5, H - 1.5, 13.5)
     skew = math.tan(math.radians(16)) * H
+    fog_defs, fog = fog_layer(W, H)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pt">
 <title id="pt">Yogeshwar S: profile</title>
 <defs>
-  <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#22262d"/>
-    <stop offset="0.16" stop-color="#3a3f48"/>
-    <stop offset="0.33" stop-color="#2a2e35"/>
-    <stop offset="0.5" stop-color="#454b55"/>
-    <stop offset="0.68" stop-color="#2b2f37"/>
-    <stop offset="0.85" stop-color="#3b4049"/>
-    <stop offset="1" stop-color="#1d2026"/>
-  </linearGradient>
-  <pattern id="grain" width="{W}" height="180" patternUnits="userSpaceOnUse">{brushed(rng, W, 180)}</pattern>
+  {fog_defs}
+  <pattern id="frost" width="128" height="128" patternUnits="userSpaceOnUse">
+    <image width="128" height="128" href="data:image/png;base64,{frost_tile()}"/>
+  </pattern>
   <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75">
     <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
     <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
@@ -876,12 +1007,16 @@ def profile_svg(data: dict) -> str:
 <style>
   .glint {{ animation: glint 16s ease-in-out infinite; }}
   @keyframes glint {{ 0% {{ transform: translateX(0); }} 60%, 100% {{ transform: translateX({W + skew + 900:.0f}px); }} }}
+  {FOG_CSS}
   {ORBIT_CSS}
   {REDUCED_MOTION}
 </style>
 <g clip-path="url(#page)">
-  <rect width="{W}" height="{H}" fill="url(#metal)"/>
-  <rect width="{W}" height="{H}" fill="url(#grain)"/>
+  <rect width="{W}" height="{H}" fill="#05080d"/>
+  <g aria-hidden="true">{fog}</g>
+  <!-- the glass: a dark tint over the fog, plus frosted grain -->
+  <rect width="{W}" height="{H}" fill="#070b11" fill-opacity="{GLASS_TINT}"/>
+  <rect width="{W}" height="{H}" fill="url(#frost)"/>
   <rect width="{W}" height="{H}" fill="url(#vignette)"/>
   <g transform="skewX(-16)"><rect class="glint" x="{-560:.0f}" y="0" width="420" height="{H}" fill="url(#glint)"/></g>
   {chr(10).join(parts)}
