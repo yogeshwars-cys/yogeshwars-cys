@@ -191,9 +191,8 @@ def caption_layer(rng: random.Random, cx: float, base_y: float) -> tuple[str, st
             phase = round(k * slot + i * 0.035 + rng.uniform(0, 0.2), 3)
             flip = round(rng.uniform(0.14, 0.3), 2)
             out.append(
-                f'<g class="ci" style="animation-delay:{phase}s" fill="{BLUE}" text-anchor="middle">'
-                f'<text class="fa" x="{x}" y="{base_y}" style="animation-duration:{flip}s">0</text>'
-                f'<text class="fb" x="{x}" y="{base_y}" style="animation-duration:{flip}s">1</text></g>'
+                f'<text class="ci" x="{x}" y="{base_y}" fill="{BLUE}" text-anchor="middle" '
+                f'style="animation-delay:{phase}s">{rng.choice("01")}</text>'
             )
             k0 = " k0" if k == 0 else ""
             out.append(f'<text class="ch{k0}" x="{x}" y="{base_y}" text-anchor="middle" fill="url(#capInk)" style="animation-delay:{phase}s">{esc(ch)}</text>')
@@ -297,6 +296,13 @@ def header_svg() -> str:
                     f'style="--mx:{mx:.0f}px;--my:{my:.0f}px;--dx:{sx:.0f}px;--dy:{sy:.0f}px;'
                     f'animation-duration:{rng.uniform(5, 9):.2f}s;animation-delay:-{rng.uniform(0, 9):.2f}s">{rng.choice("01")}</text>'
                 )
+
+    if len(leaving) > 80:
+        step = len(leaving) / 80
+        leaving = [leaving[int(i * step)] for i in range(80)]
+    if len(arriving) > 16:
+        step = len(arriving) / 16
+        arriving = [arriving[int(i * step)] for i in range(16)]
 
     name_top, name_bottom = y0, y0 + rows * cell_h
     name_left, name_right = x0, x0 + cols * cell_w
@@ -417,8 +423,11 @@ def header_svg() -> str:
 
     out.append('<g class="g" fill="url(#ink)">')
     for x, y in boil:
-        flip = rng.uniform(1.2, 3.4)
-        delay = -rng.uniform(0, 3.4)
+        if rng.random() > 0.30:
+            out.append(f'<text x="{cx(x)}" y="{cy(y)}">{rng.choice("01")}</text>')
+            continue
+        flip = rng.uniform(2.4, 5.0)
+        delay = -rng.uniform(0, 5.0)
         pair = (f'<text class="fa" x="{cx(x)}" y="{cy(y)}" style="animation-duration:{flip:.2f}s;animation-delay:{delay:.2f}s">0</text>'
                 f'<text class="fb" x="{cx(x)}" y="{cy(y)}" style="animation-duration:{flip:.2f}s;animation-delay:{delay:.2f}s">1</text>')
         if rng.random() < 0.4:
@@ -658,7 +667,7 @@ def metrics_svg(data: dict) -> str:
             h = (py1 - py0) * c / top
             r = min(4, h)
             d = f"M{x:.1f},{py1} V{py1 - h + r:.1f} Q{x:.1f},{py1 - h:.1f} {x + r:.1f},{py1 - h:.1f} H{x + bw - r:.1f} Q{x + bw:.1f},{py1 - h:.1f} {x + bw:.1f},{py1 - h + r:.1f} V{py1} Z"
-            out.append(f'<path class="vb" d="{d}" fill="{BLUE}" style="animation-delay:{k * 0.04:.2f}s"/>')
+            out.append(f'<path d="{d}" fill="{BLUE}"/>')
             if k == peak:
                 out.append(f'<text x="{x + bw / 2:.1f}" y="{py1 - h - 8:.1f}" text-anchor="middle" font-size="12.5" font-weight="700" fill="{INK}">{c}</text>')
         month = dt.date.fromisoformat(w["start"]).strftime("%b")
@@ -676,7 +685,7 @@ def metrics_svg(data: dict) -> str:
         w = max(6, (lbar1 - lbar0) * share / biggest)
         fill = "#4b5873" if name == "Other" else BLUE
         out.append(f'<text x="{lx}" y="{y + 10}" font-size="13" fill="{INK}">{esc(name)}</text>')
-        out.append(f'<rect class="hb" x="{lbar0}" y="{y}" width="{w:.1f}" height="12" rx="4" fill="{fill}" style="animation-delay:{0.3 + k * 0.06:.2f}s"/>')
+        out.append(f'<rect x="{lbar0}" y="{y}" width="{w:.1f}" height="12" rx="4" fill="{fill}"/>')
         out.append(f'<text x="{lbar0 + w + 8:.1f}" y="{y + 10}" font-size="12.5" fill="{INK2}">{share * 100:.1f}%</text>')
 
     excluded = ", ".join(data["excluded"])
@@ -691,10 +700,6 @@ def metrics_svg(data: dict) -> str:
 </defs>
 <style>
   text {{ font-family: {MONO}; }}
-  .vb {{ transform-box: fill-box; transform-origin: 50% 100%; animation: growV .9s cubic-bezier(.2,.7,.2,1) backwards; }}
-  .hb {{ transform-box: fill-box; transform-origin: 0 50%; animation: growH .9s cubic-bezier(.2,.7,.2,1) backwards; }}
-  @keyframes growV {{ from {{ transform: scaleY(0); }} }}
-  @keyframes growH {{ from {{ transform: scaleX(0); }} }}
   {REDUCED_MOTION}
 </style>
 <rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}"/>
