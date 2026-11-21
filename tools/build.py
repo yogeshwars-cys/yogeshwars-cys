@@ -74,17 +74,6 @@ def rrect(x: float, y: float, w: float, h: float, r: float) -> str:
             f"V{y + r} A{r},{r} 0 0 1 {x + r},{y} Z")
 
 
-def shine(W: float, m: float, color: str) -> str:
-    """A fixed highlight along a card's top edge, brightest a third of the way in, like light catching glass."""
-    y, x0, x1 = m + 0.75, m + 16, W - m - 16
-    return (f'<linearGradient id="shn" gradientUnits="userSpaceOnUse" x1="{x0}" y1="0" x2="{x1}" y2="0">'
-            f'<stop offset="0" stop-color="{color}" stop-opacity="0"/><stop offset="0.24" stop-color="{color}" stop-opacity="0.85"/>'
-            f'<stop offset="0.34" stop-color="#ffffff"/><stop offset="0.5" stop-color="{color}" stop-opacity="0.5"/>'
-            f'<stop offset="1" stop-color="{color}" stop-opacity="0"/></linearGradient>'
-            f'<path d="M{x0},{y}H{x1}" stroke="url(#shn)" stroke-width="6" stroke-opacity="0.22" stroke-linecap="round"/>'
-            f'<path d="M{x0},{y}H{x1}" stroke="url(#shn)" stroke-width="1.6" stroke-linecap="round"/>')
-
-
 def wrap(text: str, width: int) -> list[str]:
     lines, line = [], ""
     for word in text.split():
@@ -115,10 +104,7 @@ def bit_field(rng: random.Random, x0: float, x1: float, y0: float, y1: float, st
 
 
 def card_defs(W: float, H: float, m: float, r: float, shadow: str) -> str:
-    return f"""<filter id="sh" x="-5%" y="-10%" width="110%" height="130%">
-    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.55"/>
-  </filter>
-  <clipPath id="c"><rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="{r}"/></clipPath>"""
+    return f"""<clipPath id="c"><rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="{r}"/></clipPath>"""
 
 
 # ---------------------------------------------------------------------------
@@ -471,23 +457,13 @@ def summary_svg() -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(SUMMARY)}">
 <defs>
   {card_defs(W, H, m, 16, BLUE)}
-  <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{RED}"/>
-  </linearGradient>
-  <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{SKY}" stop-opacity="0.22"/><stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
-  </radialGradient>
 </defs>
 <style>
   {REDUCED_MOTION}
 </style>
-<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
-<g clip-path="url(#c)">
-  <ellipse cx="{W - 120}" cy="{m}" rx="360" ry="150" fill="url(#gl)"/>
-</g>
+<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}"/>
 <path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
-{shine(W, m, SKY)}
-<rect x="{m + 34}" y="{m + 34}" width="4" height="{len(lines) * 34 - 4}" rx="2" fill="url(#bar)"/>
+<rect x="{m + 34}" y="{m + 34}" width="4" height="{len(lines) * 34 - 4}" rx="2" fill="{BLUE}"/>
 <g font-family="{MONO}" font-size="19" fill="{INK}">{text}</g>
 <g font-family="{MONO}" font-size="12" fill="{BLUE}">{bit_field(rng, W - 260, W - 40, m + 30, m + 70, 10, 0.5)}</g>
 </svg>
@@ -506,16 +482,8 @@ def section_svg(title: str) -> str:
             bits.append(f'<text x="{x:.0f}" y="{rng.uniform(40, 50):.0f}" fill-opacity="{max(0.08, fade * 0.7):.2f}">{rng.choice("01")}</text>')
         x += 9 + 14 * (1 - fade)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(title)}">
-<defs>
-  <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{WHITE}"/><stop offset="1" stop-color="{SKY}"/>
-  </linearGradient>
-  <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{BLUE}"/><stop offset="0.6" stop-color="{RED}"/><stop offset="1" stop-color="{RED}" stop-opacity="0"/>
-  </linearGradient>
-</defs>
-<text x="32" y="53" font-family="{MONO}" font-size="27" font-weight="700" fill="url(#tt)">{esc(title)}</text>
-<rect x="{line_x:.0f}" y="44" width="{800 - line_x:.0f}" height="1.5" fill="url(#ln)"/>
+<text x="32" y="53" font-family="{MONO}" font-size="27" font-weight="700" fill="{INK}">{esc(title)}</text>
+<rect x="{line_x:.0f}" y="44" width="{800 - line_x:.0f}" height="1.5" fill="{LINE}"/>
 <g font-family="{MONO}" font-size="12" fill="{BLUE}">{"".join(bits)}</g>
 </svg>
 """
@@ -535,6 +503,13 @@ PROJECTS = [
         "tags": ["Python", "Agents", "Retrieval"],
     },
     {
+        "slug": "samos", "repo": "SAMOS", "title": "SAMOS", "accent": "blue",
+        "desc": "Turns a phone, SSD or USB device into explicit secondary memory: "
+                "hot data stays in laptop RAM, cold data lives on the device at "
+                "known coordinates and returns on demand, about 5 ms over USB.",
+        "tags": ["Python", "Systems", "Memory"],
+    },
+    {
         "slug": "vault", "repo": "iqoo-hackathon", "title": "Vault", "accent": "red",
         "desc": "Turns an Android phone into a private AI coprocessor. Documents stay "
                 "encrypted on-device; the laptop only receives a signed answer "
@@ -547,13 +522,6 @@ PROJECTS = [
                 "and semantic scoring plus a calibration loop. About 380 lines of "
                 "numpy, ~1 ms per request on one core.",
         "tags": ["Python", "Security", "numpy"],
-    },
-    {
-        "slug": "pramana", "repo": "Pramana-AI-Risk-Manager", "title": "Pramana", "accent": "blue",
-        "desc": "Cross-merchant fraud detection where merchants share conclusions and "
-                "hashed sketches, never data, and only first-hand evidence can "
-                "freeze a merchant.",
-        "tags": ["Python", "Fraud", "Privacy"],
     },
     {
         "slug": "saber", "repo": "Amazon-ML-2026-SABER", "title": "SABER", "accent": "red",
@@ -586,66 +554,40 @@ def card_svg(i: int, p: dict) -> str:
     desc = "".join(f'<text x="{L}" y="{m + 100 + k * 22}">{esc(line)}</text>' for k, line in enumerate(lines))
 
     tags, tx, tag_y = [], float(L), H - m - 50
-    for k, tag in enumerate(p["tags"]):
+    for tag in p["tags"]:
         w = 20 + len(tag) * 7.6
-        delay = f"animation-delay:{k * 0.9 + i * 0.35:.2f}s"
         tags.append(
-            f'<rect class="tg{i}" x="{tx:.1f}" y="{tag_y}" width="{w:.1f}" height="26" rx="13" style="{delay}"/>'
-            f'<text class="tt{i}" x="{tx + w / 2:.1f}" y="{tag_y + 17}" text-anchor="middle" style="{delay}">{esc(tag)}</text>'
+            f'<rect x="{tx:.1f}" y="{tag_y}" width="{w:.1f}" height="26" rx="13" fill="{main}" fill-opacity=".12" stroke="{main}" stroke-opacity=".45"/>'
+            f'<text x="{tx + w / 2:.1f}" y="{tag_y + 17}" text-anchor="middle" fill="{light}">{esc(tag)}</text>'
         )
         tx += w + 8
 
     if wide:
         field = bit_field(rng, 700, W - 40, m + 40, H - m - 40, 11, 0.6)
-        glow = f'<ellipse cx="900" cy="{H / 2}" rx="400" ry="160" fill="url(#gl)"/>'
     else:
         field = bit_field(rng, 390, W - m - 20, m + 26, m + 62, 9, 0.6)
-        glow = f'<ellipse cx="{m + 80 if p["accent"] == "blue" else W - m - 80}" cy="{m}" rx="260" ry="140" fill="url(#gl)"/>'
 
     flag = ""
     if p.get("flagship"):
         fx = L + len(p["title"]) * 18.2 + 20
-        flag = (f'<rect x="{fx:.0f}" y="{m + 37}" width="88" height="24" rx="12" fill="url(#accent)"/>'
+        flag = (f'<rect x="{fx:.0f}" y="{m + 37}" width="88" height="24" rx="12" fill="{dark}"/>'
                 f'<text x="{fx + 44:.0f}" y="{m + 53}" text-anchor="middle" font-family="{MONO}" font-size="12" font-weight="700" fill="#fff">Flagship</text>')
 
     frame = rrect(m + 0.75, m + 0.75, W - 2 * m - 1.5, H - 2 * m - 1.5, 15.5)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(p['title'])}: {esc(p['desc'])}">
 <defs>
   {card_defs(W, H, m, 16, main)}
-  <linearGradient id="bd" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{main}" stop-opacity="0.7"/>
-    <stop offset="0.5" stop-color="{LINE}"/>
-    <stop offset="1" stop-color="{other}" stop-opacity="0.35"/>
-  </linearGradient>
-  <linearGradient id="tt" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{WHITE}"/><stop offset="1" stop-color="{light}"/>
-  </linearGradient>
-  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{dark}"/><stop offset="1" stop-color="{main}"/>
-  </linearGradient>
-  <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{main}"/><stop offset="1" stop-color="{main}" stop-opacity="0"/>
-  </linearGradient>
-  <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{soft}" stop-opacity="{0.3 if p.get('flagship') else 0.2}"/><stop offset="1" stop-color="{soft}" stop-opacity="0"/>
-  </radialGradient>
 </defs>
 <style>
-  .tg{i} {{ fill: {main}; fill-opacity: .1; stroke: {main}; stroke-opacity: .5; animation: lit{i} 6s ease-in-out infinite backwards; }}
-  .tt{i} {{ fill: {light}; animation: litText{i} 6s ease-in-out infinite backwards; }}
-  @keyframes lit{i} {{ 0%, 26%, 100% {{ fill: {main}; fill-opacity: .1; stroke-opacity: .5; }} 9%, 17% {{ fill: {dark}; fill-opacity: 1; stroke-opacity: 1; }} }}
-  @keyframes litText{i} {{ 0%, 26%, 100% {{ fill: {light}; }} 9%, 17% {{ fill: #ffffff; }} }}
   {REDUCED_MOTION}
 </style>
-<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
+<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}"/>
 <g clip-path="url(#c)">
-  {glow}
-  <rect x="{m}" y="{m}" width="{(W - 2 * m) * 0.6:.0f}" height="3" fill="url(#bar)"/>
+  <rect x="{m}" y="{m}" width="{(W - 2 * m) * 0.6:.0f}" height="3" fill="{main}"/>
 </g>
-<path d="{frame}" fill="none" stroke="url(#bd)" stroke-width="1.5"/>
-{shine(W, m, soft)}
+<path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
 <g font-family="{MONO}" font-size="12" fill="{main}">{field}</g>
-<text x="{L}" y="{m + 56}" font-family="{MONO}" font-size="{30 if wide else 26}" font-weight="700" fill="url(#tt)">{esc(p['title'])}</text>
+<text x="{L}" y="{m + 56}" font-family="{MONO}" font-size="{30 if wide else 26}" font-weight="700" fill="{INK}">{esc(p['title'])}</text>
 {flag}
 <g font-family="{MONO}" font-size="13.5" fill="{INK2}">{desc}</g>
 <g font-family="{MONO}" font-size="12" font-weight="600">{"".join(tags)}</g>
@@ -691,7 +633,7 @@ def metrics_svg(data: dict) -> str:
         x = L + k * tw
         if k:
             out.append(f'<rect x="{x - 20:.0f}" y="{m + 44}" width="1" height="72" fill="{LINE}"/>')
-        out.append(f'<text x="{x:.0f}" y="{m + 92}" font-size="44" font-weight="700" fill="url(#num)">{value}</text>')
+        out.append(f'<text x="{x:.0f}" y="{m + 92}" font-size="44" font-weight="700" fill="{INK}">{value}</text>')
         out.append(f'<text x="{x:.0f}" y="{m + 118}" font-size="13" fill="{INK2}">{esc(label)}</text>')
     out.append(f'<rect x="{L}" y="{m + 150}" width="{R - L}" height="1" fill="{LINE}"/>')
 
@@ -716,7 +658,7 @@ def metrics_svg(data: dict) -> str:
             h = (py1 - py0) * c / top
             r = min(4, h)
             d = f"M{x:.1f},{py1} V{py1 - h + r:.1f} Q{x:.1f},{py1 - h:.1f} {x + r:.1f},{py1 - h:.1f} H{x + bw - r:.1f} Q{x + bw:.1f},{py1 - h:.1f} {x + bw:.1f},{py1 - h + r:.1f} V{py1} Z"
-            out.append(f'<path class="vb" d="{d}" fill="url(#barV)" style="animation-delay:{k * 0.04:.2f}s"/>')
+            out.append(f'<path class="vb" d="{d}" fill="{BLUE}" style="animation-delay:{k * 0.04:.2f}s"/>')
             if k == peak:
                 out.append(f'<text x="{x + bw / 2:.1f}" y="{py1 - h - 8:.1f}" text-anchor="middle" font-size="12.5" font-weight="700" fill="{INK}">{c}</text>')
         month = dt.date.fromisoformat(w["start"]).strftime("%b")
@@ -732,7 +674,7 @@ def metrics_svg(data: dict) -> str:
     for k, (name, share) in enumerate(data["lang_share"]):
         y = m + 252 + k * 33
         w = max(6, (lbar1 - lbar0) * share / biggest)
-        fill = "#4b5873" if name == "Other" else "url(#barH)"
+        fill = "#4b5873" if name == "Other" else BLUE
         out.append(f'<text x="{lx}" y="{y + 10}" font-size="13" fill="{INK}">{esc(name)}</text>')
         out.append(f'<rect class="hb" x="{lbar0}" y="{y}" width="{w:.1f}" height="12" rx="4" fill="{fill}" style="animation-delay:{0.3 + k * 0.06:.2f}s"/>')
         out.append(f'<text x="{lbar0 + w + 8:.1f}" y="{y + 10}" font-size="12.5" fill="{INK2}">{share * 100:.1f}%</text>')
@@ -746,18 +688,6 @@ def metrics_svg(data: dict) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Metrics: {data['contributions']} contributions in the last 12 months, {data['commits']} commits, {data['pull_requests']} pull requests, {data['public_repos']} public repositories, a weekly contribution chart and a language breakdown.">
 <defs>
   {card_defs(W, H, m, 16, BLUE)}
-  <linearGradient id="num" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="{WHITE}"/><stop offset="1" stop-color="{SKY}"/>
-  </linearGradient>
-  <linearGradient id="barV" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{SKY}"/>
-  </linearGradient>
-  <linearGradient id="barH" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="{SKY}"/><stop offset="1" stop-color="{BLUE}"/>
-  </linearGradient>
-  <radialGradient id="gl" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{SKY}" stop-opacity="0.2"/><stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
-  </radialGradient>
 </defs>
 <style>
   text {{ font-family: {MONO}; }}
@@ -767,79 +697,11 @@ def metrics_svg(data: dict) -> str:
   @keyframes growH {{ from {{ transform: scaleX(0); }} }}
   {REDUCED_MOTION}
 </style>
-<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}" filter="url(#sh)"/>
-<g clip-path="url(#c)"><ellipse cx="{W - 160}" cy="{m}" rx="420" ry="170" fill="url(#gl)"/></g>
+<rect x="{m}" y="{m}" width="{W - 2 * m}" height="{H - 2 * m}" rx="16" fill="{PAPER}"/>
 <path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
-{shine(W, m, SKY)}
 {chr(10).join(out)}
 </svg>
 """
-
-
-# ---------------------------------------------------------------------------
-# Backdrop: coloured fog behind frosted glass
-# ---------------------------------------------------------------------------
-# Soft blue, green and red glows, laid out along a page-sized cube, show through
-# the glass. They are one static, pre-blurred raster, so the backdrop costs a
-# single image draw per frame and no filters or animation.
-
-GLASS_TINT = 0.5                    # how dense the fog is: higher dims the colours more
-FOG_SCALE = 6                       # the fog raster is drawn at 1/6 size; it is blurred anyway
-FOG_COLORS = ["#3d88ff", "#52c45c", "#ec3a62"]   # blue, green, red
-
-
-def hexagon(cx: float, cy: float, r: float) -> list[tuple[float, float]]:
-    """Pointy-top hexagon, clockwise from the top vertex."""
-    return [(cx + r * math.cos(math.radians(-90 + 60 * k)), cy + r * math.sin(math.radians(-90 + 60 * k))) for k in range(6)]
-
-
-def cube_segments(cx: float, cy: float, r: float) -> list[tuple[tuple[float, float], tuple[float, float]]]:
-    """Wireframe cube: the hexagon outline plus spokes from the centre to every vertex."""
-    v = hexagon(cx, cy, r)
-    return [(v[k], v[(k + 1) % 6]) for k in range(6)] + [((cx, cy), p) for p in v]
-
-
-def fog_glow(W: float, H: float, groups: list[tuple[str, list]], width: float, blur: float) -> str:
-    """Base64 RGBA PNG of each (colour, segments) group diffused into soft glow and blended
-    into one image (one draw per frame instead of one per colour), at 1/FOG_SCALE size."""
-    w, h = math.ceil(W / FOG_SCALE), math.ceil(H / FOG_SCALE)
-    rgb, cover = np.zeros((h, w, 3)), np.zeros((h, w))
-    for color, segs in groups:
-        mask = Image.new("L", (w, h), 0)
-        draw = ImageDraw.Draw(mask)
-        for a, b in segs:
-            draw.line([(a[0] / FOG_SCALE, a[1] / FOG_SCALE), (b[0] / FOG_SCALE, b[1] / FOG_SCALE)], fill=255, width=round(width / FOG_SCALE))
-        m = np.asarray(mask.filter(ImageFilter.GaussianBlur(blur / FOG_SCALE)), dtype=np.float64) / 255
-        rgb += m[..., None] * np.array([int(color[k:k + 2], 16) for k in (1, 3, 5)])
-        cover += m
-    rgb /= np.maximum(cover, 1e-6)[..., None]   # colour-weighted mix where glows overlap
-    alpha = np.clip(cover, 0, 1) * 255
-    img = Image.fromarray(np.dstack([rgb, alpha]).round().astype(np.uint8), "RGBA")
-    buf = io.BytesIO()
-    img.save(buf, "PNG", optimize=True)
-    return base64.b64encode(buf.getvalue()).decode()
-
-
-def fog_layer(W: float, H: float) -> str:
-    """The coloured fog: each cube edge diffused into a glow, colours cycling blue, green, red."""
-    cx, cy, r = W / 2, H * 0.5, H * 0.42
-    segs = cube_segments(cx, cy, r)
-    groups = [(c, segs[k::3]) for k, c in enumerate(FOG_COLORS)]
-    return (f'<image width="{W}" height="{H}" preserveAspectRatio="none" '
-            f'href="data:image/png;base64,{fog_glow(W, H, groups, r * 0.22, 70)}"/>')
-
-
-def frost_tile(size: int = 128) -> str:
-    """A small RGBA noise tile (base64 PNG) for the frosted grain of the glass."""
-    rng = np.random.default_rng(9)
-    lum = rng.random((size, size))
-    rgb = np.where(lum[..., None] > 0.5, 255, 0).astype(np.uint8).repeat(3, axis=2)
-    alpha = (np.abs(lum - 0.5) * 2) ** 3 * 46
-    img = Image.fromarray(np.dstack([rgb, alpha.astype(np.uint8)]), "RGBA")
-    buf = io.BytesIO()
-    img.save(buf, "PNG", optimize=True)
-    return base64.b64encode(buf.getvalue()).decode()
-
 
 
 # ---------------------------------------------------------------------------
@@ -858,6 +720,18 @@ def nest(svg: str, ns: str, x: float, y: float, width: float) -> tuple[str, floa
     body = re.sub(r"url\(#([\w-]+)\)", lambda mt: f"url(#{ns}-{mt.group(1)})", body)
     height = width * vh / vw
     return f'<svg x="{x:.1f}" y="{y:.1f}" width="{width:.1f}" height="{height:.1f}" viewBox="0 0 {vw:g} {vh:g}">{body}</svg>', height
+
+
+def frost_tile(size: int = 128) -> str:
+    """A small RGBA noise tile (base64 PNG) for the frosted grain of the glass."""
+    rng = np.random.default_rng(9)
+    lum = rng.random((size, size))
+    rgb = np.where(lum[..., None] > 0.5, 255, 0).astype(np.uint8).repeat(3, axis=2)
+    alpha = (np.abs(lum - 0.5) * 2) ** 3 * 46
+    img = Image.fromarray(np.dstack([rgb, alpha.astype(np.uint8)]), "RGBA")
+    buf = io.BytesIO()
+    img.save(buf, "PNG", optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
 
 
 def profile_svg(data: dict) -> str:
@@ -891,38 +765,23 @@ def profile_svg(data: dict) -> str:
     H = round(y + 16)
 
     frame = rrect(0.75, 0.75, W - 1.5, H - 1.5, 13.5)
-    fog = fog_layer(W, H)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pt">
 <title id="pt">Yogeshwar S: profile</title>
 <defs>
   <pattern id="frost" width="128" height="128" patternUnits="userSpaceOnUse">
     <image width="128" height="128" href="data:image/png;base64,{frost_tile()}"/>
   </pattern>
-  <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75">
-    <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
-    <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
-  </radialGradient>
-  <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#9aa3b0" stop-opacity="0.9"/>
-    <stop offset="0.5" stop-color="#3a404a"/>
-    <stop offset="1" stop-color="#14171c"/>
-  </linearGradient>
   <clipPath id="page"><rect width="{W}" height="{H}" rx="14"/></clipPath>
 </defs>
 <style>
   {REDUCED_MOTION}
 </style>
 <g clip-path="url(#page)">
-  <rect width="{W}" height="{H}" fill="#05080d"/>
-  <g aria-hidden="true">{fog}</g>
-  <!-- the glass: a dark tint over the fog, plus frosted grain -->
-  <rect width="{W}" height="{H}" fill="#070b11" fill-opacity="{GLASS_TINT}"/>
+  <rect width="{W}" height="{H}" fill="#0a0f16"/>
   <rect width="{W}" height="{H}" fill="url(#frost)"/>
-  <rect width="{W}" height="{H}" fill="url(#vignette)"/>
   {chr(10).join(parts)}
 </g>
-<path d="{frame}" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
-{shine(W, 0, SKY)}
+<path d="{frame}" fill="none" stroke="{LINE}" stroke-width="1.5"/>
 </svg>
 """
 
